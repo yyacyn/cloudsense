@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
@@ -7,7 +8,9 @@
     <!-- Google Fonts Premium & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -35,9 +38,19 @@
         }
 
         /* ===== MODERN SCROLLBAR ===== */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #101b2b; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(145deg, #2b7fc3, #3fa5f0); border-radius: 20px; }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #101b2b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(145deg, #2b7fc3, #3fa5f0);
+            border-radius: 20px;
+        }
 
         /* ===== HEADER STICKY GLASS ===== */
         .header {
@@ -107,7 +120,7 @@
         }
 
         .nav-menu a {
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             font-weight: 600;
             font-size: 1rem;
@@ -116,7 +129,8 @@
             transition: 0.2s;
         }
 
-        .nav-menu a:hover, .nav-menu a.active {
+        .nav-menu a:hover,
+        .nav-menu a.active {
             color: white;
             text-shadow: 0 0 8px #6bb5ff;
         }
@@ -132,6 +146,7 @@
             border-radius: 3px;
             transition: width 0.3s ease;
         }
+
         .nav-menu a:hover::before,
         .nav-menu a.active::before {
             width: 100%;
@@ -158,7 +173,7 @@
             transform: translateX(-50%);
             width: 800px;
             height: 800px;
-            background: radial-gradient(circle, rgba(64,128,255,0.12) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(64, 128, 255, 0.12) 0%, transparent 70%);
             border-radius: 50%;
             z-index: 0;
         }
@@ -176,10 +191,10 @@
             letter-spacing: 4px;
             margin-bottom: 1.5rem;
             text-transform: uppercase;
-            background: rgba(255,215,0,0.1);
+            background: rgba(255, 215, 0, 0.1);
             padding: 0.5rem 2rem;
             border-radius: 60px;
-            border: 1px solid rgba(255,215,0,0.2);
+            border: 1px solid rgba(255, 215, 0, 0.2);
             backdrop-filter: blur(5px);
         }
 
@@ -192,7 +207,7 @@
             background-clip: text;
             color: transparent;
             line-height: 1.1;
-            text-shadow: 0 0 40px rgba(100,180,255,0.3);
+            text-shadow: 0 0 40px rgba(100, 180, 255, 0.3);
             letter-spacing: -0.02em;
         }
 
@@ -203,16 +218,16 @@
             gap: 2rem;
             margin-bottom: 3rem;
         }
-        
+
         .camera-panel {
-            background: rgba(10,30,45,0.7);
+            background: rgba(10, 30, 45, 0.7);
             backdrop-filter: blur(20px);
             border-radius: 50px;
             padding: 2.5rem;
             border: 1px solid #2e6191;
-            box-shadow: 0 10px 25px -10px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.5);
         }
-        
+
         .panel-title {
             color: white;
             font-size: 1.6rem;
@@ -222,7 +237,7 @@
             align-items: center;
             gap: 12px;
         }
-        
+
         .camera-area {
             background: #051a2b;
             border-radius: 40px;
@@ -230,7 +245,7 @@
             border: 2px solid #1c6191;
             margin-bottom: 1.8rem;
         }
-        
+
         .preview-box {
             width: 100%;
             aspect-ratio: 16/9;
@@ -240,30 +255,30 @@
             justify-content: center;
             position: relative;
         }
-        
+
         #preview-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: none;
         }
-        
+
         .placeholder-preview {
             text-align: center;
             color: #609ac7;
         }
-        
+
         .placeholder-preview i {
             font-size: 5rem;
             opacity: 0.7;
             margin-bottom: 0.8rem;
         }
-        
+
         .upload-actions {
             display: flex;
             gap: 1rem;
         }
-        
+
         .btn {
             flex: 1;
             padding: 1.2rem 1.5rem;
@@ -278,27 +293,27 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        
+
         .btn-primary {
             background: #1f70b5;
             color: white;
             border: 1px solid #b1deff;
         }
-        
+
         .btn-primary:hover {
             background: #2d8ae0;
             transform: translateY(-3px);
             box-shadow: 0 10px 20px -8px #0066cc;
         }
-        
+
         .btn-outline {
-            background: rgba(255,255,255,0.12);
+            background: rgba(255, 255, 255, 0.12);
             color: white;
             border: 1px solid #4d93d9;
         }
-        
+
         .btn-outline:hover {
-            background: rgba(255,255,255,0.25);
+            background: rgba(255, 255, 255, 0.25);
             transform: translateY(-3px);
         }
 
@@ -309,7 +324,7 @@
             box-shadow: 0 15px 30px -15px #000000;
             border: 1px solid #92c6ff;
         }
-        
+
         .badge-kelas {
             background: #cbe4fe;
             padding: 0.7rem 1.8rem;
@@ -320,7 +335,7 @@
             margin-bottom: 1.8rem;
             font-size: 0.95rem;
         }
-        
+
         .kelas-utama {
             display: flex;
             align-items: center;
@@ -329,13 +344,13 @@
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
-        
+
         .kelas-utama h2 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2.5rem;
             color: #0d2842;
         }
-        
+
         .kode-awan {
             font-size: 2rem;
             font-weight: 800;
@@ -344,21 +359,21 @@
             padding: 0.4rem 1.5rem;
             border-radius: 60px;
         }
-        
+
         .confidence-bar {
             background: #cfe1fa;
             height: 16px;
             border-radius: 20px;
             margin: 1.8rem 0;
         }
-        
+
         .confidence-fill {
             height: 100%;
             width: 94%;
             background: linear-gradient(90deg, #1f6db0, #479bff);
             border-radius: 20px;
         }
-        
+
         .confidence-text {
             display: flex;
             justify-content: space-between;
@@ -366,7 +381,7 @@
             color: #1b4e7a;
             font-size: 0.95rem;
         }
-        
+
         .risk-meter {
             background: #ffe5e5;
             border-left: 8px solid #e53e3e;
@@ -374,17 +389,17 @@
             padding: 1.5rem;
             margin: 1.8rem 0;
         }
-        
+
         .risk-level {
             font-size: 1.8rem;
             font-weight: 800;
             margin: 0.6rem 0;
         }
-        
+
         .risk-desc {
             font-size: 0.95rem;
         }
-        
+
         .rekom-card {
             background: linear-gradient(120deg, #e3f0ff, #ffffff);
             border-radius: 35px;
@@ -396,13 +411,13 @@
             margin-bottom: 12px;
             font-weight: 700;
         }
-        
+
         .rekom-text {
             font-size: 1.3rem;
             font-weight: 700;
             color: #1a4d7a;
         }
-        
+
         .rekom-icons {
             display: flex;
             gap: 1.5rem;
@@ -433,14 +448,16 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            background: rgba(255,255,255,0.02);
+            background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(8px);
             padding: 0.6rem 1.5rem;
             border-radius: 60px;
-            border: 1px solid rgba(255,255,255,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .weather-header h2 i { color: #FFD700; }
+        .weather-header h2 i {
+            color: #FFD700;
+        }
 
         .update-time {
             background: rgba(0, 0, 0, 0.3);
@@ -448,7 +465,7 @@
             padding: 0.7rem 1.5rem;
             border-radius: 50px;
             color: #d0e6ff;
-            border: 1px solid rgba(255,215,0,0.3);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -487,33 +504,77 @@
             margin-bottom: 0.3rem;
         }
 
-        .city-weather-icon { 
-            font-size: 3rem; 
-            margin: 0.5rem 0; 
+        .city-weather-icon {
+            font-size: 3rem;
+            margin: 0.5rem 0;
         }
 
         /* Warna icon berdasarkan kondisi cuaca */
-        .city-card[data-weather="sunny"] .city-weather-icon i { color: #ffd900; } /* Cerah */
-        .city-card[data-weather="partly-cloudy"] .city-weather-icon i { color: #ffdb4b; } /* Cerah Berawan */
-        .city-card[data-weather="cloudy"] .city-weather-icon i { color: #B0BEC5; } /* Berawan */
-        .city-card[data-weather="overcast"] .city-weather-icon i { color: #78909C; } /* Berawan Tebal */
-        .city-card[data-weather="rainy"] .city-weather-icon i { color: #4FC3F7; } /* Hujan */
+        .city-card[data-weather="sunny"] .city-weather-icon i {
+            color: #ffd900;
+        }
 
-        .city-temp { font-size: 2.2rem; font-weight: 800; color: white; }
-        .city-desc { color: #bbdbff; font-size: 0.9rem; margin-bottom: 1.2rem; }
+        /* Cerah */
+        .city-card[data-weather="partly-cloudy"] .city-weather-icon i {
+            color: #ffdb4b;
+        }
+
+        /* Cerah Berawan */
+        .city-card[data-weather="cloudy"] .city-weather-icon i {
+            color: #B0BEC5;
+        }
+
+        /* Berawan */
+        .city-card[data-weather="overcast"] .city-weather-icon i {
+            color: #78909C;
+        }
+
+        /* Berawan Tebal */
+        .city-card[data-weather="rainy"] .city-weather-icon i {
+            color: #4FC3F7;
+        }
+
+        /* Hujan */
+
+        .city-temp {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .city-desc {
+            color: #bbdbff;
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
+        }
 
         .city-stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 0.6rem;
-            background: rgba(0,0,0,0.25);
+            background: rgba(0, 0, 0, 0.25);
             border-radius: 20px;
             padding: 0.8rem;
         }
-        .city-stat-item { text-align: center; }
-        .city-stat-item i { color: #7abfff; }
-        .city-stat-value { color: white; font-weight: 700; font-size: 0.9rem; }
-        .city-stat-label { color: #aac9f0; font-size: 0.6rem; }
+
+        .city-stat-item {
+            text-align: center;
+        }
+
+        .city-stat-item i {
+            color: #7abfff;
+        }
+
+        .city-stat-value {
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .city-stat-label {
+            color: #aac9f0;
+            font-size: 0.6rem;
+        }
 
         .best-time-card {
             background: linear-gradient(95deg, #102433, #0b2b47);
@@ -537,7 +598,11 @@
             color: white;
             margin-bottom: 0.2rem;
         }
-        .best-time-content p { color: #cde2ff; font-size: 1rem; }
+
+        .best-time-content p {
+            color: #cde2ff;
+            font-size: 1rem;
+        }
 
         .best-time-badge {
             background: #1f5f9e;
@@ -552,7 +617,11 @@
             gap: 12px;
             border: 1px solid rgba(255, 255, 200, 0.3);
         }
-        .best-time-badge i { color: #FFD700; font-size: 1.4rem; }
+
+        .best-time-badge i {
+            color: #FFD700;
+            font-size: 1.4rem;
+        }
 
         /* ===== FEATURE SECTION (MENGAPA CLOUDSENSE?) ===== */
         .feature-section {
@@ -568,6 +637,7 @@
         .feature-header {
             margin-bottom: 2rem;
         }
+
         .feature-header h2 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2.2rem;
@@ -579,6 +649,7 @@
             display: inline-block;
             position: relative;
         }
+
         .feature-header h2::after {
             content: '';
             position: absolute;
@@ -589,6 +660,7 @@
             background: linear-gradient(90deg, #2b7fc3, #99d0ff);
             border-radius: 3px;
         }
+
         .feature-header p {
             color: #bfdcff;
             font-size: 1.1rem;
@@ -600,20 +672,23 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
         }
+
         .feature-item {
-            background: rgba(0,20,45,0.7);
+            background: rgba(0, 20, 45, 0.7);
             backdrop-filter: blur(8px);
             border-radius: 40px;
             padding: 2rem 1.5rem;
             border: 1px solid #295e8a;
             transition: 0.2s;
         }
+
         .feature-item:hover {
             background: #0c2742;
             border-color: #6bb0ff;
             transform: translateY(-4px);
             box-shadow: 0 8px 20px -10px #1f5f9e;
         }
+
         .feature-icon {
             width: 60px;
             height: 60px;
@@ -627,12 +702,14 @@
             margin-bottom: 1.2rem;
             box-shadow: 0 8px 15px -5px #1a4e7a;
         }
+
         .feature-item h3 {
             color: white;
             font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 0.8rem;
         }
+
         .feature-item p {
             color: #c3dfff;
             font-size: 0.95rem;
@@ -646,9 +723,11 @@
             padding: 2.5rem 2rem;
             margin-bottom: 3rem;
         }
+
         .tutorial-header {
             margin-bottom: 2rem;
         }
+
         .tutorial-header h2 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2.2rem;
@@ -660,6 +739,7 @@
             display: inline-block;
             position: relative;
         }
+
         .tutorial-header h2::after {
             content: '';
             position: absolute;
@@ -670,16 +750,19 @@
             background: linear-gradient(90deg, #2b7fc3, #99d0ff);
             border-radius: 3px;
         }
-        .tutorial-header p { 
-            color: #1f4a72; 
-            font-size: 1.1rem; 
-            margin-top: 1.2rem; 
+
+        .tutorial-header p {
+            color: #1f4a72;
+            font-size: 1.1rem;
+            margin-top: 1.2rem;
         }
+
         .tutorial-steps {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1.2rem;
         }
+
         .step-card {
             background: white;
             border-radius: 35px;
@@ -689,11 +772,13 @@
             transition: 0.2s;
             position: relative;
         }
+
         .step-card:hover {
             transform: translateY(-5px);
             border-color: #4080cf;
             box-shadow: 0 12px 25px -12px #2b7fc3;
         }
+
         .step-number {
             position: absolute;
             top: -12px;
@@ -711,17 +796,38 @@
             border: 3px solid white;
             box-shadow: 0 3px 0 #0b2642;
         }
-        .step-icon { font-size: 2.8rem; color: #236bb5; text-align: center; margin: 0.5rem 0 1rem; }
-        .step-card h3 { font-size: 1.3rem; font-weight: 700; color: #10365a; text-align: center; margin-bottom: 0.6rem; }
-        .step-card p { color: #23527c; text-align: center; font-size: 0.9rem; font-weight: 500; }
+
+        .step-icon {
+            font-size: 2.8rem;
+            color: #236bb5;
+            text-align: center;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #10365a;
+            text-align: center;
+            margin-bottom: 0.6rem;
+        }
+
+        .step-card p {
+            color: #23527c;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
 
         /* ===== 10 KARTU AWAN ===== */
         .cloud-grid-section {
             margin-bottom: 4rem;
         }
+
         .cloud-header-section {
             margin-bottom: 2rem;
         }
+
         .cloud-header-section h2 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2.2rem;
@@ -733,6 +839,7 @@
             display: inline-block;
             position: relative;
         }
+
         .cloud-header-section h2::after {
             content: '';
             position: absolute;
@@ -743,16 +850,19 @@
             background: linear-gradient(90deg, #2b7fc3, #99d0ff);
             border-radius: 3px;
         }
+
         .cloud-header-section p {
             color: #bfdcff;
             font-size: 1.1rem;
             margin-top: 1.2rem;
         }
+
         .cloud-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
         }
+
         .cloud-card {
             background: rgba(18, 40, 60, 0.8);
             backdrop-filter: blur(16px);
@@ -765,6 +875,7 @@
             flex-direction: column;
             box-shadow: 0 15px 25px -15px #000000;
         }
+
         .cloud-card:hover {
             border-color: #6bb5ff;
             background: #0f304b;
@@ -778,10 +889,11 @@
             gap: 15px;
             margin-bottom: 1.5rem;
         }
+
         .cloud-icon {
             font-size: 2.8rem;
             color: #6bb5ff;
-            background: rgba(0,50,90,0.6);
+            background: rgba(0, 50, 90, 0.6);
             width: 70px;
             height: 70px;
             border-radius: 30px;
@@ -789,9 +901,11 @@
             align-items: center;
             justify-content: center;
         }
+
         .cloud-title {
             flex: 1;
         }
+
         .cloud-code {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2rem;
@@ -799,6 +913,7 @@
             color: #b1e0ff;
             line-height: 1.2;
         }
+
         .cloud-name {
             font-size: 1.5rem;
             font-weight: 600;
@@ -812,7 +927,7 @@
             flex: 1;
             border-left: 3px solid #3f8fd9;
             padding-left: 1rem;
-            background: rgba(0,0,0,0.1);
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 0 10px 10px 0;
         }
 
@@ -822,6 +937,7 @@
             align-items: center;
             margin-top: 0.5rem;
         }
+
         .cloud-base {
             font-size: 0.9rem;
             color: #b4d5ff;
@@ -830,6 +946,7 @@
             border-radius: 50px;
             display: inline-block;
         }
+
         .btn-3d {
             background: linear-gradient(145deg, #1f5f9e, #12477a);
             border: 1px solid #9aceff;
@@ -845,16 +962,23 @@
             gap: 8px;
             box-shadow: 0 5px 10px -5px #001a33;
         }
+
         .btn-3d:hover {
             background: #2b7fc3;
             transform: scale(1.05);
             border-color: white;
             box-shadow: 0 8px 18px -5px #0080ff;
         }
-        .btn-3d i { font-size: 1.2rem; }
 
-        #camera-input, #gallery-input { display: none; }
-        
+        .btn-3d i {
+            font-size: 1.2rem;
+        }
+
+        #camera-input,
+        #gallery-input {
+            display: none;
+        }
+
         .footer {
             text-align: center;
             padding: 2rem;
@@ -865,238 +989,252 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1000px) {
-            .main-grid { grid-template-columns: 1fr; }
-            .cities-grid { grid-template-columns: repeat(3,1fr); }
-            .feature-grid { grid-template-columns: repeat(2,1fr); }
-            .tutorial-steps { grid-template-columns: repeat(2,1fr); }
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cities-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tutorial-steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
+
         @media (max-width: 700px) {
-            .hero-minimal { padding: 3rem 1.5rem; }
-            .hero-content h1 { font-size: 3.5rem; }
-            .cities-grid { grid-template-columns: repeat(2,1fr); }
-            .feature-grid { grid-template-columns: 1fr; }
-            .tutorial-steps { grid-template-columns: 1fr; }
-            .cloud-grid { grid-template-columns: 1fr; }
-            .best-time-card { flex-direction: column; text-align: center; }
+            .hero-minimal {
+                padding: 3rem 1.5rem;
+            }
+
+            .hero-content h1 {
+                font-size: 3.5rem;
+            }
+
+            .cities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tutorial-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .cloud-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .best-time-card {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
+
 <body>
-<div class="web-container">
+    <div class="web-container">
 
-    <!-- HEADER -->
-    <header class="header">
-        <div class="nav-container">
-            <div class="logo-wrapper">
-                <div class="logo-icon"><i class="fas fa-cloud-moon"></i></div>
-                <div class="logo-text">
-                    <h1>CloudSense</h1>
-                    <p>10 KARAKTER AWAN · GESTURE 3D</p>
-                </div>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="active">Beranda</a></li>
-                <li><a href="#features">Tentang</a></li>
-                <li><a href="#tutorial">Panduan</a></li>
-                <li><a href="#clouds">Karakter Awan</a></li>
-            </ul>
-        </div>
-    </header>
-
-    <!-- ===== HERO SECTION - HANYA TAGLINE & TITLE ===== -->
-    <div class="hero-minimal" id="home">
-        <div class="hero-content">
-            <div class="hero-tag">NEXT GEN CLOUD INTELLIGENCE</div>
-            <h1>CloudSense</h1>
-        </div>
-    </div>
-
-    <!-- MAIN GRID UPLOAD -->
-    <div class="main-grid">
-        <div class="camera-panel">
-            <div class="panel-title"><i class="fas fa-cloud-upload-alt"></i> Upload Citra Awan</div>
-            <div class="camera-area">
-                <div class="preview-box" id="previewBox">
-                    <img id="preview-image" src="#" alt="preview">
-                    <div class="placeholder-preview" id="placeholderPreview">
-                        <i class="fas fa-cloud-moon"></i>
-                        <p>Belum ada gambar</p>
-                        <p style="font-size:0.9rem;">Klik Kamera atau Galeri</p>
+        <!-- HEADER -->
+        <header class="header">
+            <div class="nav-container">
+                <div class="logo-wrapper">
+                    <div class="logo-icon"><i class="fas fa-cloud-moon"></i></div>
+                    <div class="logo-text">
+                        <h1>CloudSense</h1>
+                        <p>10 KARAKTER AWAN · GESTURE 3D</p>
                     </div>
                 </div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="active">Beranda</a></li>
+                    <li><a href="#features">Tentang</a></li>
+                    <li><a href="#tutorial">Panduan</a></li>
+                    <li><a href="#clouds">Karakter Awan</a></li>
+                </ul>
             </div>
-            <div class="upload-actions">
-                <button class="btn btn-primary" id="shutterBtn"><i class="fas fa-camera"></i> Kamera</button>
-                <button class="btn btn-outline" id="galleryBtn"><i class="fas fa-images"></i> Galeri</button>
+        </header>
+
+        <!-- ===== HERO SECTION - HANYA TAGLINE & TITLE ===== -->
+        <div class="hero-minimal" id="home">
+            <div class="hero-content">
+                <div class="hero-tag">NEXT GEN CLOUD INTELLIGENCE</div>
+                <h1>CloudSense</h1>
             </div>
-            <input type="file" id="camera-input" accept="image/*" capture="environment">
-            <input type="file" id="gallery-input" accept="image/*">
         </div>
 
-        <div class="result-panel" id="resultPanel">
-            <span class="badge-kelas"><i class="fas fa-chart-line"></i> HASIL PREDIKSI</span>
-            <div class="kelas-utama">
-                <h2 id="cloudName">Cumulus</h2>
-                <span class="kode-awan" id="cloudCode">Cu</span>
+        <!-- MAIN GRID UPLOAD -->
+        <div class="main-grid">
+            <div class="camera-panel">
+                <div class="panel-title"><i class="fas fa-cloud-upload-alt"></i> Upload Citra Awan</div>
+                <div class="camera-area">
+                    <div class="preview-box" id="previewBox">
+                        <img id="preview-image" src="#" alt="preview">
+                        <div class="placeholder-preview" id="placeholderPreview">
+                            <i class="fas fa-cloud-moon"></i>
+                            <p>Belum ada gambar</p>
+                            <p style="font-size:0.9rem;">Klik Kamera atau Galeri</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="upload-actions">
+                    <button class="btn btn-primary" id="shutterBtn"><i class="fas fa-camera"></i> Kamera</button>
+                    <button class="btn btn-outline" id="galleryBtn"><i class="fas fa-images"></i> Galeri</button>
+                </div>
+                <input type="file" id="camera-input" accept="image/*" capture="environment">
+                <input type="file" id="gallery-input" accept="image/*">
             </div>
-            <div class="confidence-bar"><div class="confidence-fill" style="width:94%"></div></div>
-            <div class="confidence-text"><span>Confidence</span><span>94%</span></div>
-            <div class="risk-meter">
-                <i class="fas fa-exclamation-triangle"></i><span style="font-weight:700; margin-left:8px;">Analisis Risiko</span>
-                <div class="risk-level" id="riskLevel">Rendah · Cerah</div>
-                <div class="risk-desc" id="riskDesc">Tidak ada potensi hujan dalam 3-6 jam ke depan</div>
-            </div>
-            <div class="rekom-card">
-                <div><i class="fas fa-clipboard-check"></i> Rekomendasi Aktivitas</div>
-                <div class="rekom-text" id="rekomText">Waktu tepat untuk aktivitas luar ruangan</div>
-                <div class="rekom-icons" id="rekomIcons"><i class="fas fa-sun"></i><i class="fas fa-person-hiking"></i><i class="fas fa-tree"></i></div>
-            </div>
-        </div>
-    </div>
 
-    <!-- WEATHER JABODETABEK -->
-    <div class="weather-jabodetabek">
-        <div class="weather-header">
-            <h2><i class="fas fa-satellite-dish"></i> Jabodetabek Nowcast</h2>
-            <div class="update-time"><i class="fas fa-sync-alt"></i> Real-time 10:47 WIB</div>
-        </div>
-        <div class="cities-grid">
-            <!-- Jakarta - Cerah Berawan (partly-cloudy) -->
-            <div class="city-card" data-weather="partly-cloudy">
-                <div class="city-name">Jakarta</div>
-                <div class="city-weather-icon"><i class="fas fa-cloud-sun"></i></div>
-                <div class="city-temp">29°C</div>
-                <div class="city-desc">Cerah Berawan</div>
-                <div class="city-stats">
-                    <div class="city-stat-item"><i class="fas fa-droplet"></i><div class="city-stat-value">84%</div><div class="city-stat-label">RH</div></div>
-                    <div class="city-stat-item"><i class="fas fa-wind"></i><div class="city-stat-value">12 km/h</div><div class="city-stat-label">Angin</div></div>
+            <div class="result-panel" id="resultPanel">
+                <span class="badge-kelas"><i class="fas fa-chart-line"></i> HASIL PREDIKSI</span>
+                <div class="kelas-utama">
+                    <h2 id="cloudName">Cumulus</h2>
+                    <span class="kode-awan" id="cloudCode">Cu</span>
                 </div>
-            </div>
-            <!-- Bogor - Hujan Ringan (rainy) -->
-            <div class="city-card" data-weather="rainy">
-                <div class="city-name">Bogor</div>
-                <div class="city-weather-icon"><i class="fas fa-cloud-rain"></i></div>
-                <div class="city-temp">24°C</div>
-                <div class="city-desc">Hujan Ringan</div>
-                <div class="city-stats">
-                    <div class="city-stat-item"><i class="fas fa-droplet"></i><div class="city-stat-value">92%</div><div class="city-stat-label">RH</div></div>
-                    <div class="city-stat-item"><i class="fas fa-wind"></i><div class="city-stat-value">8 km/h</div><div class="city-stat-label">Angin</div></div>
+                <div class="confidence-bar">
+                    <div class="confidence-fill" style="width:94%"></div>
                 </div>
-            </div>
-            <!-- Depok - Berawan (cloudy) -->
-            <div class="city-card" data-weather="cloudy">
-                <div class="city-name">Depok</div>
-                <div class="city-weather-icon"><i class="fas fa-cloud"></i></div>
-                <div class="city-temp">27°C</div>
-                <div class="city-desc">Berawan</div>
-                <div class="city-stats">
-                    <div class="city-stat-item"><i class="fas fa-droplet"></i><div class="city-stat-value">78%</div><div class="city-stat-label">RH</div></div>
-                    <div class="city-stat-item"><i class="fas fa-wind"></i><div class="city-stat-value">10 km/h</div><div class="city-stat-label">Angin</div></div>
+                <div class="confidence-text"><span>Confidence</span><span>94%</span></div>
+                <div class="risk-meter">
+                    <i class="fas fa-exclamation-triangle"></i><span style="font-weight:700; margin-left:8px;">Analisis
+                        Risiko</span>
+                    <div class="risk-level" id="riskLevel">Rendah · Cerah</div>
+                    <div class="risk-desc" id="riskDesc">Tidak ada potensi hujan dalam 3-6 jam ke depan</div>
                 </div>
-            </div>
-            <!-- Tangerang - Cerah Berawan (partly-cloudy) -->
-            <div class="city-card" data-weather="partly-cloudy">
-                <div class="city-name">Tangerang</div>
-                <div class="city-weather-icon"><i class="fas fa-cloud-sun"></i></div>
-                <div class="city-temp">28°C</div>
-                <div class="city-desc">Cerah Berawan</div>
-                <div class="city-stats">
-                    <div class="city-stat-item"><i class="fas fa-droplet"></i><div class="city-stat-value">76%</div><div class="city-stat-label">RH</div></div>
-                    <div class="city-stat-item"><i class="fas fa-wind"></i><div class="city-stat-value">11 km/h</div><div class="city-stat-label">Angin</div></div>
-                </div>
-            </div>
-            <!-- Bekasi - Berawan Tebal (overcast) -->
-            <div class="city-card" data-weather="overcast">
-                <div class="city-name">Bekasi</div>
-                <div class="city-weather-icon"><i class="fas fa-cloud"></i></div>
-                <div class="city-temp">28°C</div>
-                <div class="city-desc">Berawan Tebal</div>
-                <div class="city-stats">
-                    <div class="city-stat-item"><i class="fas fa-droplet"></i><div class="city-stat-value">81%</div><div class="city-stat-label">RH</div></div>
-                    <div class="city-stat-item"><i class="fas fa-wind"></i><div class="city-stat-value">9 km/h</div><div class="city-stat-label">Angin</div></div>
+                <div class="rekom-card">
+                    <div><i class="fas fa-clipboard-check"></i> Rekomendasi Aktivitas</div>
+                    <div class="rekom-text" id="rekomText">Waktu tepat untuk aktivitas luar ruangan</div>
+                    <div class="rekom-icons" id="rekomIcons"><i class="fas fa-sun"></i><i
+                            class="fas fa-person-hiking"></i><i class="fas fa-tree"></i></div>
                 </div>
             </div>
         </div>
-        <div class="best-time-card">
-            <div class="best-time-content"><h3><i class="fas fa-clock" style="color: #FFD700;"></i> Golden Window Outdoor</h3><p>Rekomendasi multisatelit Jabodetabek</p></div>
-            <div class="best-time-badge"><i class="fas fa-sun"></i> 09:00 – 15:00</div>
-        </div>
-    </div>
 
-    <!-- ===== FEATURE SECTION (MENGAPA CLOUDSENSE?) ===== -->
-    <div class="feature-section" id="features">
-        <div class="feature-header">
-            <h2>Mengapa CloudSense?</h2>
-            <p>Pendekatan baru dalam memahami awan</p>
-        </div>
-        <div class="feature-grid">
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-brain"></i></div>
-                <h3>Deep Learning</h3>
-                <p>Klasifikasi 10 jenis awan dengan convolutional neural network yang dilatih pada ribuan citra.</p>
+        <!-- WEATHER JABODETABEK -->
+        <div class="weather-jabodetabek">
+            <div class="weather-header">
+                <h2><i class="fas fa-satellite-dish"></i> Jabodetabek Nowcast</h2>
+                <div class="update-time" id="updateTime"><i class="fas fa-sync-alt fa-spin" id="syncIcon"></i> Memuat
+                    data...</div>
             </div>
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-cubes"></i></div>
-                <h3>Model 3D Interaktif</h3>
-                <p>Setiap awan direkonstruksi dalam bentuk tiga dimensi untuk observasi morfologi.</p>
+            <div class="cities-grid" id="citiesGrid">
+                <!-- Diisi oleh JavaScript -->
+                <div class="city-card" style="grid-column:1/-1; text-align:center; padding:3rem; opacity:0.6;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:2.5rem; color:#6bb5ff;"></i>
+                    <p style="color:#b0d5ff; margin-top:1rem;">Mengambil data cuaca terkini...</p>
+                </div>
             </div>
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fas fa-hand-peace"></i></div>
-                <h3>Gesture Recognition</h3>
-                <p>Kontrol penuh menggunakan gerakan tangan — putar, geser, zoom — tanpa menyentuh layar.</p>
+            <div class="best-time-card">
+                <div class="best-time-content">
+                    <h3><i class="fas fa-clock" style="color: #FFD700;"></i> Golden Window Outdoor</h3>
+                    <p id="bestTimeDesc">Menghitung waktu terbaik...</p>
+                </div>
+                <div class="best-time-badge" id="bestTimeBadge"><i class="fas fa-sun"></i> <span id="bestTimeText">09:00
+                        – 15:00</span></div>
             </div>
         </div>
+
+        <!-- ===== FEATURE SECTION (MENGAPA CLOUDSENSE?) ===== -->
+        <div class="feature-section" id="features">
+            <div class="feature-header">
+                <h2>Mengapa CloudSense?</h2>
+                <p>Pendekatan baru dalam memahami awan</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                    <h3>Deep Learning</h3>
+                    <p>Klasifikasi 10 jenis awan dengan convolutional neural network yang dilatih pada ribuan citra.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-cubes"></i></div>
+                    <h3>Model 3D Interaktif</h3>
+                    <p>Setiap awan direkonstruksi dalam bentuk tiga dimensi untuk observasi morfologi.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-hand-peace"></i></div>
+                    <h3>Gesture Recognition</h3>
+                    <p>Kontrol penuh menggunakan gerakan tangan — putar, geser, zoom — tanpa menyentuh layar.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TUTORIAL -->
+        <div class="tutorial-section" id="tutorial">
+            <div class="tutorial-header">
+                <h2>Panduan Cepat</h2>
+                <p>4 langkah eksplorasi awan</p>
+            </div>
+            <div class="tutorial-steps">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon"><i class="fas fa-camera-retro"></i></div>
+                    <h3>Upload / Capture</h3>
+                    <p>Ambil foto awan dari kamera atau galeri.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon"><i class="fas fa-microchip"></i></div>
+                    <h3>Identifikasi</h3>
+                    <p>Sistem CNN mengenali 10 kelas awan.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon"><i class="fas fa-cube"></i></div>
+                    <h3>Lihat 3D</h3>
+                    <p>Klik "Jelajahi 3D" untuk membuka model interaktif.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-icon"><i class="fas fa-hand-peace"></i></div>
+                    <h3>Gesture</h3>
+                    <p>Gerakkan tangan untuk memutar & memperbesar awan.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10 KARAKTER AWAN + TOMBOL LIHAT 3D -->
+        <div class="cloud-grid-section" id="clouds">
+            <div class="cloud-header-section">
+                <h2>☁️ 10 Karakter Awan</h2>
+                <p>Pelajari morfologi setiap jenis awan melalui visualisasi 3D interaktif.</p>
+            </div>
+            <div class="cloud-grid" id="cloudGrid"></div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer"><i class="fas fa-cloud-sun"></i> CloudSense · 10 Karakter Awan · Hadirkan 3D dengan gestur
+        </div>
     </div>
 
-    <!-- TUTORIAL -->
-    <div class="tutorial-section" id="tutorial">
-        <div class="tutorial-header">
-            <h2>Panduan Cepat</h2>
-            <p>4 langkah eksplorasi awan</p>
-        </div>
-        <div class="tutorial-steps">
-            <div class="step-card"><div class="step-number">1</div><div class="step-icon"><i class="fas fa-camera-retro"></i></div><h3>Upload / Capture</h3><p>Ambil foto awan dari kamera atau galeri.</p></div>
-            <div class="step-card"><div class="step-number">2</div><div class="step-icon"><i class="fas fa-microchip"></i></div><h3>Identifikasi</h3><p>Sistem CNN mengenali 10 kelas awan.</p></div>
-            <div class="step-card"><div class="step-number">3</div><div class="step-icon"><i class="fas fa-cube"></i></div><h3>Lihat 3D</h3><p>Klik "Jelajahi 3D" untuk membuka model interaktif.</p></div>
-            <div class="step-card"><div class="step-number">4</div><div class="step-icon"><i class="fas fa-hand-peace"></i></div><h3>Gesture</h3><p>Gerakkan tangan untuk memutar & memperbesar awan.</p></div>
-        </div>
-    </div>
+    <!-- SCRIPT -->
+    <script>
+        (function () {
+            // DATA 10 AWAN
+            const cloudData = [
+                { code: 'Cu', name: 'Cumulus', icon: 'fa-cloud-sun', karakter: 'Putih menggumpal seperti kapas, dasar datar, puncak menggelembung. Tanda cuaca baik, namun bisa tumbuh vertikal menjadi Cumulonimbus.', base: 'Dasar <2 km' },
+                { code: 'Cc', name: 'Cirrocumulus', icon: 'fa-cloud', karakter: 'Sisik ikan halus di langit, terdiri dari kristal es. Menandakan cuaca stabil, kadang menjadi pertanda perubahan.', base: '>6 km' },
+                { code: 'Ac', name: 'Altocumulus', icon: 'fa-cloud', karakter: 'Bergulung seperti domba, awan menengah. Sering menandakan udara dingin di ketinggian. Bisa berkembang jadi hujan jika tebal.', base: '2-6 km' },
+                { code: 'As', name: 'Altostratus', icon: 'fa-layer-group', karakter: 'Selubung abu-abu merata, menutupi langit. Sering membawa gerimis atau salju ringan.', base: '2-6 km' },
+                { code: 'Ns', name: 'Nimbostratus', icon: 'fa-cloud-rain', karakter: 'Lapisan tebal kelabu penyebab hujan terus-menerus. Tidak disertai petir, tapi durasi panjang.', base: '0-3 km' },
+                { code: 'Cb', name: 'Cumulonimbus', icon: 'fa-cloud-bolt', karakter: 'Raksasa vertikal seperti menara, puncak landasan. Menyebabkan hujan lebat, petir, angin kencang.', base: '0-16 km' },
+                { code: 'Sc', name: 'Stratocumulus', icon: 'fa-cloud', karakter: 'Gumpalan abu-abu berlapis, kadang gerimis ringan. Umumnya tidak membawa hujan lebat.', base: '<2 km' },
+                { code: 'St', name: 'Stratus', icon: 'fa-smog', karakter: 'Kabut naik, kelabu merata. Menimbulkan gerimis atau salju ringan, visibilitas rendah.', base: '0-1 km' },
+                { code: 'Ci', name: 'Cirrus', icon: 'fa-feather', karakter: 'Halus seperti bulu, kristal es. Pertanda cuaca cerah, tapi bisa jadi indikator front hangat.', base: '>7 km' },
+                { code: 'Cs', name: 'Cirrostratus', icon: 'fa-circle', karakter: 'Selubung tipis transparan menutupi langit, menciptakan fenomena halo. Pertanda hujan dalam 12-24 jam.', base: '>6 km' }
+            ];
 
-    <!-- 10 KARAKTER AWAN + TOMBOL LIHAT 3D -->
-    <div class="cloud-grid-section" id="clouds">
-        <div class="cloud-header-section">
-            <h2>☁️ 10 Karakter Awan</h2>
-            <p>Pelajari morfologi setiap jenis awan melalui visualisasi 3D interaktif.</p>
-        </div>
-        <div class="cloud-grid" id="cloudGrid"></div>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer"><i class="fas fa-cloud-sun"></i> CloudSense · 10 Karakter Awan · Hadirkan 3D dengan gestur</div>
-</div>
-
-<!-- SCRIPT -->
-<script>
-(function() {
-    // DATA 10 AWAN
-    const cloudData = [
-        { code: 'Cu', name: 'Cumulus', icon: 'fa-cloud-sun', karakter: 'Putih menggumpal seperti kapas, dasar datar, puncak menggelembung. Tanda cuaca baik, namun bisa tumbuh vertikal menjadi Cumulonimbus.', base: 'Dasar <2 km' },
-        { code: 'Cc', name: 'Cirrocumulus', icon: 'fa-cloud', karakter: 'Sisik ikan halus di langit, terdiri dari kristal es. Menandakan cuaca stabil, kadang menjadi pertanda perubahan.', base: '>6 km' },
-        { code: 'Ac', name: 'Altocumulus', icon: 'fa-cloud', karakter: 'Bergulung seperti domba, awan menengah. Sering menandakan udara dingin di ketinggian. Bisa berkembang jadi hujan jika tebal.', base: '2-6 km' },
-        { code: 'As', name: 'Altostratus', icon: 'fa-layer-group', karakter: 'Selubung abu-abu merata, menutupi langit. Sering membawa gerimis atau salju ringan.', base: '2-6 km' },
-        { code: 'Ns', name: 'Nimbostratus', icon: 'fa-cloud-rain', karakter: 'Lapisan tebal kelabu penyebab hujan terus-menerus. Tidak disertai petir, tapi durasi panjang.', base: '0-3 km' },
-        { code: 'Cb', name: 'Cumulonimbus', icon: 'fa-cloud-bolt', karakter: 'Raksasa vertikal seperti menara, puncak landasan. Menyebabkan hujan lebat, petir, angin kencang.', base: '0-16 km' },
-        { code: 'Sc', name: 'Stratocumulus', icon: 'fa-cloud', karakter: 'Gumpalan abu-abu berlapis, kadang gerimis ringan. Umumnya tidak membawa hujan lebat.', base: '<2 km' },
-        { code: 'St', name: 'Stratus', icon: 'fa-smog', karakter: 'Kabut naik, kelabu merata. Menimbulkan gerimis atau salju ringan, visibilitas rendah.', base: '0-1 km' },
-        { code: 'Ci', name: 'Cirrus', icon: 'fa-feather', karakter: 'Halus seperti bulu, kristal es. Pertanda cuaca cerah, tapi bisa jadi indikator front hangat.', base: '>7 km' },
-        { code: 'Cs', name: 'Cirrostratus', icon: 'fa-circle', karakter: 'Selubung tipis transparan menutupi langit, menciptakan fenomena halo. Pertanda hujan dalam 12-24 jam.', base: '>6 km' }
-    ];
-
-    const grid = document.getElementById('cloudGrid');
-    cloudData.forEach(c => {
-        const card = document.createElement('div');
-        card.className = 'cloud-card';
-        card.innerHTML = `
+            const grid = document.getElementById('cloudGrid');
+            cloudData.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'cloud-card';
+                card.innerHTML = `
             <div class="cloud-header">
                 <div class="cloud-icon"><i class="fas ${c.icon}"></i></div>
                 <div class="cloud-title">
@@ -1110,69 +1248,165 @@
                 <button class="btn-3d" data-code="${c.code}" data-name="${c.name}"><i class="fas fa-cube"></i> Jelajahi 3D</button>
             </div>
         `;
-        grid.appendChild(card);
-    });
+                grid.appendChild(card);
+            });
 
-    // Event tombol 3D
-    document.querySelectorAll('.btn-3d').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const code = btn.dataset.code;
-            const name = btn.dataset.name;
-            alert(`🚀 Buka halaman eksplorasi 3D untuk ${name} (${code})\nFitur gesture recognition: putar, geser, zoom menggunakan tangan.`);
-        });
-    });
+            // Event tombol 3D
+            document.querySelectorAll('.btn-3d').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const code = btn.dataset.code;
+                    const name = btn.dataset.name;
+                    alert(`🚀 Buka halaman eksplorasi 3D untuk ${name} (${code})\nFitur gesture recognition: putar, geser, zoom menggunakan tangan.`);
+                });
+            });
 
-    // Handler upload
-    const cameraInput = document.getElementById('camera-input');
-    const galleryInput = document.getElementById('gallery-input');
-    const shutterBtn = document.getElementById('shutterBtn');
-    const galleryBtn = document.getElementById('galleryBtn');
-    const previewImg = document.getElementById('preview-image');
-    const placeholder = document.getElementById('placeholderPreview');
-    
-    shutterBtn.onclick = () => { cameraInput.value = ''; cameraInput.click(); };
-    galleryBtn.onclick = () => { galleryInput.value = ''; galleryInput.click(); };
-    
-    function processImage(file) {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            previewImg.src = ev.target.result;
-            previewImg.style.display = 'block';
-            placeholder.style.display = 'none';
-            
-            setTimeout(() => {
-                const rand = cloudData[Math.floor(Math.random() * cloudData.length)];
-                document.getElementById('cloudName').innerText = rand.name;
-                document.getElementById('cloudCode').innerText = rand.code;
-                document.getElementById('riskLevel').innerText = (rand.code === 'Cb' || rand.code === 'Ns') ? 'Tinggi · Waspada' : 'Rendah';
-                document.getElementById('riskDesc').innerText = rand.karakter.substring(0, 60)+'…';
-                document.getElementById('rekomText').innerText = (rand.code === 'Cb') ? 'Hindari outdoor, cek 3D awan' : 'Cocok untuk aktivitas ringan';
-                const icons = document.getElementById('rekomIcons');
-                if(rand.code.includes('Cb') || rand.code.includes('Ns')) icons.innerHTML = '<i class="fas fa-cloud-rain"></i><i class="fas fa-bolt"></i><i class="fas fa-house-flood-water"></i>';
-                else icons.innerHTML = '<i class="fas fa-sun"></i><i class="fas fa-person-hiking"></i><i class="fas fa-tree"></i>';
-            }, 1000);
-        };
-        reader.readAsDataURL(file);
-    }
-    
-    cameraInput.onchange = (e) => { if(e.target.files[0]) processImage(e.target.files[0]); };
-    galleryInput.onchange = (e) => { if(e.target.files[0]) processImage(e.target.files[0]); };
+            // Handler upload
+            const cameraInput = document.getElementById('camera-input');
+            const galleryInput = document.getElementById('gallery-input');
+            const shutterBtn = document.getElementById('shutterBtn');
+            const galleryBtn = document.getElementById('galleryBtn');
+            const previewImg = document.getElementById('preview-image');
+            const placeholder = document.getElementById('placeholderPreview');
 
-    // Active menu smooth scroll
-    document.querySelectorAll('.nav-menu a').forEach(a => {
-        a.onclick = (e) => {
-            const hash = a.getAttribute('href');
-            if(hash && hash.startsWith('#')) {
-                e.preventDefault();
-                const target = document.getElementById(hash.substring(1));
-                if(target) target.scrollIntoView({behavior: 'smooth', block: 'start'});
-                document.querySelectorAll('.nav-menu a').forEach(l => l.classList.remove('active'));
-                a.classList.add('active');
+            shutterBtn.onclick = () => { cameraInput.value = ''; cameraInput.click(); };
+            galleryBtn.onclick = () => { galleryInput.value = ''; galleryInput.click(); };
+
+            function processImage(file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    previewImg.src = ev.target.result;
+                    previewImg.style.display = 'block';
+                    placeholder.style.display = 'none';
+
+                    setTimeout(() => {
+                        const rand = cloudData[Math.floor(Math.random() * cloudData.length)];
+                        document.getElementById('cloudName').innerText = rand.name;
+                        document.getElementById('cloudCode').innerText = rand.code;
+                        document.getElementById('riskLevel').innerText = (rand.code === 'Cb' || rand.code === 'Ns') ? 'Tinggi · Waspada' : 'Rendah';
+                        document.getElementById('riskDesc').innerText = rand.karakter.substring(0, 60) + '…';
+                        document.getElementById('rekomText').innerText = (rand.code === 'Cb') ? 'Hindari outdoor, cek 3D awan' : 'Cocok untuk aktivitas ringan';
+                        const icons = document.getElementById('rekomIcons');
+                        if (rand.code.includes('Cb') || rand.code.includes('Ns')) icons.innerHTML = '<i class="fas fa-cloud-rain"></i><i class="fas fa-bolt"></i><i class="fas fa-house-flood-water"></i>';
+                        else icons.innerHTML = '<i class="fas fa-sun"></i><i class="fas fa-person-hiking"></i><i class="fas fa-tree"></i>';
+                    }, 1000);
+                };
+                reader.readAsDataURL(file);
             }
-        };
-    });
-})();
-</script>
+
+            cameraInput.onchange = (e) => { if (e.target.files[0]) processImage(e.target.files[0]); };
+            galleryInput.onchange = (e) => { if (e.target.files[0]) processImage(e.target.files[0]); };
+
+            // Active menu smooth scroll
+            document.querySelectorAll('.nav-menu a').forEach(a => {
+                a.onclick = (e) => {
+                    const hash = a.getAttribute('href');
+                    if (hash && hash.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.getElementById(hash.substring(1));
+                        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        document.querySelectorAll('.nav-menu a').forEach(l => l.classList.remove('active'));
+                        a.classList.add('active');
+                    }
+                };
+            });
+
+            // ===== LIVE WEATHER (Open-Meteo, no API key) =====
+            const CITIES = [
+                { name: 'Jakarta', lat: -6.2088, lon: 106.8456 },
+                { name: 'Bogor', lat: -6.5971, lon: 106.8060 },
+                { name: 'Depok', lat: -6.4025, lon: 106.7942 },
+                { name: 'Tangerang', lat: -6.1781, lon: 106.6297 },
+                { name: 'Bekasi', lat: -6.2349, lon: 106.9896 },
+            ];
+
+            // WMO weather code → { desc, icon FA class, weather type }
+            function wmoInfo(code) {
+                if (code === 0) return { desc: 'Cerah', icon: 'fa-sun', type: 'sunny' };
+                if (code <= 2) return { desc: 'Cerah Berawan', icon: 'fa-cloud-sun', type: 'partly-cloudy' };
+                if (code === 3) return { desc: 'Berawan Tebal', icon: 'fa-cloud', type: 'overcast' };
+                if (code <= 49) return { desc: 'Berkabut', icon: 'fa-smog', type: 'cloudy' };
+                if (code <= 57) return { desc: 'Gerimis', icon: 'fa-cloud-drizzle', type: 'rainy' };
+                if (code <= 67) return { desc: 'Hujan', icon: 'fa-cloud-rain', type: 'rainy' };
+                if (code <= 77) return { desc: 'Salju', icon: 'fa-snowflake', type: 'cloudy' };
+                if (code <= 82) return { desc: 'Hujan Lebat', icon: 'fa-cloud-showers-heavy', type: 'rainy' };
+                if (code <= 99) return { desc: 'Badai Petir', icon: 'fa-cloud-bolt', type: 'rainy' };
+                return { desc: 'Tidak Diketahui', icon: 'fa-question', type: 'cloudy' };
+            }
+
+            async function fetchCityWeather(city) {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}` +
+                    `&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code` +
+                    `&wind_speed_unit=kmh&timezone=Asia%2FJakarta`;
+                const res = await fetch(url);
+                const json = await res.json();
+                const cur = json.current;
+                return {
+                    name: city.name,
+                    temp: Math.round(cur.temperature_2m),
+                    humidity: cur.relative_humidity_2m,
+                    wind: Math.round(cur.wind_speed_10m),
+                    ...wmoInfo(cur.weather_code)
+                };
+            }
+
+            function renderCityCard(d) {
+                return `
+        <div class="city-card" data-weather="${d.type}">
+            <div class="city-name">${d.name}</div>
+            <div class="city-weather-icon"><i class="fas ${d.icon}"></i></div>
+            <div class="city-temp">${d.temp}°C</div>
+            <div class="city-desc">${d.desc}</div>
+            <div class="city-stats">
+                <div class="city-stat-item"><i class="fas fa-droplet"></i><div class="city-stat-value">${d.humidity}%</div><div class="city-stat-label">RH</div></div>
+                <div class="city-stat-item"><i class="fas fa-wind"></i><div class="city-stat-value">${d.wind} km/h</div><div class="city-stat-label">Angin</div></div>
+            </div>
+        </div>`;
+            }
+
+            function updateClock() {
+                const now = new Date();
+                const hh = String(now.getHours()).padStart(2, '0');
+                const mm = String(now.getMinutes()).padStart(2, '0');
+                document.getElementById('updateTime').innerHTML =
+                    `<i class="fas fa-satellite-dish" style="color:#FFD700"></i> Diperbarui ${hh}:${mm} WIB`;
+            }
+
+            async function fetchAllWeather() {
+                const syncIcon = document.getElementById('syncIcon');
+                if (syncIcon) syncIcon.className = 'fas fa-sync-alt fa-spin';
+                try {
+                    const results = await Promise.all(CITIES.map(fetchCityWeather));
+                    const grid = document.getElementById('citiesGrid');
+                    grid.innerHTML = results.map(renderCityCard).join('');
+
+                    // Best time: count non-rainy cities
+                    const rainyCount = results.filter(r => r.type === 'rainy').length;
+                    const badgeEl = document.getElementById('bestTimeBadge');
+                    const descEl = document.getElementById('bestTimeDesc');
+                    if (rainyCount >= 3) {
+                        badgeEl.style.background = '#4a1a1a';
+                        document.getElementById('bestTimeText').textContent = 'Waspada Hujan';
+                        descEl.textContent = `${rainyCount} dari 5 kota Jabodetabek terpantau hujan`;
+                    } else {
+                        badgeEl.style.background = '#1f5f9e';
+                        document.getElementById('bestTimeText').textContent = '09:00 – 15:00';
+                        descEl.textContent = 'Rekomendasi berdasarkan cuaca terkini Jabodetabek';
+                    }
+                    updateClock();
+                } catch (err) {
+                    document.getElementById('updateTime').innerHTML =
+                        `<i class="fas fa-exclamation-triangle" style="color:#ff6b6b"></i> Gagal memuat data`;
+                    console.error('Weather fetch error:', err);
+                }
+            }
+
+            // Fetch on load, then refresh every 10 minutes
+            fetchAllWeather();
+            setInterval(fetchAllWeather, 10 * 60 * 1000);
+
+        })();
+    </script>
 </body>
+
 </html>
