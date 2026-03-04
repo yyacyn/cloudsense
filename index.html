@@ -963,6 +963,8 @@
             align-items: center;
             gap: 8px;
             box-shadow: 0 5px 10px -5px #001a33;
+            text-decoration: none;
+            border: none;
         }
 
         .btn-3d:hover {
@@ -1291,7 +1293,7 @@
                     <p id="bestTimeDesc">Menghitung waktu terbaik...</p>
                 </div>
                 <div class="best-time-badge" id="bestTimeBadge"><i class="fas fa-sun"></i> <span id="bestTimeText">09:00
-                        – 15:00</span></div>
+                            – 15:00</span></div>
             </div>
         </div>
 
@@ -1400,7 +1402,7 @@
             <div class="cloud-desc">${c.karakter}</div>
             <div class="cloud-footer">
                 <span class="cloud-base"><i class="fas fa-arrow-up"></i> ${c.base}</span>
-                <button class="btn-3d" data-code="${c.code}" data-name="${c.name}"><i class="fas fa-cube"></i> Jelajahi 3D</button>
+                <a href="cloud.html" class="btn-3d" data-code="${c.code}" data-name="${c.name}"><i class="fas fa-cube"></i> Jelajahi 3D</a>
             </div>
         `;
                 grid.appendChild(card);
@@ -1410,9 +1412,8 @@
             document.querySelectorAll('.btn-3d').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const code = btn.dataset.code;
-                    const name = btn.dataset.name;
-                    alert(`🚀 Buka halaman eksplorasi 3D untuk ${name} (${code})\nFitur gesture recognition: putar, geser, zoom menggunakan tangan.`);
+                    // Link sudah mengarah ke cloud.html
+                    console.log('Navigasi ke cloud.html');
                 });
             });
 

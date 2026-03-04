@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudSense · 10 Karakter Awan 3D</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js untuk 3D -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+            }
+        }
+    </script>
+    <style>
+        /* ===== HEADER STICKY GLASS ===== */
+        .header {
+            background: rgba(6, 18, 30, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 0 0 40px 40px;
+            padding: 1.2rem 2rem;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            border: 1px solid rgba(64, 128, 255, 0.25);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: radial-gradient(circle at 30% 20%, #3b8fd9, #0f4c81);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            box-shadow: 0 10px 20px -5px #2b7fc3;
+        }
+
+        .logo-text h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #b3deff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text p {
+            color: #92c5ff;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-menu a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: white;
+            text-shadow: 0 0 8px #6bb5ff;
+        }
+
+        .nav-menu a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #2b7fc3, #9ad0ff);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::before,
+        .nav-menu a.active::before {
+            width: 100%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0A0F1F;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .web-container {
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== MODERN SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #101b2b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(145deg, #2b7fc3, #3fa5f0);
+            border-radius: 20px;
+        }
+
+        /* ===== BACK BUTTON ===== */
+        .back-button {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-right: 10px;
+        }
+
+        .back-button:hover {
+            background: #2b7fc3;
+            transform: scale(1.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+        }
+
+        /* ===== POSE CONTROL ===== */
+        .pose-control {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 60px;
+            padding: 0.7rem 1.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .pose-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #aac9ff;
+            font-size: 0.9rem;
+        }
+
+        .pose-item i {
+            color: #FFD700;
+            font-size: 1rem;
+        }
+
+        .pose-item strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        .separator {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .main-container {
+            display: flex;
+            padding: 20px 0;
+            gap: 20px;
+            height: calc(100vh - 180px);
+            margin-top: 10px;
+        }
+
+        /* ===== LEFT PANEL - 10 KARAKTER AWAN ===== */
+        .left-panel {
+            width: 400px;
+            background: rgba(20, 30, 50, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 25px;
+            border: 1px solid rgba(100, 180, 255, 0.2);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #2b7fc3 #1a2a40;
+        }
+
+        .left-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .left-panel::-webkit-scrollbar-track {
+            background: #1a2a40;
+            border-radius: 10px;
+        }
+        .left-panel::-webkit-scrollbar-thumb {
+            background: #2b7fc3;
+            border-radius: 10px;
+        }
+
+        .panel-header {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .panel-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #9bc9ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .panel-header p {
+            color: #aac9f0;
+            font-size: 0.95rem;
+            margin-top: 8px;
+        }
+
+        .cloud-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .cloud-card {
+            background: rgba(30, 45, 70, 0.6);
+            border-radius: 30px;
+            padding: 20px;
+            border: 1px solid rgba(100, 180, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cloud-card:hover {
+            transform: translateY(-4px);
+            border-color: #3b9eff;
+            box-shadow: 0 15px 30px -15px #0088ff;
+            background: rgba(40, 60, 90, 0.8);
+        }
+
+        .cloud-card.active {
+            border-color: #FFD700;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+            background: rgba(50, 70, 100, 0.9);
+        }
+
+        .cloud-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .cloud-code {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #FFD700;
+            line-height: 1;
+        }
+
+        .cloud-icon {
+            font-size: 2.2rem;
+            color: #b1dcff;
+        }
+
+        .cloud-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .cloud-desc {
+            color: #c3dfff;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .cloud-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .cloud-altitude {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 15px;
+            border-radius: 30px;
+            color: #aac9f0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .explore-btn {
+            background: transparent;
+            border: 1px solid #3b9eff;
+            color: #3b9eff;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .explore-btn:hover {
+            background: #3b9eff;
+            color: white;
+        }
+
+        .explore-btn i {
+            font-size: 0.8rem;
+        }
+
+        /* ===== CENTER PANEL - 3D VIEWER ===== */
+        .center-panel {
+            flex: 1;
+            background: #0A0F1F;
+            border-radius: 40px;
+            overflow: hidden;
+            border: 1px solid rgba(100, 180, 255, 0.3);
+            position: relative;
+            box-shadow: 0 20px 40px -15px #000;
+        }
+
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .viewer-overlay {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            z-index: 10;
+        }
+
+        .cloud-info-overlay {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 60px;
+            padding: 15px 30px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 10px 30px -10px #000;
+        }
+
+        .current-cloud {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .current-cloud span {
+            color: #FFD700;
+            font-size: 1.2rem;
+            background: rgba(255, 215, 0, 0.15);
+            padding: 5px 15px;
+            border-radius: 40px;
+        }
+
+        .current-desc {
+            color: #aac9f0;
+            font-size: 1rem;
+            margin-top: 8px;
+            max-width: 400px;
+        }
+
+        /* ===== RIGHT PANEL - VIDEO & LANDMARK ===== */
+        .right-panel {
+            width: 380px;
+            background: rgba(20, 30, 50, 0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 25px;
+            border: 1px solid rgba(100, 180, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-section {
+            background: #0A0F1F;
+            border-radius: 35px;
+            padding: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .video-header h3 {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .video-header h3 i {
+            color: #FFD700;
+        }
+
+        .live-badge {
+            background: #ff4444;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .live-badge i {
+            font-size: 0.6rem;
+        }
+
+        .video-preview {
+            aspect-ratio: 16/9;
+            background: #1a2a40;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a6a8a;
+            font-size: 4rem;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,215,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,215,0,0.1), transparent 70%);
+        }
+
+        .landmark-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .landmark-box {
+            background: #1a2a40;
+            border-radius: 25px;
+            padding: 15px 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            transition: 0.2s;
+        }
+
+        .landmark-box:hover {
+            border-color: #FFD700;
+            transform: translateY(-2px);
+        }
+
+        .landmark-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #FFD700;
+            line-height: 1.2;
+        }
+
+        .landmark-label {
+            color: #aac9f0;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .stream-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #aac9f0;
+            font-size: 0.9rem;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stream-status i {
+            color: #44ff44;
+            font-size: 0.7rem;
+            filter: drop-shadow(0 0 5px #00ff00);
+        }
+
+        /* ===== BUTTON KAMERA ===== */
+        .camera-button {
+            background: linear-gradient(135deg, #1f5f9e, #2d8ae0);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 50px;
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 10px 20px -8px #0066cc;
+        }
+
+        .camera-button:hover {
+            background: #2d8ae0;
+            border-color: #FFD700;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -10px #0088ff;
+        }
+
+        .camera-button span {
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .camera-button i {
+            color: #FFD700;
+            font-size: 1.4rem;
+        }
+
+        .camera-button .arrow-icon {
+            color: white;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        /* ===== INPUT KAMERA TERSEMBUNYI ===== */
+        #camera-input {
+            display: none;
+        }
+
+        /* ===== ACTIVATE WINDOWS ===== */
+        .activate-windows {
+            text-align: center;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1400px) {
+            .main-container {
+                flex-wrap: wrap;
+                height: auto;
+            }
+            .left-panel, .right-panel {
+                width: 100%;
+            }
+            .center-panel {
+                height: 500px;
+                width: 100%;
+            }
+            .pose-control {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER dengan logo sesuai CSS -->
+    <header class="header">
+        <div class="nav-container">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div class="back-button" onclick="window.location.href='index.html'">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+                <div class="logo-wrapper">
+                    <div class="logo-icon"><i class="fas fa-cloud"></i></div>
+                    <div class="logo-text">
+                        <h1>CloudSense</h1>
+                        <p>10 KARAKTER AWAN · GESTURE 3D</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pose-control">
+                <div class="pose-item">
+                    <i class="fas fa-hand-peace"></i>
+                    <span>Buka tangan = <strong>Zoom out</strong></span>
+                </div>
+                <span class="separator">|</span>
+                <div class="pose-item">
+                    <i class="fas fa-hand-fist"></i>
+                    <span>Tutup tangan = <strong>Zoom in</strong></span>
+                </div>
+                <span class="separator">|</span>
+                <div class="pose-item">
+                    <i class="fas fa-hand-peace"></i>
+                    <span>Peace = <strong>Putar otomatis</strong></span>
+                </div>
+                <span class="separator">|</span>
+                <div class="pose-item">
+                    <i class="fas fa-hand"></i>
+                    <span>Tepuk = <strong>Reset view</strong></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div class="web-container">
+        <div class="main-container">
+            <!-- LEFT PANEL - 10 KARAKTER AWAN -->
+            <div class="left-panel">
+                <div class="panel-header">
+                    <h2>10 Karakter Awan</h2>
+                    <p>Pelajari morfologi setiap jenis awan melalui visualisasi 3D interaktif</p>
+                </div>
+                
+                <div class="cloud-cards" id="cloudCards">
+                    <!-- Akan diisi oleh JavaScript -->
+                </div>
+            </div>
+
+            <!-- CENTER PANEL - 3D VIEWER -->
+            <div class="center-panel">
+                <div id="canvas-container"></div>
+                
+                <!-- OVERLAY INFO -->
+                <div class="viewer-overlay">
+                    <div class="cloud-info-overlay" id="cloudInfoOverlay">
+                        <div class="current-cloud">
+                            Cumulus <span id="currentCloudCode">Cu</span>
+                        </div>
+                        <div class="current-desc" id="currentCloudDesc">
+                            Awan putih mengumpul seperti kapas
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL - VIDEO & LANDMARK -->
+            <div class="right-panel">
+                <div class="video-section">
+                    <div class="video-header">
+                        <h3><i class="fas fa-video"></i> VIDEO REAL-TIME</h3>
+                        <div class="live-badge">
+                            <i class="fas fa-circle"></i> LIVE
+                        </div>
+                    </div>
+                    
+                    <div class="video-preview">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                    
+                    <div class="landmark-grid">
+                        <div class="landmark-box">
+                            <div class="landmark-value">x1</div>
+                            <div class="landmark-label">ZOOM</div>
+                        </div>
+                        <div class="landmark-box">
+                            <div class="landmark-value" id="pointsValue">99</div>
+                            <div class="landmark-label">POINTS</div>
+                        </div>
+                        <div class="landmark-box">
+                            <div class="landmark-value" id="fpsValue">18</div>
+                            <div class="landmark-label">FPS</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stream-status">
+                        <i class="fas fa-circle"></i>
+                        <span>Stream aktif. Landmark diproses oleh backend MediaPipe.</span>
+                    </div>
+                </div>
+                
+                <!-- BUTTON KAMERA -->
+                <input type="file" id="camera-input" accept="image/*" capture="environment">
+                <div class="camera-button" id="cameraBtn">
+                    <span>
+                        <i class="fas fa-camera"></i> Aktifkan Kamera
+                    </span>
+                    <i class="fas fa-arrow-right arrow-icon"></i>
+                </div>
+                
+                <!-- ACTIVATE WINDOWS -->
+                <div class="activate-windows">
+                    Activate Windows
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'https://unpkg.com/three@0.128.0/examples/jsm/controls/OrbitControls.js';
+
+        // ===== DATA 10 KARAKTER AWAN DENGAN DESKRIPSI YANG 100% BENAR =====
+        const cloudData = [
+            {
+                code: 'Cu',
+                name: 'Cumulus',
+                icon: 'fa-cloud-sun',
+                desc: 'Awan putih mengumpul seperti kapas, dasar datar, puncak menggelembung. Tanda cuaca baik.',
+                longDesc: 'Cumulus adalah awan putih mengumpul seperti kapas dengan dasar yang datar dan puncak yang menggelembung. Terbentuk dari arus konveksi udara panas. Biasanya menandakan cuaca cerah, namun bisa tumbuh vertikal menjadi Cumulonimbus.',
+                altitude: '↑ Dasar <2 km',
+                color: 0xffffff,
+                type: 'cumulus'
+            },
+            {
+                code: 'Cc',
+                name: 'Cirrocumulus',
+                icon: 'fa-cloud-sun',
+                desc: 'Awan tinggi berupa gumpalan kecil seperti sisik ikan. Terdiri dari kristal es.',
+                longDesc: 'Cirrocumulus adalah awan tinggi yang terdiri dari kristal es. Bentuknya seperti sisik ikan atau riak pasir di langit. Menandakan cuaca stabil, kadang menjadi pertanda perubahan cuaca.',
+                altitude: '↑ >6 km',
+                color: 0xe0f0ff,
+                type: 'cirrocumulus'
+            },
+            {
+                code: 'Ac',
+                name: 'Altocumulus',
+                icon: 'fa-cloud',
+                desc: 'Awan menengah bergulung seperti domba. Sering muncul sebelum badai petir.',
+                longDesc: 'Altocumulus adalah awan menengah berbentuk gulungan atau lembaran dengan bongkahan-bongkahan kecil seperti domba di langit. Sering muncul sebelum badai petir di sore hari.',
+                altitude: '↑ 2–6 km',
+                color: 0xd0e0f0,
+                type: 'altocumulus'
+            },
+            {
+                code: 'As',
+                name: 'Altostratus',
+                icon: 'fa-cloud',
+                desc: 'Selubung abu-abu merata yang menutupi langit. Sering membawa gerimis.',
+                longDesc: 'Altostratus adalah awan tebal berwarna abu-abu yang menutupi seluruh langit. Matahari tampak seperti melalui kaca buram. Sering membawa hujan gerimis atau salju ringan.',
+                altitude: '↑ 2–6 km',
+                color: 0xa0b0c0,
+                type: 'altostratus'
+            },
+            {
+                code: 'Ci',
+                name: 'Cirrus',
+                icon: 'fa-cloud',
+                desc: 'Awan tinggi halus berserat seperti bulu. Terdiri dari kristal es.',
+                longDesc: 'Cirrus adalah awan tinggi yang halus dan berserat seperti bulu. Terbentuk dari kristal es di ketinggian di atas 6 km. Menandakan cuaca cerah namun bisa menjadi pertanda perubahan cuaca.',
+                altitude: '↑ >6 km',
+                color: 0xf0f8ff,
+                type: 'cirrus'
+            },
+            {
+                code: 'Cs',
+                name: 'Cirrostratus',
+                icon: 'fa-cloud-sun',
+                desc: 'Selubung tipis transparan yang menutupi langit. Menyebabkan fenomena halo.',
+                longDesc: 'Cirrostratus adalah awan tipis seperti selubung yang menutupi seluruh langit. Terdiri dari kristal es dan sering menyebabkan fenomena halo di sekitar matahari atau bulan.',
+                altitude: '↑ >6 km',
+                color: 0xe8f0fe,
+                type: 'cirrostratus'
+            },
+            {
+                code: 'Cb',
+                name: 'Cumulonimbus',
+                icon: 'fa-cloud-rain',
+                desc: 'Awan besar vertikal seperti gunung. Penyebab hujan lebat, petir, angin kencang.',
+                longDesc: 'Cumulonimbus adalah awan vertikal yang menjulang tinggi seperti gunung. Bagian atas bisa melebar seperti landasan. Penyebab hujan lebat, petir, angin kencang, bahkan tornado.',
+                altitude: '↑ Dasar <2 km',
+                color: 0x4a5a6a,
+                type: 'cumulonimbus'
+            },
+            {
+                code: 'Ns',
+                name: 'Nimbostratus',
+                icon: 'fa-cloud-rain',
+                desc: 'Awan tebal kelabu gelap yang membawa hujan terus-menerus. Menutupi seluruh langit.',
+                longDesc: 'Nimbostratus adalah awan tebal berwarna kelabu gelap yang membawa hujan terus-menerus. Menutupi seluruh langit dan mengurangi visibilitas.',
+                altitude: '↑ <3 km',
+                color: 0x3a4a5a,
+                type: 'nimbostratus'
+            },
+            {
+                code: 'Sc',
+                name: 'Stratocumulus',
+                icon: 'fa-cloud',
+                desc: 'Gumpalan abu-abu rendah yang sering menutupi langit. Dapat menghasilkan gerimis.',
+                longDesc: 'Stratocumulus adalah awan rendah bergumpal-gumpal, seringkali menutupi seluruh langit. Dapat menghasilkan hujan rintik atau gerimis ringan.',
+                altitude: '↑ <2 km',
+                color: 0x8a9aad,
+                type: 'stratocumulus'
+            },
+            {
+                code: 'St',
+                name: 'Stratus',
+                icon: 'fa-smog',
+                desc: 'Awan rendah seragam seperti kabut. Menyebabkan gerimis atau kabut.',
+                longDesc: 'Stratus adalah awan rendah seragam berwarna abu-abu, mirip kabut yang naik. Sering menyebabkan gerimis atau kabut. Mengurangi jarak pandang.',
+                altitude: '↑ <2 km',
+                color: 0x9aabbc,
+                type: 'stratus'
+            }
+        ];
+
+        // ===== SETUP THREE.JS =====
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0A0F1F);
+        
+        // Camera
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.set(5, 3, 10);
+        
+        // Renderer
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+        
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.8;
+        controls.enableZoom = true;
+        controls.enablePan = true;
+        controls.maxPolarAngle = Math.PI / 2;
+        
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404060);
+        scene.add(ambientLight);
+        
+        const sunLight = new THREE.DirectionalLight(0xfff5e6, 1.8);
+        sunLight.position.set(5, 10, 7);
+        sunLight.castShadow = true;
+        sunLight.receiveShadow = true;
+        sunLight.shadow.mapSize.width = 2048;
+        sunLight.shadow.mapSize.height = 2048;
+        const d = 15;
+        sunLight.shadow.camera.left = -d;
+        sunLight.shadow.camera.right = d;
+        sunLight.shadow.camera.top = d;
+        sunLight.shadow.camera.bottom = -d;
+        sunLight.shadow.camera.near = 1;
+        sunLight.shadow.camera.far = 25;
+        scene.add(sunLight);
+        
+        const fillLight = new THREE.PointLight(0x4466cc, 0.8);
+        fillLight.position.set(-5, 2, 5);
+        scene.add(fillLight);
+        
+        const backLight = new THREE.PointLight(0x3355aa, 0.6);
+        backLight.position.set(0, 3, -8);
+        scene.add(backLight);
+        
+        // Efek kabut tipis
+        scene.fog = new THREE.FogExp2(0x0A0F1F, 0.02);
+        
+        // Ground
+        const groundGeometry = new THREE.CircleGeometry(30, 32);
+        const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x1a2a40, roughness: 0.8 });
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.y = -1.5;
+        ground.receiveShadow = true;
+        scene.add(ground);
+        
+        // Grid
+        const gridHelper = new THREE.GridHelper(30, 20, 0x3b9eff, 0x1a3a5a);
+        gridHelper.position.y = -1.4;
+        scene.add(gridHelper);
+        
+        // Bintang
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsCount = 1500;
+        const starsPositions = new Float32Array(starsCount * 3);
+        for (let i = 0; i < starsCount * 3; i += 3) {
+            starsPositions[i] = (Math.random() - 0.5) * 200;
+            starsPositions[i+1] = (Math.random() - 0.5) * 200;
+            starsPositions[i+2] = (Math.random() - 0.5) * 200 - 50;
+        }
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
+        const starsMaterial = new THREE.PointsMaterial({color: 0xffffff, size: 0.15, transparent: true});
+        const stars = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(stars);
+
+        // ===== FUNGSI MEMBUAT AWAN 3D REALISTIK =====
+        let currentCloudGroup = null;
+
+        function createRealisticCloud(type, baseColor) {
+            const group = new THREE.Group();
+            
+            const mainMaterial = new THREE.MeshStandardMaterial({
+                color: baseColor,
+                emissive: 0x111122,
+                roughness: 0.3,
+                metalness: 0.0,
+                emissiveIntensity: 0.2
+            });
+            
+            const darkMaterial = new THREE.MeshStandardMaterial({
+                color: baseColor - 0x222222,
+                emissive: 0x0a0a1a,
+                roughness: 0.5
+            });
+            
+            const lightMaterial = new THREE.MeshStandardMaterial({
+                color: baseColor + 0x111111,
+                emissive: 0x222244,
+                roughness: 0.2
+            });
+            
+            if (type === 'cumulus') {
+                const spheres = [
+                    { pos: [0, 0, 0], scale: 1.6, mat: mainMaterial },
+                    { pos: [1.3, 0.7, 0.4], scale: 1.1, mat: lightMaterial },
+                    { pos: [-1.2, 0.6, -0.5], scale: 1.1, mat: lightMaterial },
+                    { pos: [0.6, 1.4, -0.3], scale: 1.0, mat: mainMaterial },
+                    { pos: [-0.5, 1.5, 0.6], scale: 1.0, mat: mainMaterial },
+                    { pos: [0.9, -0.4, 0.9], scale: 0.8, mat: darkMaterial },
+                    { pos: [-0.8, -0.3, -1.0], scale: 0.8, mat: darkMaterial },
+                    { pos: [1.5, 0.1, -0.9], scale: 0.7, mat: lightMaterial },
+                    { pos: [-1.4, 0.0, 1.0], scale: 0.7, mat: lightMaterial }
+                ];
+                
+                spheres.forEach(s => {
+                    const sphere = new THREE.Mesh(new THREE.SphereGeometry(s.scale, 32, 32), s.mat);
+                    sphere.position.set(s.pos[0], s.pos[1], s.pos[2]);
+                    sphere.castShadow = true;
+                    sphere.receiveShadow = true;
+                    group.add(sphere);
+                });
+            }
+            else if (type === 'cirrus' || type === 'cirrocumulus' || type === 'cirrostratus') {
+                for (let i = 0; i < 10; i++) {
+                    const curve = new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(-2 + Math.random() * 4, Math.random() * 2, -2 + Math.random() * 4),
+                        new THREE.Vector3(-1 + Math.random() * 2, 1 + Math.random() * 2, -1 + Math.random() * 2),
+                        new THREE.Vector3(1 + Math.random() * 2, 0.5 + Math.random() * 2, 1 + Math.random() * 2),
+                        new THREE.Vector3(2 + Math.random() * 2, Math.random() * 2, 2 + Math.random() * 2)
+                    ]);
+                    
+                    const tubeGeometry = new THREE.TubeGeometry(curve, 64, 0.15, 8, false);
+                    const tubeMaterial = new THREE.MeshStandardMaterial({ 
+                        color: 0xf0f8ff,
+                        emissive: 0x112233,
+                        roughness: 0.2,
+                        transparent: true,
+                        opacity: 0.8
+                    });
+                    const tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+                    tube.castShadow = true;
+                    tube.receiveShadow = true;
+                    group.add(tube);
+                }
+                
+                for (let i = 0; i < 8; i++) {
+                    const sphere = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.2 + Math.random()*0.2, 8),
+                        new THREE.MeshStandardMaterial({ color: 0xf0f8ff, roughness: 0.2 })
+                    );
+                    sphere.position.set(
+                        -1.5 + Math.random() * 3,
+                        0.5 + Math.random() * 2,
+                        -1.5 + Math.random() * 3
+                    );
+                    sphere.castShadow = true;
+                    sphere.receiveShadow = true;
+                    group.add(sphere);
+                }
+            }
+            else if (type === 'cumulonimbus') {
+                const base = new THREE.Mesh(new THREE.SphereGeometry(2.3, 32, 32), darkMaterial);
+                base.position.y = 0.5;
+                base.castShadow = true;
+                base.receiveShadow = true;
+                group.add(base);
+                
+                const towerPositions = [
+                    [0, 1.8, 0], [0.5, 2.8, -0.3], [-0.4, 3.8, 0.2], [0.3, 4.8, -0.1], [-0.2, 5.6, 0.3]
+                ];
+                
+                towerPositions.forEach((pos, idx) => {
+                    const size = 1.3 - idx * 0.2;
+                    const mat = idx > 2 ? lightMaterial : mainMaterial;
+                    const sphere = new THREE.Mesh(new THREE.SphereGeometry(size, 24, 24), mat);
+                    sphere.position.set(pos[0], pos[1], pos[2]);
+                    sphere.castShadow = true;
+                    sphere.receiveShadow = true;
+                    group.add(sphere);
+                });
+                
+                for (let i = 0; i < 10; i++) {
+                    const extra = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.8 + Math.random() * 0.6, 16),
+                        mainMaterial
+                    );
+                    extra.position.set(
+                        -1.8 + Math.random() * 3.6,
+                        1.5 + Math.random() * 4,
+                        -1.8 + Math.random() * 3.6
+                    );
+                    extra.castShadow = true;
+                    extra.receiveShadow = true;
+                    group.add(extra);
+                }
+            }
+            else if (type === 'stratus' || type === 'altostratus' || type === 'nimbostratus') {
+                for (let l = 0; l < 4; l++) {
+                    for (let s = 0; s < 8; s++) {
+                        const sphere = new THREE.Mesh(
+                            new THREE.SphereGeometry(0.8 + Math.random() * 0.4, 16),
+                            l === 0 ? darkMaterial : (l === 3 ? lightMaterial : mainMaterial)
+                        );
+                        sphere.position.set(
+                            -2.5 + s * 0.8 + Math.random() * 0.3,
+                            l * 0.7,
+                            -1.5 + Math.random() * 3
+                        );
+                        sphere.castShadow = true;
+                        sphere.receiveShadow = true;
+                        group.add(sphere);
+                    }
+                }
+            }
+            else {
+                for (let i = 0; i < 6; i++) {
+                    for (let j = 0; j < 4; j++) {
+                        const sphere = new THREE.Mesh(
+                            new THREE.SphereGeometry(0.7 + Math.random() * 0.4, 16),
+                            i % 2 === 0 ? mainMaterial : lightMaterial
+                        );
+                        sphere.position.set(
+                            (i - 2.5) * 1.2,
+                            j * 1.0 - 0.5,
+                            (Math.random() - 0.5) * 2
+                        );
+                        sphere.castShadow = true;
+                        sphere.receiveShadow = true;
+                        group.add(sphere);
+                    }
+                }
+            }
+            
+            return group;
+        }
+
+        // ===== RENDER KARTU AWAN =====
+        const cloudCards = document.getElementById('cloudCards');
+        
+        cloudData.forEach((cloud, index) => {
+            const card = document.createElement('div');
+            card.className = 'cloud-card' + (index === 0 ? ' active' : '');
+            card.dataset.index = index;
+            
+            // MENGGUNAKAN DATA YANG SESUAI UNTUK MASING-MASING AWAN
+            card.innerHTML = `
+                <div class="cloud-card-header">
+                    <div class="cloud-code">${cloud.code}</div>
+                    <div class="cloud-icon"><i class="fas ${cloud.icon}"></i></div>
+                </div>
+                <div class="cloud-name">${cloud.name}</div>
+                <div class="cloud-desc">${cloud.longDesc}</div>
+                <div class="cloud-footer">
+                    <div class="cloud-altitude">${cloud.altitude}</div>
+                    <div class="explore-btn" data-code="${cloud.code}">
+                        Jelajahi 3D <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            `;
+            
+            card.addEventListener('click', (e) => {
+                document.querySelectorAll('.cloud-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                
+                if (currentCloudGroup) {
+                    scene.remove(currentCloudGroup);
+                }
+                currentCloudGroup = createRealisticCloud(cloud.type, cloud.color);
+                currentCloudGroup.position.set(0, 1, 0);
+                currentCloudGroup.scale.set(0.7, 0.7, 0.7);
+                scene.add(currentCloudGroup);
+                
+                document.getElementById('currentCloudCode').textContent = cloud.code;
+                document.getElementById('currentCloudDesc').textContent = cloud.desc;
+                
+                controls.autoRotate = true;
+            });
+            
+            cloudCards.appendChild(card);
+            
+            const exploreBtn = card.querySelector('.explore-btn');
+            exploreBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                card.click();
+            });
+        });
+
+        // Load default cloud (Cumulus)
+        currentCloudGroup = createRealisticCloud('cumulus', 0xffffff);
+        currentCloudGroup.position.set(0, 1, 0);
+        currentCloudGroup.scale.set(0.7, 0.7, 0.7);
+        scene.add(currentCloudGroup);
+
+        // ===== ANIMASI =====
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+
+        // ===== RESIZE HANDLER =====
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+
+        // ===== BUTTON KAMERA =====
+        const cameraBtn = document.getElementById('cameraBtn');
+        const cameraInput = document.getElementById('camera-input');
+        
+        cameraBtn.addEventListener('click', () => {
+            cameraInput.click();
+        });
+        
+        cameraInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                alert('Kamera diaktifkan! File: ' + file.name);
+            }
+        });
+
+        // Simulasi angka landmark
+        setInterval(() => {
+            const pointsEl = document.getElementById('pointsValue');
+            const fpsEl = document.getElementById('fpsValue');
+            
+            if (pointsEl) {
+                pointsEl.textContent = Math.floor(Math.random() * 20) + 90;
+            }
+            if (fpsEl) {
+                fpsEl.textContent = Math.floor(Math.random() * 5) + 16;
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
