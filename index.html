@@ -997,6 +997,7 @@
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
         }
 
@@ -1209,6 +1210,8 @@
                 <div class="camera-area">
                     <div class="preview-box" id="previewBox">
                         <img id="preview-image" src="#" alt="preview">
+                        <video id="camera-stream" autoplay playsinline
+                            style="display:none;width:100%;height:100%;object-fit:cover;border-radius:inherit;"></video>
                         <div class="placeholder-preview" id="placeholderPreview">
                             <i class="fas fa-cloud-moon"></i>
                             <p>Belum ada gambar</p>
@@ -1218,10 +1221,16 @@
                 </div>
                 <div class="upload-actions">
                     <button class="btn btn-primary" id="shutterBtn"><i class="fas fa-camera"></i> Kamera</button>
+                    <button class="btn btn-primary" id="captureBtn"
+                        style="display:none;background:linear-gradient(135deg,#e74c3c,#c0392b);"><i
+                            class="fas fa-circle"></i> Ambil Foto</button>
+                    <button class="btn btn-outline" id="stopCamBtn" style="display:none;"><i class="fas fa-times"></i>
+                        Tutup</button>
                     <button class="btn btn-outline" id="galleryBtn"><i class="fas fa-images"></i> Galeri</button>
                 </div>
-                <input type="file" id="camera-input" accept="image/*" capture="environment">
-                <input type="file" id="gallery-input" accept="image/*">
+                <canvas id="camera-canvas" style="display:none;"></canvas>
+                <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none">
+                <input type="file" id="gallery-input" accept="image/*" style="display:none">
             </div>
 
             <div class="result-panel" id="resultPanel">
@@ -1264,10 +1273,6 @@
                         <label>Deskripsi Risiko</label>
                         <p id="modalDesc">-</p>
                     </div>
-                    <div class="modal-section">
-                        <label>Rekomendasi Aktivitas</label>
-                        <p id="modalRekom">-</p>
-                    </div>
                     <button class="btn-close-modal" onclick="closeDetailModal()">Tutup</button>
                 </div>
             </div>
@@ -1293,7 +1298,7 @@
                     <p id="bestTimeDesc">Menghitung waktu terbaik...</p>
                 </div>
                 <div class="best-time-badge" id="bestTimeBadge"><i class="fas fa-sun"></i> <span id="bestTimeText">09:00
-                            – 15:00</span></div>
+                        – 15:00</span></div>
             </div>
         </div>
 
@@ -1421,11 +1426,70 @@
             const cameraInput = document.getElementById('camera-input');
             const galleryInput = document.getElementById('gallery-input');
             const shutterBtn = document.getElementById('shutterBtn');
+            const captureBtn = document.getElementById('captureBtn');
+            const stopCamBtn = document.getElementById('stopCamBtn');
             const galleryBtn = document.getElementById('galleryBtn');
             const previewImg = document.getElementById('preview-image');
             const placeholder = document.getElementById('placeholderPreview');
+            const cameraStream = document.getElementById('camera-stream');
+            const cameraCanvas = document.getElementById('camera-canvas');
+            let activeStream = null;
 
-            shutterBtn.onclick = () => { cameraInput.value = ''; cameraInput.click(); };
+            // Open webcam
+            shutterBtn.onclick = async () => {
+                // On mobile, use native camera capture
+                if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+                    cameraInput.value = ''; cameraInput.click();
+                    return;
+                }
+                // Desktop: open webcam stream
+                try {
+                    activeStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } } });
+                    cameraStream.srcObject = activeStream;
+                    cameraStream.style.display = 'block';
+                    previewImg.style.display = 'none';
+                    placeholder.style.display = 'none';
+                    shutterBtn.style.display = 'none';
+                    galleryBtn.style.display = 'none';
+                    captureBtn.style.display = '';
+                    stopCamBtn.style.display = '';
+                } catch (err) {
+                    console.warn('Kamera tidak tersedia:', err);
+                    cameraInput.value = ''; cameraInput.click();
+                }
+            };
+
+            // Capture photo from stream
+            captureBtn.onclick = () => {
+                cameraCanvas.width = cameraStream.videoWidth;
+                cameraCanvas.height = cameraStream.videoHeight;
+                cameraCanvas.getContext('2d').drawImage(cameraStream, 0, 0);
+                const dataUrl = cameraCanvas.toDataURL('image/jpeg', 0.9);
+                stopCamera();
+                previewImg.src = dataUrl;
+                previewImg.style.display = 'block';
+                // Convert to blob and process
+                cameraCanvas.toBlob(blob => { if (blob) processImage(blob); }, 'image/jpeg', 0.9);
+            };
+
+            // Stop camera
+            function stopCamera() {
+                if (activeStream) {
+                    activeStream.getTracks().forEach(t => t.stop());
+                    activeStream = null;
+                }
+                cameraStream.style.display = 'none';
+                cameraStream.srcObject = null;
+                captureBtn.style.display = 'none';
+                stopCamBtn.style.display = 'none';
+                shutterBtn.style.display = '';
+                galleryBtn.style.display = '';
+            }
+            stopCamBtn.onclick = () => {
+                stopCamera();
+                placeholder.style.display = '';
+            };
+
             galleryBtn.onclick = () => { galleryInput.value = ''; galleryInput.click(); };
 
             // ===== GROQ LLM API (Llama 3.3 70B) =====
@@ -1654,7 +1718,6 @@ Keterangan:
             if (!r) return;
             document.getElementById('modalRisk').textContent = r.riskLevel || '-';
             document.getElementById('modalDesc').textContent = r.riskDesc || '-';
-            document.getElementById('modalRekom').textContent = r.recommendation || '-';
             document.getElementById('detailModal').classList.add('active');
         }
         function closeDetailModal() {
