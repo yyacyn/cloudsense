@@ -1528,6 +1528,9 @@ Keterangan:
 - recommendation: rekomendasi aktivitas 1 kalimat
 - icons: 3 nama FontAwesome 6 icon yang relevan (tanpa prefix "fas ")`;
 
+                const maskedKey = GROQ_API_KEY ? GROQ_API_KEY.slice(0, 8) + '...' + GROQ_API_KEY.slice(-4) : '(empty)';
+                console.log(`🔑 Using API key: ${maskedKey}`);
+
                 const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
@@ -1542,8 +1545,12 @@ Keterangan:
                     })
                 });
 
-                if (res.status === 429) throw new Error('RATE_LIMITED');
-                if (!res.ok) throw new Error(`API error ${res.status}`);
+                if (!res.ok) {
+                    const errBody = await res.text();
+                    console.error(`❌ Groq API ${res.status}:`, errBody);
+                    console.error(`🔑 Key used: ${maskedKey}`);
+                    throw new Error(`API error ${res.status}: ${errBody}`);
+                }
 
                 const data = await res.json();
                 let text = data.choices?.[0]?.message?.content || '';
