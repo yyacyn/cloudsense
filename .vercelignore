@@ -1,0 +1,7 @@
+# Vercel Deployment Ignore File
+# Ignore large AI model files from being copied to serverless functions
+
+*.keras
+*.h5
+*.hd5
+*.pkl

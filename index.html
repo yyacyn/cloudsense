@@ -13,7 +13,6 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
-    <script src="config.js"></script>
     <style>
         * {
             margin: 0;
@@ -1509,7 +1508,6 @@
             galleryBtn.onclick = () => { galleryInput.value = ''; galleryInput.click(); };
 
             // ===== GROQ LLM API (Llama 3.3 70B) =====
-            const GROQ_API_KEY = CONFIG.GROQ_API_KEY;
             let cachedWeatherResults = null;
 
             // Rate Limiter
@@ -1544,14 +1542,10 @@ Keterangan:
 - recommendation: rekomendasi aktivitas 1 kalimat
 - icons: 3 nama FontAwesome 6 icon yang relevan (tanpa prefix "fas ")`;
 
-                const maskedKey = GROQ_API_KEY ? GROQ_API_KEY.slice(0, 8) + '...' + GROQ_API_KEY.slice(-4) : '(empty)';
-                console.log(`🔑 Using API key: ${maskedKey}`);
-
-                const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                const res = await fetch('/api/chat', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${GROQ_API_KEY}`
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         model: 'llama-3.3-70b-versatile',
@@ -1656,15 +1650,17 @@ Keterangan:
                     document.getElementById('confidenceVal').textContent = conf + '%';
 
                     // ── DEBUG (console) ──
-                    console.group('🔍 Model Output');
-                    CLASS_NAMES.slice(0, 6).forEach((n, i) => {
-                        const pct = (probs[i] * 100).toFixed(2);
-                        const bar = '█'.repeat(Math.round(probs[i] * 20));
-                        const isTop = i === probs.indexOf(Math.max(...probs.slice(0, 6)));
-                        console.log(`${isTop ? '▶' : ' '} ${n.padEnd(15)} ${pct}% ${bar}`);
-                    });
-                    console.log(`Sum: ${probs.slice(0, 6).reduce((a, b) => a + b, 0).toFixed(4)}`);
-                    console.groupEnd();
+                    if (probs) {
+                        console.group('🔍 Model Output');
+                        CLASS_NAMES.slice(0, 6).forEach((n, i) => {
+                            const pct = (probs[i] * 100).toFixed(2);
+                            const bar = '█'.repeat(Math.round(probs[i] * 20));
+                            const isTop = i === probs.indexOf(Math.max(...probs.slice(0, 6)));
+                            console.log(`${isTop ? '▶' : ' '} ${n.padEnd(15)} ${pct}% ${bar}`);
+                        });
+                        console.log(`Sum: ${probs.slice(0, 6).reduce((a, b) => a + b, 0).toFixed(4)}`);
+                        console.groupEnd();
+                    }
 
                     if (rateLimiter.canCall()) {
                         try {
