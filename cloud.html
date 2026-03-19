@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudSense · 10 Karakter Awan 3D</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>CloudSense · 10 Karakter Awan 3D + Gesture</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -504,14 +504,27 @@
             overflow: hidden;
         }
 
-        .video-preview::before {
-            content: '';
+        #camera-stream {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .placeholder-preview {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(255,215,0,0.1), transparent 70%);
+            text-align: center;
+            color: #609ac7;
+        }
+
+        .placeholder-preview i {
+            font-size: 5rem;
+            opacity: 0.7;
+            margin-bottom: 0.8rem;
+        }
+
+        .placeholder-preview p {
+            font-size: 0.9rem;
         }
 
         .landmark-grid {
@@ -568,6 +581,10 @@
             filter: drop-shadow(0 0 5px #00ff00);
         }
 
+        .stream-status i.off {
+            color: #ff4444;
+        }
+
         /* ===== BUTTON KAMERA ===== */
         .camera-button {
             background: linear-gradient(135deg, #1f5f9e, #2d8ae0);
@@ -610,9 +627,25 @@
             opacity: 0.8;
         }
 
-        /* ===== INPUT KAMERA TERSEMBUNYI ===== */
-        #camera-input {
+        /* ===== CAPTURE BUTTON ===== */
+        .capture-button {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: 0.2s;
             display: none;
+        }
+
+        .capture-button:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
         }
 
         /* ===== ACTIVATE WINDOWS ===== */
@@ -644,7 +677,7 @@
     </style>
 </head>
 <body>
-    <!-- HEADER dengan logo sesuai CSS -->
+    <!-- HEADER -->
     <header class="header">
         <div class="nav-container">
             <div style="display: flex; align-items: center; gap: 20px;">
@@ -673,12 +706,12 @@
                 <span class="separator">|</span>
                 <div class="pose-item">
                     <i class="fas fa-hand-peace"></i>
-                    <span>Peace = <strong>Putar otomatis</strong></span>
+                    <span>Tiga jari = <strong>Putar otomatis</strong></span>
                 </div>
                 <span class="separator">|</span>
                 <div class="pose-item">
-                    <i class="fas fa-hand"></i>
-                    <span>Tepuk = <strong>Reset view</strong></span>
+                    <i class="fas fa-hand-peace"></i>
+                    <span>Kelingking = <strong>Reset view</strong></span>
                 </div>
             </div>
         </div>
@@ -721,38 +754,42 @@
                 <div class="video-section">
                     <div class="video-header">
                         <h3><i class="fas fa-video"></i> VIDEO REAL-TIME</h3>
-                        <div class="live-badge">
-                            <i class="fas fa-circle"></i> LIVE
+                        <div class="live-badge" id="liveBadge">
+                            <i class="fas fa-circle"></i> OFF
                         </div>
                     </div>
                     
-                    <div class="video-preview">
-                        <i class="fas fa-cloud-sun"></i>
+                    <div class="video-preview" id="videoPreview">
+                        <video id="camera-stream" autoplay playsinline></video>
+                        <div class="placeholder-preview" id="placeholderPreview">
+                            <i class="fas fa-cloud-moon"></i>
+                            <p>Kamera nonaktif</p>
+                            <p style="font-size:0.9rem;">Klik Aktifkan Kamera</p>
+                        </div>
                     </div>
                     
                     <div class="landmark-grid">
                         <div class="landmark-box">
-                            <div class="landmark-value">x1</div>
-                            <div class="landmark-label">ZOOM</div>
+                            <div class="landmark-value" id="gestureName">--</div>
+                            <div class="landmark-label">GESTURE</div>
                         </div>
                         <div class="landmark-box">
-                            <div class="landmark-value" id="pointsValue">99</div>
+                            <div class="landmark-value" id="pointsValue">--</div>
                             <div class="landmark-label">POINTS</div>
                         </div>
                         <div class="landmark-box">
-                            <div class="landmark-value" id="fpsValue">18</div>
+                            <div class="landmark-value" id="fpsValue">--</div>
                             <div class="landmark-label">FPS</div>
                         </div>
                     </div>
                     
                     <div class="stream-status">
-                        <i class="fas fa-circle"></i>
-                        <span>Stream aktif. Landmark diproses oleh backend MediaPipe.</span>
+                        <i class="fas fa-circle" id="statusIndicator"></i>
+                        <span id="statusText">Kamera tidak aktif</span>
                     </div>
-                </div>
+                </div> <!-- Penutup video-section -->
                 
-                <!-- BUTTON KAMERA -->
-                <input type="file" id="camera-input" accept="image/*" capture="environment">
+                <!-- BUTTON KAMERA (di luar video-section) -->
                 <div class="camera-button" id="cameraBtn">
                     <span>
                         <i class="fas fa-camera"></i> Aktifkan Kamera
@@ -760,19 +797,28 @@
                     <i class="fas fa-arrow-right arrow-icon"></i>
                 </div>
                 
+                <!-- CAPTURE BUTTON (ditambahkan) -->
+                <div class="capture-button" id="captureBtn">
+                    <i class="fas fa-camera-retro"></i> Ambil Foto
+                </div>
+                
                 <!-- ACTIVATE WINDOWS -->
                 <div class="activate-windows">
                     Activate Windows
                 </div>
-            </div>
-        </div>
-    </div>
+            </div> <!-- Penutup right-panel -->
+        </div> <!-- Penutup main-container -->
+    </div> <!-- Penutup web-container -->
+
+    <!-- Canvas untuk capture foto -->
+    <canvas id="capture-canvas" style="display: none;"></canvas>
 
     <script type="module">
         import * as THREE from 'three';
         import { OrbitControls } from 'https://unpkg.com/three@0.128.0/examples/jsm/controls/OrbitControls.js';
+        import { HandLandmarker, FilesetResolver } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3';
 
-        // ===== DATA 10 KARAKTER AWAN DENGAN DESKRIPSI YANG 100% BENAR =====
+        // ===== DATA 10 KARAKTER AWAN =====
         const cloudData = [
             {
                 code: 'Cu',
@@ -876,222 +922,207 @@
             }
         ];
 
-        // ===== SETUP THREE.JS =====
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0A0F1F);
-        
-        // Camera
-        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.set(5, 3, 10);
-        
-        // Renderer
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        renderer.setPixelRatio(window.devicePixelRatio);
-        container.appendChild(renderer.domElement);
-        
-        // Controls
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.autoRotate = true;
-        controls.autoRotateSpeed = 0.8;
-        controls.enableZoom = true;
-        controls.enablePan = true;
-        controls.maxPolarAngle = Math.PI / 2;
-        
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0x404060);
-        scene.add(ambientLight);
-        
-        const sunLight = new THREE.DirectionalLight(0xfff5e6, 1.8);
-        sunLight.position.set(5, 10, 7);
-        sunLight.castShadow = true;
-        sunLight.receiveShadow = true;
-        sunLight.shadow.mapSize.width = 2048;
-        sunLight.shadow.mapSize.height = 2048;
-        const d = 15;
-        sunLight.shadow.camera.left = -d;
-        sunLight.shadow.camera.right = d;
-        sunLight.shadow.camera.top = d;
-        sunLight.shadow.camera.bottom = -d;
-        sunLight.shadow.camera.near = 1;
-        sunLight.shadow.camera.far = 25;
-        scene.add(sunLight);
-        
-        const fillLight = new THREE.PointLight(0x4466cc, 0.8);
-        fillLight.position.set(-5, 2, 5);
-        scene.add(fillLight);
-        
-        const backLight = new THREE.PointLight(0x3355aa, 0.6);
-        backLight.position.set(0, 3, -8);
-        scene.add(backLight);
-        
-        // Efek kabut tipis
-        scene.fog = new THREE.FogExp2(0x0A0F1F, 0.02);
-        
-        // Ground
-        const groundGeometry = new THREE.CircleGeometry(30, 32);
-        const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x1a2a40, roughness: 0.8 });
-        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-        ground.rotation.x = -Math.PI / 2;
-        ground.position.y = -1.5;
-        ground.receiveShadow = true;
-        scene.add(ground);
-        
-        // Grid
-        const gridHelper = new THREE.GridHelper(30, 20, 0x3b9eff, 0x1a3a5a);
-        gridHelper.position.y = -1.4;
-        scene.add(gridHelper);
-        
-        // Bintang
-        const starsGeometry = new THREE.BufferGeometry();
-        const starsCount = 1500;
-        const starsPositions = new Float32Array(starsCount * 3);
-        for (let i = 0; i < starsCount * 3; i += 3) {
-            starsPositions[i] = (Math.random() - 0.5) * 200;
-            starsPositions[i+1] = (Math.random() - 0.5) * 200;
-            starsPositions[i+2] = (Math.random() - 0.5) * 200 - 50;
+        // ===== CEK ELEMEN YANG DIPERLUKAN =====
+        function getRequiredElements() {
+            const elements = {
+                container: document.getElementById('canvas-container'),
+                cameraBtn: document.getElementById('cameraBtn'),
+                captureBtn: document.getElementById('captureBtn'),
+                videoElement: document.getElementById('camera-stream'),
+                placeholderPreview: document.getElementById('placeholderPreview'),
+                liveBadge: document.getElementById('liveBadge'),
+                statusIndicator: document.getElementById('statusIndicator'),
+                statusText: document.getElementById('statusText'),
+                pointsValue: document.getElementById('pointsValue'),
+                fpsValue: document.getElementById('fpsValue'),
+                gestureName: document.getElementById('gestureName'),
+                captureCanvas: document.getElementById('capture-canvas'),
+                cloudCards: document.getElementById('cloudCards'),
+                currentCloudCode: document.getElementById('currentCloudCode'),
+                currentCloudDesc: document.getElementById('currentCloudDesc')
+            };
+            
+            // Cek elemen yang null dan beri warning
+            Object.entries(elements).forEach(([key, value]) => {
+                if (!value) {
+                    console.warn(`Elemen dengan ID '${key}' tidak ditemukan di HTML`);
+                }
+            });
+            
+            return elements;
         }
-        starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
-        const starsMaterial = new THREE.PointsMaterial({color: 0xffffff, size: 0.15, transparent: true});
-        const stars = new THREE.Points(starsGeometry, starsMaterial);
-        scene.add(stars);
 
-        // ===== FUNGSI MEMBUAT AWAN 3D REALISTIK =====
-        let currentCloudGroup = null;
+        const elements = getRequiredElements();
 
-        function createRealisticCloud(type, baseColor) {
-            const group = new THREE.Group();
+        // ===== SETUP THREE.JS =====
+        if (!elements.container) {
+            console.error('Container canvas tidak ditemukan!');
+        } else {
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0A0F1F);
             
-            const mainMaterial = new THREE.MeshStandardMaterial({
-                color: baseColor,
-                emissive: 0x111122,
-                roughness: 0.3,
-                metalness: 0.0,
-                emissiveIntensity: 0.2
-            });
+            // Camera
+            const camera = new THREE.PerspectiveCamera(45, elements.container.clientWidth / elements.container.clientHeight, 0.1, 1000);
+            camera.position.set(5, 3, 10);
             
-            const darkMaterial = new THREE.MeshStandardMaterial({
-                color: baseColor - 0x222222,
-                emissive: 0x0a0a1a,
-                roughness: 0.5
-            });
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+            renderer.setSize(elements.container.clientWidth, elements.container.clientHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.setPixelRatio(window.devicePixelRatio);
+            elements.container.appendChild(renderer.domElement);
             
-            const lightMaterial = new THREE.MeshStandardMaterial({
-                color: baseColor + 0x111111,
-                emissive: 0x222244,
-                roughness: 0.2
-            });
+            // Controls
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 0.8;
+            controls.enableZoom = true;
+            controls.enablePan = true;
+            controls.maxPolarAngle = Math.PI / 2;
             
-            if (type === 'cumulus') {
-                const spheres = [
-                    { pos: [0, 0, 0], scale: 1.6, mat: mainMaterial },
-                    { pos: [1.3, 0.7, 0.4], scale: 1.1, mat: lightMaterial },
-                    { pos: [-1.2, 0.6, -0.5], scale: 1.1, mat: lightMaterial },
-                    { pos: [0.6, 1.4, -0.3], scale: 1.0, mat: mainMaterial },
-                    { pos: [-0.5, 1.5, 0.6], scale: 1.0, mat: mainMaterial },
-                    { pos: [0.9, -0.4, 0.9], scale: 0.8, mat: darkMaterial },
-                    { pos: [-0.8, -0.3, -1.0], scale: 0.8, mat: darkMaterial },
-                    { pos: [1.5, 0.1, -0.9], scale: 0.7, mat: lightMaterial },
-                    { pos: [-1.4, 0.0, 1.0], scale: 0.7, mat: lightMaterial }
-                ];
-                
-                spheres.forEach(s => {
-                    const sphere = new THREE.Mesh(new THREE.SphereGeometry(s.scale, 32, 32), s.mat);
-                    sphere.position.set(s.pos[0], s.pos[1], s.pos[2]);
-                    sphere.castShadow = true;
-                    sphere.receiveShadow = true;
-                    group.add(sphere);
-                });
+            // Simpan referensi controls untuk gesture
+            window.controls = controls;
+            window.camera = camera;
+            
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0x404060);
+            scene.add(ambientLight);
+            
+            const sunLight = new THREE.DirectionalLight(0xfff5e6, 1.8);
+            sunLight.position.set(5, 10, 7);
+            sunLight.castShadow = true;
+            sunLight.receiveShadow = true;
+            sunLight.shadow.mapSize.width = 2048;
+            sunLight.shadow.mapSize.height = 2048;
+            const d = 15;
+            sunLight.shadow.camera.left = -d;
+            sunLight.shadow.camera.right = d;
+            sunLight.shadow.camera.top = d;
+            sunLight.shadow.camera.bottom = -d;
+            sunLight.shadow.camera.near = 1;
+            sunLight.shadow.camera.far = 25;
+            scene.add(sunLight);
+            
+            const fillLight = new THREE.PointLight(0x4466cc, 0.8);
+            fillLight.position.set(-5, 2, 5);
+            scene.add(fillLight);
+            
+            const backLight = new THREE.PointLight(0x3355aa, 0.6);
+            backLight.position.set(0, 3, -8);
+            scene.add(backLight);
+            
+            // Efek kabut tipis
+            scene.fog = new THREE.FogExp2(0x0A0F1F, 0.02);
+            
+            // Ground
+            const groundGeometry = new THREE.CircleGeometry(30, 32);
+            const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x1a2a40, roughness: 0.8 });
+            const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+            ground.rotation.x = -Math.PI / 2;
+            ground.position.y = -1.5;
+            ground.receiveShadow = true;
+            scene.add(ground);
+            
+            // Grid
+            const gridHelper = new THREE.GridHelper(30, 20, 0x3b9eff, 0x1a3a5a);
+            gridHelper.position.y = -1.4;
+            scene.add(gridHelper);
+            
+            // Bintang
+            const starsGeometry = new THREE.BufferGeometry();
+            const starsCount = 1500;
+            const starsPositions = new Float32Array(starsCount * 3);
+            for (let i = 0; i < starsCount * 3; i += 3) {
+                starsPositions[i] = (Math.random() - 0.5) * 200;
+                starsPositions[i+1] = (Math.random() - 0.5) * 200;
+                starsPositions[i+2] = (Math.random() - 0.5) * 200 - 50;
             }
-            else if (type === 'cirrus' || type === 'cirrocumulus' || type === 'cirrostratus') {
-                for (let i = 0; i < 10; i++) {
-                    const curve = new THREE.CatmullRomCurve3([
-                        new THREE.Vector3(-2 + Math.random() * 4, Math.random() * 2, -2 + Math.random() * 4),
-                        new THREE.Vector3(-1 + Math.random() * 2, 1 + Math.random() * 2, -1 + Math.random() * 2),
-                        new THREE.Vector3(1 + Math.random() * 2, 0.5 + Math.random() * 2, 1 + Math.random() * 2),
-                        new THREE.Vector3(2 + Math.random() * 2, Math.random() * 2, 2 + Math.random() * 2)
-                    ]);
+            starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
+            const starsMaterial = new THREE.PointsMaterial({color: 0xffffff, size: 0.15, transparent: true});
+            const stars = new THREE.Points(starsGeometry, starsMaterial);
+            scene.add(stars);
+
+            // ===== FUNGSI MEMBUAT AWAN 3D REALISTIK =====
+            let currentCloudGroup = null;
+
+            function createRealisticCloud(type, baseColor) {
+                const group = new THREE.Group();
+                
+                const mainMaterial = new THREE.MeshStandardMaterial({
+                    color: baseColor,
+                    emissive: 0x111122,
+                    roughness: 0.3,
+                    metalness: 0.0,
+                    emissiveIntensity: 0.2
+                });
+                
+                const darkMaterial = new THREE.MeshStandardMaterial({
+                    color: baseColor - 0x222222,
+                    emissive: 0x0a0a1a,
+                    roughness: 0.5
+                });
+                
+                const lightMaterial = new THREE.MeshStandardMaterial({
+                    color: baseColor + 0x111111,
+                    emissive: 0x222244,
+                    roughness: 0.2
+                });
+                
+                if (type === 'cumulus') {
+                    const spheres = [
+                        { pos: [0, 0, 0], scale: 1.6, mat: mainMaterial },
+                        { pos: [1.3, 0.7, 0.4], scale: 1.1, mat: lightMaterial },
+                        { pos: [-1.2, 0.6, -0.5], scale: 1.1, mat: lightMaterial },
+                        { pos: [0.6, 1.4, -0.3], scale: 1.0, mat: mainMaterial },
+                        { pos: [-0.5, 1.5, 0.6], scale: 1.0, mat: mainMaterial },
+                        { pos: [0.9, -0.4, 0.9], scale: 0.8, mat: darkMaterial },
+                        { pos: [-0.8, -0.3, -1.0], scale: 0.8, mat: darkMaterial },
+                        { pos: [1.5, 0.1, -0.9], scale: 0.7, mat: lightMaterial },
+                        { pos: [-1.4, 0.0, 1.0], scale: 0.7, mat: lightMaterial }
+                    ];
                     
-                    const tubeGeometry = new THREE.TubeGeometry(curve, 64, 0.15, 8, false);
-                    const tubeMaterial = new THREE.MeshStandardMaterial({ 
-                        color: 0xf0f8ff,
-                        emissive: 0x112233,
-                        roughness: 0.2,
-                        transparent: true,
-                        opacity: 0.8
+                    spheres.forEach(s => {
+                        const sphere = new THREE.Mesh(new THREE.SphereGeometry(s.scale, 32, 32), s.mat);
+                        sphere.position.set(s.pos[0], s.pos[1], s.pos[2]);
+                        sphere.castShadow = true;
+                        sphere.receiveShadow = true;
+                        group.add(sphere);
                     });
-                    const tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
-                    tube.castShadow = true;
-                    tube.receiveShadow = true;
-                    group.add(tube);
                 }
-                
-                for (let i = 0; i < 8; i++) {
-                    const sphere = new THREE.Mesh(
-                        new THREE.SphereGeometry(0.2 + Math.random()*0.2, 8),
-                        new THREE.MeshStandardMaterial({ color: 0xf0f8ff, roughness: 0.2 })
-                    );
-                    sphere.position.set(
-                        -1.5 + Math.random() * 3,
-                        0.5 + Math.random() * 2,
-                        -1.5 + Math.random() * 3
-                    );
-                    sphere.castShadow = true;
-                    sphere.receiveShadow = true;
-                    group.add(sphere);
-                }
-            }
-            else if (type === 'cumulonimbus') {
-                const base = new THREE.Mesh(new THREE.SphereGeometry(2.3, 32, 32), darkMaterial);
-                base.position.y = 0.5;
-                base.castShadow = true;
-                base.receiveShadow = true;
-                group.add(base);
-                
-                const towerPositions = [
-                    [0, 1.8, 0], [0.5, 2.8, -0.3], [-0.4, 3.8, 0.2], [0.3, 4.8, -0.1], [-0.2, 5.6, 0.3]
-                ];
-                
-                towerPositions.forEach((pos, idx) => {
-                    const size = 1.3 - idx * 0.2;
-                    const mat = idx > 2 ? lightMaterial : mainMaterial;
-                    const sphere = new THREE.Mesh(new THREE.SphereGeometry(size, 24, 24), mat);
-                    sphere.position.set(pos[0], pos[1], pos[2]);
-                    sphere.castShadow = true;
-                    sphere.receiveShadow = true;
-                    group.add(sphere);
-                });
-                
-                for (let i = 0; i < 10; i++) {
-                    const extra = new THREE.Mesh(
-                        new THREE.SphereGeometry(0.8 + Math.random() * 0.6, 16),
-                        mainMaterial
-                    );
-                    extra.position.set(
-                        -1.8 + Math.random() * 3.6,
-                        1.5 + Math.random() * 4,
-                        -1.8 + Math.random() * 3.6
-                    );
-                    extra.castShadow = true;
-                    extra.receiveShadow = true;
-                    group.add(extra);
-                }
-            }
-            else if (type === 'stratus' || type === 'altostratus' || type === 'nimbostratus') {
-                for (let l = 0; l < 4; l++) {
-                    for (let s = 0; s < 8; s++) {
+                else if (type === 'cirrus' || type === 'cirrocumulus' || type === 'cirrostratus') {
+                    for (let i = 0; i < 10; i++) {
+                        const curve = new THREE.CatmullRomCurve3([
+                            new THREE.Vector3(-2 + Math.random() * 4, Math.random() * 2, -2 + Math.random() * 4),
+                            new THREE.Vector3(-1 + Math.random() * 2, 1 + Math.random() * 2, -1 + Math.random() * 2),
+                            new THREE.Vector3(1 + Math.random() * 2, 0.5 + Math.random() * 2, 1 + Math.random() * 2),
+                            new THREE.Vector3(2 + Math.random() * 2, Math.random() * 2, 2 + Math.random() * 2)
+                        ]);
+                        
+                        const tubeGeometry = new THREE.TubeGeometry(curve, 64, 0.15, 8, false);
+                        const tubeMaterial = new THREE.MeshStandardMaterial({ 
+                            color: 0xf0f8ff,
+                            emissive: 0x112233,
+                            roughness: 0.2,
+                            transparent: true,
+                            opacity: 0.8
+                        });
+                        const tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+                        tube.castShadow = true;
+                        tube.receiveShadow = true;
+                        group.add(tube);
+                    }
+                    
+                    for (let i = 0; i < 8; i++) {
                         const sphere = new THREE.Mesh(
-                            new THREE.SphereGeometry(0.8 + Math.random() * 0.4, 16),
-                            l === 0 ? darkMaterial : (l === 3 ? lightMaterial : mainMaterial)
+                            new THREE.SphereGeometry(0.2 + Math.random()*0.2, 8),
+                            new THREE.MeshStandardMaterial({ color: 0xf0f8ff, roughness: 0.2 })
                         );
                         sphere.position.set(
-                            -2.5 + s * 0.8 + Math.random() * 0.3,
-                            l * 0.7,
+                            -1.5 + Math.random() * 3,
+                            0.5 + Math.random() * 2,
                             -1.5 + Math.random() * 3
                         );
                         sphere.castShadow = true;
@@ -1099,130 +1130,706 @@
                         group.add(sphere);
                     }
                 }
-            }
-            else {
-                for (let i = 0; i < 6; i++) {
-                    for (let j = 0; j < 4; j++) {
-                        const sphere = new THREE.Mesh(
-                            new THREE.SphereGeometry(0.7 + Math.random() * 0.4, 16),
-                            i % 2 === 0 ? mainMaterial : lightMaterial
-                        );
-                        sphere.position.set(
-                            (i - 2.5) * 1.2,
-                            j * 1.0 - 0.5,
-                            (Math.random() - 0.5) * 2
-                        );
+                else if (type === 'cumulonimbus') {
+                    const base = new THREE.Mesh(new THREE.SphereGeometry(2.3, 32, 32), darkMaterial);
+                    base.position.y = 0.5;
+                    base.castShadow = true;
+                    base.receiveShadow = true;
+                    group.add(base);
+                    
+                    const towerPositions = [
+                        [0, 1.8, 0], [0.5, 2.8, -0.3], [-0.4, 3.8, 0.2], [0.3, 4.8, -0.1], [-0.2, 5.6, 0.3]
+                    ];
+                    
+                    towerPositions.forEach((pos, idx) => {
+                        const size = 1.3 - idx * 0.2;
+                        const mat = idx > 2 ? lightMaterial : mainMaterial;
+                        const sphere = new THREE.Mesh(new THREE.SphereGeometry(size, 24, 24), mat);
+                        sphere.position.set(pos[0], pos[1], pos[2]);
                         sphere.castShadow = true;
                         sphere.receiveShadow = true;
                         group.add(sphere);
+                    });
+                    
+                    for (let i = 0; i < 10; i++) {
+                        const extra = new THREE.Mesh(
+                            new THREE.SphereGeometry(0.8 + Math.random() * 0.6, 16),
+                            mainMaterial
+                        );
+                        extra.position.set(
+                            -1.8 + Math.random() * 3.6,
+                            1.5 + Math.random() * 4,
+                            -1.8 + Math.random() * 3.6
+                        );
+                        extra.castShadow = true;
+                        extra.receiveShadow = true;
+                        group.add(extra);
                     }
                 }
-            }
-            
-            return group;
-        }
-
-        // ===== RENDER KARTU AWAN =====
-        const cloudCards = document.getElementById('cloudCards');
-        
-        cloudData.forEach((cloud, index) => {
-            const card = document.createElement('div');
-            card.className = 'cloud-card' + (index === 0 ? ' active' : '');
-            card.dataset.index = index;
-            
-            // MENGGUNAKAN DATA YANG SESUAI UNTUK MASING-MASING AWAN
-            card.innerHTML = `
-                <div class="cloud-card-header">
-                    <div class="cloud-code">${cloud.code}</div>
-                    <div class="cloud-icon"><i class="fas ${cloud.icon}"></i></div>
-                </div>
-                <div class="cloud-name">${cloud.name}</div>
-                <div class="cloud-desc">${cloud.longDesc}</div>
-                <div class="cloud-footer">
-                    <div class="cloud-altitude">${cloud.altitude}</div>
-                    <div class="explore-btn" data-code="${cloud.code}">
-                        Jelajahi 3D <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-            `;
-            
-            card.addEventListener('click', (e) => {
-                document.querySelectorAll('.cloud-card').forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                
-                if (currentCloudGroup) {
-                    scene.remove(currentCloudGroup);
+                else if (type === 'stratus' || type === 'altostratus' || type === 'nimbostratus') {
+                    for (let l = 0; l < 4; l++) {
+                        for (let s = 0; s < 8; s++) {
+                            const sphere = new THREE.Mesh(
+                                new THREE.SphereGeometry(0.8 + Math.random() * 0.4, 16),
+                                l === 0 ? darkMaterial : (l === 3 ? lightMaterial : mainMaterial)
+                            );
+                            sphere.position.set(
+                                -2.5 + s * 0.8 + Math.random() * 0.3,
+                                l * 0.7,
+                                -1.5 + Math.random() * 3
+                            );
+                            sphere.castShadow = true;
+                            sphere.receiveShadow = true;
+                            group.add(sphere);
+                        }
+                    }
                 }
-                currentCloudGroup = createRealisticCloud(cloud.type, cloud.color);
+                else {
+                    for (let i = 0; i < 6; i++) {
+                        for (let j = 0; j < 4; j++) {
+                            const sphere = new THREE.Mesh(
+                                new THREE.SphereGeometry(0.7 + Math.random() * 0.4, 16),
+                                i % 2 === 0 ? mainMaterial : lightMaterial
+                            );
+                            sphere.position.set(
+                                (i - 2.5) * 1.2,
+                                j * 1.0 - 0.5,
+                                (Math.random() - 0.5) * 2
+                            );
+                            sphere.castShadow = true;
+                            sphere.receiveShadow = true;
+                            group.add(sphere);
+                        }
+                    }
+                }
+                
+                return group;
+            }
+
+            // ===== RENDER KARTU AWAN =====
+            if (elements.cloudCards) {
+                cloudData.forEach((cloud, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'cloud-card' + (index === 0 ? ' active' : '');
+                    card.dataset.index = index;
+                    
+                    card.innerHTML = `
+                        <div class="cloud-card-header">
+                            <div class="cloud-code">${cloud.code}</div>
+                            <div class="cloud-icon"><i class="fas ${cloud.icon}"></i></div>
+                        </div>
+                        <div class="cloud-name">${cloud.name}</div>
+                        <div class="cloud-desc">${cloud.longDesc}</div>
+                        <div class="cloud-footer">
+                            <div class="cloud-altitude">${cloud.altitude}</div>
+                            <div class="explore-btn" data-code="${cloud.code}">
+                                Jelajahi 3D <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    `;
+                    
+                    card.addEventListener('click', (e) => {
+                        document.querySelectorAll('.cloud-card').forEach(c => c.classList.remove('active'));
+                        card.classList.add('active');
+                        
+                        if (currentCloudGroup) {
+                            scene.remove(currentCloudGroup);
+                        }
+                        currentCloudGroup = createRealisticCloud(cloud.type, cloud.color);
+                        currentCloudGroup.position.set(0, 1, 0);
+                        currentCloudGroup.scale.set(0.7, 0.7, 0.7);
+                        scene.add(currentCloudGroup);
+                        
+                        if (elements.currentCloudCode) {
+                            elements.currentCloudCode.textContent = cloud.code;
+                        }
+                        if (elements.currentCloudDesc) {
+                            elements.currentCloudDesc.textContent = cloud.desc;
+                        }
+                        
+                        controls.autoRotate = true;
+                    });
+                    
+                    elements.cloudCards.appendChild(card);
+                    
+                    const exploreBtn = card.querySelector('.explore-btn');
+                    if (exploreBtn) {
+                        exploreBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            card.click();
+                        });
+                    }
+                });
+
+                // Load default cloud (Cumulus)
+                currentCloudGroup = createRealisticCloud('cumulus', 0xffffff);
                 currentCloudGroup.position.set(0, 1, 0);
                 currentCloudGroup.scale.set(0.7, 0.7, 0.7);
                 scene.add(currentCloudGroup);
-                
-                document.getElementById('currentCloudCode').textContent = cloud.code;
-                document.getElementById('currentCloudDesc').textContent = cloud.desc;
-                
-                controls.autoRotate = true;
-            });
+            }
+
+            // ===== ANIMASI =====
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
             
-            cloudCards.appendChild(card);
-            
-            const exploreBtn = card.querySelector('.explore-btn');
-            exploreBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                card.click();
-            });
-        });
+            animate();
 
-        // Load default cloud (Cumulus)
-        currentCloudGroup = createRealisticCloud('cumulus', 0xffffff);
-        currentCloudGroup.position.set(0, 1, 0);
-        currentCloudGroup.scale.set(0.7, 0.7, 0.7);
-        scene.add(currentCloudGroup);
-
-        // ===== ANIMASI =====
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-        }
-        
-        animate();
-
-        // ===== RESIZE HANDLER =====
-        window.addEventListener('resize', onWindowResize, false);
-        function onWindowResize() {
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
+            // ===== RESIZE HANDLER =====
+            window.addEventListener('resize', onWindowResize, false);
+            function onWindowResize() {
+                camera.aspect = elements.container.clientWidth / elements.container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(elements.container.clientWidth, elements.container.clientHeight);
+            }
         }
 
-        // ===== BUTTON KAMERA =====
-        const cameraBtn = document.getElementById('cameraBtn');
-        const cameraInput = document.getElementById('camera-input');
+        // ===== FUNGSI KAMERA LIVE DENGAN LANDMARK =====
+        let stream = null;
+        let isCameraActive = false;
+        let handLandmarker = null;
+        let lastVideoTime = -1;
         
-        cameraBtn.addEventListener('click', () => {
-            cameraInput.click();
-        });
+        // Variabel untuk gesture
+        let lastGesture = '';
+        let lastClapTime = 0;
+        let clapCooldown = 1000; // 1 detik cooldown untuk tepuk
         
-        cameraInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                alert('Kamera diaktifkan! File: ' + file.name);
+        // Canvas untuk menggambar landmark
+        const landmarkCanvas = document.createElement('canvas');
+        const landmarkCtx = landmarkCanvas.getContext('2d');
+        let overlayCanvas = null;
+
+        // Warna untuk koneksi landmark (sesuai diagram MediaPipe)
+        const connections = [
+            [0, 1], [1, 2], [2, 3], [3, 4], // Ibu jari
+            [0, 5], [5, 6], [6, 7], [7, 8], // Jari telunjuk
+            [0, 9], [9, 10], [10, 11], [11, 12], // Jari tengah
+            [0, 13], [13, 14], [14, 15], [15, 16], // Jari manis
+            [0, 17], [17, 18], [18, 19], [19, 20], // Jari kelingking
+            [5, 9], [9, 13], [13, 17] // Koneksi antar jari
+        ];
+
+        // Fungsi untuk mendeteksi gesture tangan
+        function detectGesture(landmarks) {
+            if (!landmarks || landmarks.length === 0) return 'TIDAK ADA TANGAN';
+            
+            // Ambil tangan pertama (asumsikan satu tangan)
+            const hand = landmarks[0];
+            
+            // Hitung jarak antar ujung jari ke pangkal jari untuk deteksi terbuka/tutup
+            const fingerTips = [4, 8, 12, 16, 20]; // Ujung jari
+            const fingerMCPs = [2, 5, 9, 13, 17]; // Pangkal jari (sendi pertama)
+            
+            let extendedCount = 0;
+            let extendedFingers = [];
+            
+            fingerTips.forEach((tip, index) => {
+                const tip_y = hand[tip].y;
+                const mcp_y = hand[fingerMCPs[index]].y;
+                
+                // Untuk ibu jari (index 0) perlu penanganan khusus karena orientasi berbeda
+                if (index === 0) {
+                    // Ibu jari: bandingkan x (kiri/kanan) untuk tangan kanan/kiri
+                    const tip_x = hand[tip].x;
+                    const mcp_x = hand[fingerMCPs[index]].x;
+                    // Asumsikan tangan kanan, ibu jari terbuka jika tip_x > mcp_x
+                    if (tip_x > mcp_x) {
+                        extendedCount++;
+                        extendedFingers.push(index);
+                    }
+                } else {
+                    // Jari lain: bandingkan y (tip harus lebih tinggi/lebih kecil y dari mcp)
+                    if (tip_y < mcp_y) {
+                        extendedCount++;
+                        extendedFingers.push(index);
+                    }
+                }
+            });
+            
+            // Deteksi TIGA JARI (telunjuk, tengah, manis) - untuk auto rotate
+            const isThreeFingers = extendedCount === 3 && 
+                                   extendedFingers.includes(1) && // Telunjuk
+                                   extendedFingers.includes(2) && // Tengah
+                                   extendedFingers.includes(3);   // Manis
+            
+            // Deteksi KELINGKING SAJA (hanya jari kelingking terbuka) - untuk reset
+            const isPinkyOnly = extendedCount === 1 && 
+                               extendedFingers.includes(4); // Hanya kelingking
+            
+            // Deteksi Buka Tangan (5 jari terbuka)
+            const isOpenHand = extendedCount >= 5;
+            
+            // Deteksi Tutup Tangan (0 jari terbuka, mengepal)
+            const isClosedHand = extendedCount === 0;
+            
+            // Tentukan gesture berdasarkan prioritas
+            if (isPinkyOnly) return 'KELINGKING';
+            if (isThreeFingers) return 'TIGA JARI';
+            if (isOpenHand) return 'BUKA TANGAN';
+            if (isClosedHand) return 'TUTUP TANGAN';
+            
+            return `${extendedCount} JARI TERBUKA`;
+        }
+
+        // Inisialisasi MediaPipe Hand Landmarker
+        async function initHandLandmarker() {
+            try {
+                const resolver = await FilesetResolver.forVisionTasks(
+                    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
+                );
+
+                handLandmarker = await HandLandmarker.createFromOptions(resolver, {
+                    baseOptions: {
+                        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+                        delegate: "CPU"
+                    },
+                    runningMode: "VIDEO",
+                    numHands: 2,
+                    minHandDetectionConfidence: 0.5,
+                    minHandPresenceConfidence: 0.5,
+                    minTrackingConfidence: 0.5
+                });
+
+                console.log("✅ Hand Landmarker siap");
+                if (elements.statusText) {
+                    elements.statusText.textContent = 'MediaPipe siap - Aktifkan kamera';
+                }
+            } catch (error) {
+                console.error("❌ Gagal inisialisasi Hand Landmarker:", error);
+                if (elements.statusText) {
+                    elements.statusText.textContent = 'Gagal load MediaPipe';
+                }
+            }
+        }
+
+        // Fungsi untuk menggambar landmark di canvas
+        function drawHandLandmarks(landmarks, handiness, canvas, ctx) {
+            if (!landmarks || landmarks.length === 0) return;
+            
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Bersihkan canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Gambar background semi-transparan untuk efek
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+            
+            landmarks.forEach((hand, handIndex) => {
+                const isRightHand = handiness && handiness[handIndex] === 'Right';
+                
+                // Gambar koneksi antar landmark
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = isRightHand ? '#44ff44' : '#ffaa44';
+                ctx.beginPath();
+                
+                connections.forEach(([start, end]) => {
+                    if (hand[start] && hand[end]) {
+                        const startX = hand[start].x * width;
+                        const startY = hand[start].y * height;
+                        const endX = hand[end].x * width;
+                        const endY = hand[end].y * height;
+                        
+                        ctx.moveTo(startX, startY);
+                        ctx.lineTo(endX, endY);
+                    }
+                });
+                ctx.stroke();
+                
+                // Gambar landmark points
+                hand.forEach((point, index) => {
+                    const x = point.x * width;
+                    const y = point.y * height;
+                    
+                    // Lingkaran luar (glow)
+                    ctx.beginPath();
+                    ctx.arc(x, y, 6, 0, 2 * Math.PI);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                    ctx.fill();
+                    
+                    // Lingkaran dalam
+                    ctx.beginPath();
+                    ctx.arc(x, y, 4, 0, 2 * Math.PI);
+                    
+                    // Warna berdasarkan jenis tangan dan index
+                    if (isRightHand) {
+                        ctx.fillStyle = '#44ff44'; // Hijau untuk tangan kanan
+                    } else {
+                        ctx.fillStyle = '#ffaa44'; // Oranye untuk tangan kiri
+                    }
+                    
+                    ctx.fill();
+                    
+                    // Outline putih
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                    
+                    // Tambahkan nomor landmark untuk beberapa titik penting
+                    if ([0, 4, 8, 12, 16, 20].includes(index)) {
+                        ctx.font = 'bold 12px Arial';
+                        ctx.fillStyle = 'white';
+                        ctx.shadowColor = 'black';
+                        ctx.shadowBlur = 4;
+                        ctx.fillText(index, x + 8, y - 8);
+                        ctx.shadowBlur = 0;
+                    }
+                });
+            });
+            
+            // Tambahkan info teks
+            ctx.font = 'bold 14px Arial';
+            ctx.fillStyle = 'white';
+            ctx.shadowColor = 'black';
+            ctx.shadowBlur = 4;
+            ctx.fillText(`Tangan terdeteksi: ${landmarks.length}`, 10, 30);
+            ctx.shadowBlur = 0;
+        }
+
+        // Fungsi deteksi tangan dari frame video
+        async function detectAndDrawHands() {
+            if (!isCameraActive || !handLandmarker || !elements.videoElement || !elements.videoElement.videoWidth) return;
+
+            const startTime = performance.now();
+            
+            try {
+                const results = await handLandmarker.detectForVideo(elements.videoElement, performance.now());
+                
+                // Update canvas overlay
+                if (overlayCanvas && elements.videoElement.videoWidth > 0) {
+                    // Set ukuran canvas sesuai video
+                    overlayCanvas.width = elements.videoElement.videoWidth;
+                    overlayCanvas.height = elements.videoElement.videoHeight;
+                    
+                    const ctx = overlayCanvas.getContext('2d');
+                    
+                    // Gambar frame video
+                    ctx.drawImage(elements.videoElement, 0, 0, overlayCanvas.width, overlayCanvas.height);
+                    
+                    // Gambar landmark di atas video
+                    if (results.landmarks && results.landmarks.length > 0) {
+                        drawHandLandmarks(results.landmarks, results.handedness, overlayCanvas, ctx);
+                        
+                        // Deteksi gesture
+                        const gesture = detectGesture(results.landmarks);
+                        
+                        // Tampilkan gesture di UI
+                        if (elements.gestureName) {
+                            elements.gestureName.textContent = gesture;
+                        }
+                        
+                        // Logika kontrol 3D berdasarkan gesture
+                        if (window.controls && window.camera) {
+                            const controls = window.controls;
+                            const camera = window.camera;
+                            
+                            // Simpan posisi kamera default untuk reset
+                            if (!window.defaultCameraPos) {
+                                window.defaultCameraPos = camera.position.clone();
+                                window.defaultTarget = controls.target.clone();
+                            }
+                            
+                            switch(gesture) {
+                                case 'BUKA TANGAN':
+                                    // Zoom out
+                                    camera.position.multiplyScalar(1.02);
+                                    break;
+                                case 'TUTUP TANGAN':
+                                    // Zoom in
+                                    camera.position.multiplyScalar(0.98);
+                                    break;
+                                case 'TIGA JARI':
+                                    // Putar otomatis
+                                    controls.autoRotate = true;
+                                    break;
+                                case 'KELINGKING':
+                                    // Reset view
+                                    camera.position.copy(window.defaultCameraPos);
+                                    controls.target.copy(window.defaultTarget);
+                                    controls.autoRotate = false;
+                                    break;
+                                default:
+                                    // Jika bukan tiga jari, matikan auto rotate
+                                    if (gesture !== 'TIGA JARI') {
+                                        controls.autoRotate = false;
+                                    }
+                                    break;
+                            }
+                        }
+                    } else {
+                        // Jika tidak ada tangan, tetap tampilkan video tanpa overlay
+                        ctx.drawImage(elements.videoElement, 0, 0, overlayCanvas.width, overlayCanvas.height);
+                        
+                        if (elements.gestureName) {
+                            elements.gestureName.textContent = '--';
+                        }
+                    }
+                }
+                
+                if (results.landmarks && results.landmarks.length > 0) {
+                    // Update jumlah titik landmark yang terdeteksi
+                    const totalLandmarks = results.landmarks.reduce((acc, hand) => acc + hand.length, 0);
+                    if (elements.pointsValue) {
+                        elements.pointsValue.textContent = totalLandmarks;
+                    }
+                    
+                    // Update FPS
+                    const fps = Math.round(1000 / (performance.now() - startTime));
+                    if (elements.fpsValue) {
+                        elements.fpsValue.textContent = fps;
+                    }
+                    
+                    // Update status
+                    if (elements.statusIndicator) {
+                        elements.statusIndicator.style.color = '#44ff44';
+                    }
+                    if (elements.statusText) {
+                        const handTypes = results.handedness.map(h => h[0].displayName).join(' & ');
+                        elements.statusText.textContent = `Mendeteksi ${results.landmarks.length} tangan (${handTypes})`;
+                    }
+                } else {
+                    if (elements.pointsValue) {
+                        elements.pointsValue.textContent = '0';
+                    }
+                    if (elements.statusIndicator) {
+                        elements.statusIndicator.style.color = '#ffff44';
+                    }
+                    if (elements.statusText) {
+                        elements.statusText.textContent = 'Tidak ada tangan terdeteksi';
+                    }
+                    
+                    // Jika tidak ada tangan, matikan auto rotate
+                    if (window.controls) {
+                        window.controls.autoRotate = false;
+                    }
+                }
+            } catch (error) {
+                console.error("Error deteksi tangan:", error);
+            }
+            
+            // Lanjutkan deteksi frame berikutnya
+            if (isCameraActive) {
+                requestAnimationFrame(detectAndDrawHands);
+            }
+        }
+
+        // Fungsi aktivasi kamera
+        async function activateCamera() {
+            try {
+                // Cek apakah elemen yang diperlukan ada
+                if (!elements.videoElement || !elements.placeholderPreview || !elements.liveBadge || 
+                    !elements.statusIndicator || !elements.statusText || !elements.captureBtn || !elements.cameraBtn) {
+                    console.error('Elemen kamera tidak lengkap!');
+                    
+                    // Tampilkan elemen mana yang hilang
+                    const missingElements = [];
+                    if (!elements.videoElement) missingElements.push('videoElement');
+                    if (!elements.placeholderPreview) missingElements.push('placeholderPreview');
+                    if (!elements.liveBadge) missingElements.push('liveBadge');
+                    if (!elements.statusIndicator) missingElements.push('statusIndicator');
+                    if (!elements.statusText) missingElements.push('statusText');
+                    if (!elements.captureBtn) missingElements.push('captureBtn');
+                    if (!elements.cameraBtn) missingElements.push('cameraBtn');
+                    
+                    alert(`Error: Elemen berikut tidak ditemukan: ${missingElements.join(', ')}. Periksa kembali HTML Anda.`);
+                    return;
+                }
+
+                // Cek dukungan browser
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    alert('Browser Anda tidak mendukung akses kamera. Gunakan Chrome, Firefox, atau Edge terbaru.');
+                    return;
+                }
+
+                // Minta izin kamera
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'user', // Pakai kamera depan untuk demo tangan
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    } 
+                });
+                
+                // Buat canvas overlay
+                overlayCanvas = document.createElement('canvas');
+                overlayCanvas.style.position = 'absolute';
+                overlayCanvas.style.top = '0';
+                overlayCanvas.style.left = '0';
+                overlayCanvas.style.width = '100%';
+                overlayCanvas.style.height = '100%';
+                overlayCanvas.style.pointerEvents = 'none'; // Biarkan klik tembus
+                
+                // Sembunyikan video element asli, kita akan pakai canvas
+                elements.videoElement.style.display = 'none';
+                
+                // Tambahkan canvas ke video preview
+                const videoPreview = document.querySelector('.video-preview');
+                videoPreview.style.position = 'relative';
+                videoPreview.appendChild(overlayCanvas);
+                
+                // Tampilkan stream
+                elements.videoElement.srcObject = stream;
+                elements.placeholderPreview.style.display = 'none';
+                
+                // Update UI
+                isCameraActive = true;
+                elements.liveBadge.innerHTML = '<i class="fas fa-circle"></i> LIVE';
+                elements.statusIndicator.className = 'fas fa-circle';
+                elements.statusIndicator.style.color = '#ffff44';
+                elements.statusText.textContent = 'Kamera aktif - Menunggu deteksi...';
+                
+                // Tampilkan tombol capture
+                elements.captureBtn.style.display = 'flex';
+                
+                // Ubah teks tombol
+                elements.cameraBtn.innerHTML = `
+                    <span>
+                        <i class="fas fa-camera"></i> Matikan Kamera
+                    </span>
+                    <i class="fas fa-arrow-right arrow-icon"></i>
+                `;
+                
+                // Tunggu video siap
+                elements.videoElement.onloadeddata = () => {
+                    elements.videoElement.play();
+                    // Mulai deteksi tangan dengan landmark
+                    detectAndDrawHands();
+                };
+                
+                console.log('✅ Kamera berhasil diaktifkan');
+                
+            } catch (err) {
+                console.error('❌ Gagal mengakses kamera:', err);
+                
+                let errorMessage = 'Tidak dapat mengakses kamera. ';
+                
+                if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                    errorMessage += 'Izin kamera ditolak. Izinkan akses kamera di pengaturan browser.';
+                } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+                    errorMessage += 'Tidak ada kamera yang terdeteksi.';
+                } else if (err.name === 'NotReadableError') {
+                    errorMessage += 'Kamera sedang digunakan aplikasi lain.';
+                } else {
+                    errorMessage += err.message;
+                }
+                
+                alert(errorMessage);
+            }
+        }
+
+        // Fungsi mematikan kamera
+        function deactivateCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => {
+                    track.stop();
+                });
+                stream = null;
+            }
+            
+            // Hapus overlay canvas
+            if (overlayCanvas && overlayCanvas.parentNode) {
+                overlayCanvas.parentNode.removeChild(overlayCanvas);
+                overlayCanvas = null;
+            }
+            
+            if (elements.videoElement) {
+                elements.videoElement.srcObject = null;
+                elements.videoElement.style.display = 'none';
+            }
+            
+            if (elements.placeholderPreview) {
+                elements.placeholderPreview.style.display = 'flex';
+            }
+            
+            isCameraActive = false;
+            
+            if (elements.liveBadge) {
+                elements.liveBadge.innerHTML = '<i class="fas fa-circle"></i> OFF';
+            }
+            
+            if (elements.statusIndicator) {
+                elements.statusIndicator.className = 'fas fa-circle';
+                elements.statusIndicator.style.color = '#ff4444';
+            }
+            
+            if (elements.statusText) {
+                elements.statusText.textContent = 'Kamera tidak aktif';
+            }
+            
+            if (elements.captureBtn) {
+                elements.captureBtn.style.display = 'none';
+            }
+            
+            if (elements.pointsValue) {
+                elements.pointsValue.textContent = '--';
+            }
+            
+            if (elements.fpsValue) {
+                elements.fpsValue.textContent = '--';
+            }
+            
+            if (elements.gestureName) {
+                elements.gestureName.textContent = '--';
+            }
+            
+            if (elements.cameraBtn) {
+                elements.cameraBtn.innerHTML = `
+                    <span>
+                        <i class="fas fa-camera"></i> Aktifkan Kamera
+                    </span>
+                    <i class="fas fa-arrow-right arrow-icon"></i>
+                `;
+            }
+        }
+
+        // Fungsi mengambil foto
+        function capturePhoto() {
+            if (!isCameraActive || !stream || !overlayCanvas) return;
+            
+            // Gunakan overlay canvas yang sudah ada landmarknya
+            const photoDataUrl = overlayCanvas.toDataURL('image/jpeg', 0.9);
+            
+            // Buat link download
+            const link = document.createElement('a');
+            link.download = `hand-landmark-${new Date().getTime()}.jpg`;
+            link.href = photoDataUrl;
+            link.click();
+            
+            // Tampilkan notifikasi
+            alert('📸 Foto dengan landmark berhasil disimpan!');
+            
+            console.log('Foto landmark diambil');
+        }
+
+        // Event listeners (hanya jika elemennya ada)
+        if (elements.cameraBtn) {
+            elements.cameraBtn.addEventListener('click', () => {
+                if (isCameraActive) {
+                    deactivateCamera();
+                } else {
+                    activateCamera();
+                }
+            });
+        }
+        
+        if (elements.captureBtn) {
+            elements.captureBtn.addEventListener('click', capturePhoto);
+        }
+
+        // Bersihkan saat halaman ditutup
+        window.addEventListener('beforeunload', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
             }
         });
 
-        // Simulasi angka landmark
-        setInterval(() => {
-            const pointsEl = document.getElementById('pointsValue');
-            const fpsEl = document.getElementById('fpsValue');
-            
-            if (pointsEl) {
-                pointsEl.textContent = Math.floor(Math.random() * 20) + 90;
-            }
-            if (fpsEl) {
-                fpsEl.textContent = Math.floor(Math.random() * 5) + 16;
-            }
-        }, 3000);
+        // Inisialisasi Hand Landmarker saat halaman dimuat
+        initHandLandmarker();
+
     </script>
 </body>
 </html>
