@@ -844,14 +844,6 @@
                             <div class="landmark-value" id="gestureName">--</div>
                             <div class="landmark-label">GESTURE</div>
                         </div>
-                        <div class="landmark-box">
-                            <div class="landmark-value" id="pointsValue">--</div>
-                            <div class="landmark-label">POINTS</div>
-                        </div>
-                        <div class="landmark-box">
-                            <div class="landmark-value" id="fpsValue">--</div>
-                            <div class="landmark-label">FPS</div>
-                        </div>
                     </div>
                     
                     <div class="stream-status">
@@ -899,7 +891,7 @@
                 </div>
                 <div class="help-item">
                     <i class="fas fa-hand-scissors"></i>
-                    <span>Dua jari (peace) = <strong>Orbit View</strong> (Putar Manual)</span>
+                    <span>Dua jari = <strong>Orbit View</strong> (Putar Manual)</span>
                 </div>
                 <div class="help-item">
                     <i class="fas fa-hand-back-fist"></i>
@@ -911,7 +903,7 @@
                 </div>
                 <div class="help-item">
                     <i class="fas fa-arrows-to-eye"></i>
-                    <span>Dua telapak / mengepal = <strong>Orbit View</strong> (Putar Kamera)</span>
+                    <span>Dua tangan / mengepal = <strong>Orbit View</strong> (Putar Kamera)</span>
                 </div>
                 <div class="help-item">
                     <i class="fas fa-hand-holding-hand"></i>
@@ -1042,8 +1034,6 @@
                 liveBadge: document.getElementById('liveBadge'),
                 statusIndicator: document.getElementById('statusIndicator'),
                 statusText: document.getElementById('statusText'),
-                pointsValue: document.getElementById('pointsValue'),
-                fpsValue: document.getElementById('fpsValue'),
                 gestureName: document.getElementById('gestureName'),
                 captureCanvas: document.getElementById('capture-canvas'),
                 cloudCards: document.getElementById('cloudCards'),
@@ -1404,7 +1394,8 @@
         // Variabel untuk gesture
         let lastGesture = '';
         let lastClapTime = 0;
-        let clapCooldown = 1000; // 1 detik cooldown untuk tepuk
+        let clapCooldown = 1000;
+        let isProcessingHand = false;
         
         // Canvas untuk menggambar landmark
         const landmarkCanvas = document.createElement('canvas');
@@ -1583,19 +1574,14 @@
                 });
             });
             
-            // Tambahkan info teks
-            ctx.font = 'bold 14px Arial';
-            ctx.fillStyle = 'white';
-            ctx.shadowColor = 'black';
-            ctx.shadowBlur = 4;
-            ctx.fillText(`Tangan terdeteksi: ${landmarks.length}`, 10, 30);
-            ctx.shadowBlur = 0;
+            // Info teks removed per request
         }
 
         // Fungsi deteksi tangan dari frame video
         async function detectAndDrawHands() {
-            if (!isCameraActive || !handLandmarker || !elements.videoElement || !elements.videoElement.videoWidth) return;
-
+            if (isProcessingHand || !isCameraActive || !handLandmarker || !elements.videoElement || !elements.videoElement.videoWidth) return;
+            
+            isProcessingHand = true;
             const startTime = performance.now();
             
             try {
@@ -1742,18 +1728,6 @@
                 }
                 
                 if (results.landmarks && results.landmarks.length > 0) {
-                    // Update jumlah titik landmark yang terdeteksi
-                    const totalLandmarks = results.landmarks.reduce((acc, hand) => acc + hand.length, 0);
-                    if (elements.pointsValue) {
-                        elements.pointsValue.textContent = totalLandmarks;
-                    }
-                    
-                    // Update FPS
-                    const fps = Math.round(1000 / (performance.now() - startTime));
-                    if (elements.fpsValue) {
-                        elements.fpsValue.textContent = fps;
-                    }
-                    
                     // Update status
                     if (elements.statusIndicator) {
                         elements.statusIndicator.style.color = '#44ff44';
@@ -1763,9 +1737,6 @@
                         elements.statusText.textContent = `Mendeteksi ${results.landmarks.length} tangan (${handTypes})`;
                     }
                 } else {
-                    if (elements.pointsValue) {
-                        elements.pointsValue.textContent = '0';
-                    }
                     if (elements.statusIndicator) {
                         elements.statusIndicator.style.color = '#ffff44';
                     }
@@ -1780,11 +1751,12 @@
                 }
             } catch (error) {
                 console.error("Error deteksi tangan:", error);
-            }
-            
-            // Lanjutkan deteksi frame berikutnya
-            if (isCameraActive) {
-                requestAnimationFrame(detectAndDrawHands);
+            } finally {
+                isProcessingHand = false;
+                // Lanjutkan deteksi frame berikutnya
+                if (isCameraActive) {
+                    requestAnimationFrame(detectAndDrawHands);
+                }
             }
         }
 
