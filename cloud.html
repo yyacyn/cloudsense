@@ -179,39 +179,128 @@
             align-items: center;
         }
 
-        /* ===== POSE CONTROL ===== */
-        .pose-control {
-            background: rgba(0, 0, 0, 0.4);
+        /* ===== HELP BUTTON & MODAL ===== */
+        .help-btn {
+            background: rgba(43, 127, 195, 0.2);
+            border: 1px solid rgba(135, 206, 250, 0.4);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
             backdrop-filter: blur(10px);
-            border-radius: 60px;
-            padding: 0.7rem 1.8rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .help-btn:hover {
+            background: rgba(43, 127, 195, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: #FFD700;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 5, 15, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .help-modal {
+            background: rgba(20, 30, 50, 0.95);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 40px;
+            padding: 40px;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
+            animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .help-modal h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: white;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .help-modal h2 i { color: #FFD700; }
+
+        .help-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .help-item {
             display: flex;
             align-items: center;
             gap: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.2s;
+        }
+        .help-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 215, 0, 0.2);
         }
 
-        .pose-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #aac9ff;
-            font-size: 0.9rem;
-        }
-
-        .pose-item i {
+        .help-item i {
+            width: 35px;
+            font-size: 1.4rem;
             color: #FFD700;
+            text-align: center;
+        }
+
+        .help-item span {
+            color: #aac9ff;
             font-size: 1rem;
         }
 
-        .pose-item strong {
+        .help-item strong {
             color: white;
-            font-weight: 600;
+            font-weight: 700;
         }
 
-        .separator {
-            color: rgba(255, 255, 255, 0.3);
+        .close-help {
+            margin-top: 30px;
+            background: linear-gradient(135deg, #1f5f9e, #2d8ae0);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 35px;
+            width: 100%;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 10px 20px -8px #0066cc;
         }
+        .close-help:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px -10px #0088ff;
+        }
+
+        /* ===== POSE CONTROL (DEPRECATED - Moved to Modal) ===== */
+
 
         /* ===== MAIN CONTAINER ===== */
         .main-container {
@@ -693,32 +782,9 @@
                 </div>
             </div>
             
-            <div class="pose-control">
-                <div class="pose-item">
-                    <i class="fas fa-hand-paper"></i>
-                    <span>Buka tangan = <strong>Zoom out</strong></span>
-                </div>
-                <span class="separator">|</span>
-                <div class="pose-item">
-                    <i class="fas fa-hand-fist"></i>
-                    <span>Tutup tangan = <strong>Zoom in</strong></span>
-                </div>
-                <span class="separator">|</span>
-                <div class="pose-item">
-                    <i class="fas fa-hand-scissors"></i>
-                    <span>Tiga jari = <strong>Putar otomatis</strong></span>
-                </div>
-                <span class="separator">|</span>
-                <div class="pose-item">
-                    <i class="fas fa-hand-pointer"></i>
-                    <span>Kelingking = <strong>Reset view</strong></span>
-                </div>
-                <span class="separator">|</span>
-                <div class="pose-item">
-                    <i class="fas fa-hands"></i>
-                    <span>Dua tangan = <strong>Pindah kamera</strong></span>
-                </div>
-            </div>
+            <button class="help-btn" onclick="openHelpModal()">
+                <i class="fas fa-question-circle"></i> Cara Menggunakan
+            </button>
         </div>
     </header>
 
@@ -817,6 +883,36 @@
 
     <!-- Canvas untuk capture foto -->
     <canvas id="capture-canvas" style="display: none;"></canvas>
+
+    <!-- HELP MODAL -->
+    <div class="modal-overlay" id="helpModalOverlay">
+        <div class="help-modal">
+            <h2><i class="fas fa-hand-dots"></i> Panduan Gesture</h2>
+            <div class="help-grid">
+                <div class="help-item">
+                    <i class="fas fa-hand-paper"></i>
+                    <span>Buka tangan = <strong>Zoom Out</strong> (Menjauh)</span>
+                </div>
+                <div class="help-item">
+                    <i class="fas fa-hand-fist"></i>
+                    <span>Tutup tangan = <strong>Zoom In</strong> (Mendekat)</span>
+                </div>
+                <div class="help-item">
+                    <i class="fas fa-hand-scissors"></i>
+                    <span>Tiga jari = <strong>Auto Rotate</strong> (Putar Awan)</span>
+                </div>
+                <div class="help-item">
+                    <i class="fas fa-hand-pointer"></i>
+                    <span>Kelingking = <strong>Reset View</strong> (Kembali Awal)</span>
+                </div>
+                <div class="help-item">
+                    <i class="fas fa-hands"></i>
+                    <span>Dua tangan = <strong>Pindah Kamera</strong> (Geser/Pan)</span>
+                </div>
+            </div>
+            <button class="close-help" onclick="closeHelpModal()">Saya Mengerti</button>
+        </div>
+    </div>
 
     <script type="module">
         import * as THREE from 'three';
@@ -1867,6 +1963,19 @@
 
         // Inisialisasi Hand Landmarker saat halaman dimuat
         initHandLandmarker();
+
+        // ===== MODAL HELP FUNCTIONS =====
+        window.openHelpModal = () => {
+            document.getElementById('helpModalOverlay').classList.add('active');
+        };
+        window.closeHelpModal = () => {
+            document.getElementById('helpModalOverlay').classList.remove('active');
+        };
+
+        // Close modal on click outside
+        document.getElementById('helpModalOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'helpModalOverlay') closeHelpModal();
+        });
 
     </script>
 </body>
