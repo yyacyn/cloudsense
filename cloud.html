@@ -695,7 +695,7 @@
             
             <div class="pose-control">
                 <div class="pose-item">
-                    <i class="fas fa-hand-peace"></i>
+                    <i class="fas fa-hand-paper"></i>
                     <span>Buka tangan = <strong>Zoom out</strong></span>
                 </div>
                 <span class="separator">|</span>
@@ -705,13 +705,18 @@
                 </div>
                 <span class="separator">|</span>
                 <div class="pose-item">
-                    <i class="fas fa-hand-peace"></i>
+                    <i class="fas fa-hand-scissors"></i>
                     <span>Tiga jari = <strong>Putar otomatis</strong></span>
                 </div>
                 <span class="separator">|</span>
                 <div class="pose-item">
-                    <i class="fas fa-hand-peace"></i>
+                    <i class="fas fa-hand-pointer"></i>
                     <span>Kelingking = <strong>Reset view</strong></span>
+                </div>
+                <span class="separator">|</span>
+                <div class="pose-item">
+                    <i class="fas fa-hands"></i>
+                    <span>Dua tangan = <strong>Pindah kamera</strong></span>
                 </div>
             </div>
         </div>
@@ -1315,6 +1320,7 @@
         // Fungsi untuk mendeteksi gesture tangan
         function detectGesture(landmarks) {
             if (!landmarks || landmarks.length === 0) return 'TIDAK ADA TANGAN';
+            if (landmarks.length === 2) return 'DUA TANGAN';
             
             // Ambil tangan pertama (asumsikan satu tangan)
             const hand = landmarks[0];
@@ -1534,25 +1540,57 @@
                             }
                             
                             switch(gesture) {
+                                case 'DUA TANGAN':
+                                    // Pindahkan kamera (Panning)
+                                    const h1 = results.landmarks[0][9]; // Pangkal jari tengah
+                                    const h2 = results.landmarks[1][9];
+                                    const midX = (h1.x + h2.x) / 2;
+                                    const midY = (h1.y + h2.y) / 2;
+                                    
+                                    if (window.lastMidpoint) {
+                                        const dx = midX - window.lastMidpoint.x;
+                                        const dy = midY - window.lastMidpoint.y;
+                                        
+                                        // Sensitivitas panning
+                                        const sensitivitas = 25; 
+                                        
+                                        // Update target dan posisi kamera
+                                        controls.target.x += dx * sensitivitas;
+                                        controls.target.y -= dy * sensitivitas;
+                                        camera.position.x += dx * sensitivitas;
+                                        camera.position.y -= dy * sensitivitas;
+                                    }
+                                    window.lastMidpoint = { x: midX, y: midY };
+                                    break;
+                                    
                                 case 'BUKA TANGAN':
+                                    window.lastMidpoint = null;
                                     // Zoom out
-                                    camera.position.multiplyScalar(1.02);
+                                    if (camera.position.length() < 25) {
+                                        camera.position.multiplyScalar(1.015);
+                                    }
                                     break;
                                 case 'TUTUP TANGAN':
+                                    window.lastMidpoint = null;
                                     // Zoom in
-                                    camera.position.multiplyScalar(0.98);
+                                    if (camera.position.length() > 4) {
+                                        camera.position.multiplyScalar(0.985);
+                                    }
                                     break;
                                 case 'TIGA JARI':
+                                    window.lastMidpoint = null;
                                     // Putar otomatis
                                     controls.autoRotate = true;
                                     break;
                                 case 'KELINGKING':
+                                    window.lastMidpoint = null;
                                     // Reset view
                                     camera.position.copy(window.defaultCameraPos);
                                     controls.target.copy(window.defaultTarget);
                                     controls.autoRotate = false;
                                     break;
                                 default:
+                                    window.lastMidpoint = null;
                                     // Jika bukan tiga jari, matikan auto rotate
                                     if (gesture !== 'TIGA JARI') {
                                         controls.autoRotate = false;
