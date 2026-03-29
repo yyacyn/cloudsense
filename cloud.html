@@ -899,6 +899,10 @@
                 </div>
                 <div class="help-item">
                     <i class="fas fa-hand-scissors"></i>
+                    <span>Dua jari (peace) = <strong>Orbit View</strong> (Putar Manual)</span>
+                </div>
+                <div class="help-item">
+                    <i class="fas fa-hand-back-fist"></i>
                     <span>Tiga jari = <strong>Auto Rotate</strong> (Putar Awan)</span>
                 </div>
                 <div class="help-item">
@@ -1440,12 +1444,14 @@
             });
             
             const isThree = extendedCount === 3 && extendedFingers.includes(1) && extendedFingers.includes(2) && extendedFingers.includes(3);
+            const isTwo = extendedCount === 2 && extendedFingers.includes(1) && extendedFingers.includes(2);
             const isPinky = extendedCount === 1 && extendedFingers.includes(4);
             const isOpen = extendedCount >= 5;
             const isClosed = extendedCount === 0;
             
             if (isPinky) return 'KELINGKING';
             if (isThree) return 'TIGA JARI';
+            if (isTwo) return 'DUA JARI';
             if (isOpen) return 'BUKA TANGAN';
             if (isClosed) return 'TUTUP TANGAN';
             return 'LAINNYA';
@@ -1672,8 +1678,22 @@
                                     break;
 
                                     
+                                case 'DUA JARI':
+                                    window.lastMidpoint = null;
+                                    // Orbit Manual 1 Tangan
+                                    const hPos = results.landmarks[0][9];
+                                    if (window.lastSingleHandPos) {
+                                        const dx = hPos.x - window.lastSingleHandPos.x;
+                                        const dy = hPos.y - window.lastSingleHandPos.y;
+                                        controls.rotateLeft(dx * 8);
+                                        controls.rotateUp(dy * 8);
+                                    }
+                                    window.lastSingleHandPos = { x: hPos.x, y: hPos.y };
+                                    break;
+                                    
                                 case 'BUKA TANGAN':
                                     window.lastMidpoint = null;
+                                    window.lastSingleHandPos = null;
                                     // Zoom out
                                     if (camera.position.length() < 25) {
                                         camera.position.multiplyScalar(1.015);
@@ -1681,6 +1701,7 @@
                                     break;
                                 case 'TUTUP TANGAN':
                                     window.lastMidpoint = null;
+                                    window.lastSingleHandPos = null;
                                     // Zoom in
                                     if (camera.position.length() > 4) {
                                         camera.position.multiplyScalar(0.985);
@@ -1688,11 +1709,13 @@
                                     break;
                                 case 'TIGA JARI':
                                     window.lastMidpoint = null;
+                                    window.lastSingleHandPos = null;
                                     // Putar otomatis
                                     controls.autoRotate = true;
                                     break;
                                 case 'KELINGKING':
                                     window.lastMidpoint = null;
+                                    window.lastSingleHandPos = null;
                                     // Reset view
                                     camera.position.copy(window.defaultCameraPos);
                                     controls.target.copy(window.defaultTarget);
@@ -1700,6 +1723,7 @@
                                     break;
                                 default:
                                     window.lastMidpoint = null;
+                                    window.lastSingleHandPos = null;
                                     // Jika bukan tiga jari, matikan auto rotate
                                     if (gesture !== 'TIGA JARI') {
                                         controls.autoRotate = false;
