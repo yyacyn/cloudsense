@@ -906,8 +906,12 @@
                     <span>Kelingking = <strong>Reset View</strong> (Kembali Awal)</span>
                 </div>
                 <div class="help-item">
-                    <i class="fas fa-hands"></i>
-                    <span>Dua tangan = <strong>Pindah Kamera</strong> (Geser/Pan)</span>
+                    <i class="fas fa-arrows-to-eye"></i>
+                    <span>Dua telapak / mengepal = <strong>Orbit View</strong> (Putar Kamera)</span>
+                </div>
+                <div class="help-item">
+                    <i class="fas fa-hand-holding-hand"></i>
+                    <span>Dua tangan (bebas) = <strong>Pindah Kamera</strong> (Geser/Pan)</span>
                 </div>
             </div>
             <button class="close-help" onclick="closeHelpModal()">Saya Mengerti</button>
@@ -1412,18 +1416,13 @@
             [0, 17], [17, 18], [18, 19], [19, 20], // Jari kelingking
             [5, 9], [9, 13], [13, 17] // Koneksi antar jari
         ];
-
-        // Fungsi untuk mendeteksi gesture tangan
-        function detectGesture(landmarks) {
-            if (!landmarks || landmarks.length === 0) return 'TIDAK ADA TANGAN';
-            if (landmarks.length === 2) return 'DUA TANGAN';
+        
+        // Helper: Deteksi gesture satu tangan
+        function detectSingleHand(hand) {
+            if (!hand) return '';
             
-            // Ambil tangan pertama (asumsikan satu tangan)
-            const hand = landmarks[0];
-            
-            // Hitung jarak antar ujung jari ke pangkal jari untuk deteksi terbuka/tutup
-            const fingerTips = [4, 8, 12, 16, 20]; // Ujung jari
-            const fingerMCPs = [2, 5, 9, 13, 17]; // Pangkal jari (sendi pertama)
+            const fingerTips = [4, 8, 12, 16, 20];
+            const fingerMCPs = [2, 5, 9, 13, 17];
             
             let extendedCount = 0;
             let extendedFingers = [];
@@ -1431,50 +1430,45 @@
             fingerTips.forEach((tip, index) => {
                 const tip_y = hand[tip].y;
                 const mcp_y = hand[fingerMCPs[index]].y;
-                
-                // Untuk ibu jari (index 0) perlu penanganan khusus karena orientasi berbeda
                 if (index === 0) {
-                    // Ibu jari: bandingkan x (kiri/kanan) untuk tangan kanan/kiri
                     const tip_x = hand[tip].x;
                     const mcp_x = hand[fingerMCPs[index]].x;
-                    // Asumsikan tangan kanan, ibu jari terbuka jika tip_x > mcp_x
-                    if (tip_x > mcp_x) {
-                        extendedCount++;
-                        extendedFingers.push(index);
-                    }
+                    if (tip_x > mcp_x) { extendedCount++; extendedFingers.push(index); }
                 } else {
-                    // Jari lain: bandingkan y (tip harus lebih tinggi/lebih kecil y dari mcp)
-                    if (tip_y < mcp_y) {
-                        extendedCount++;
-                        extendedFingers.push(index);
-                    }
+                    if (tip_y < mcp_y) { extendedCount++; extendedFingers.push(index); }
                 }
             });
             
-            // Deteksi TIGA JARI (telunjuk, tengah, manis) - untuk auto rotate
-            const isThreeFingers = extendedCount === 3 && 
-                                   extendedFingers.includes(1) && // Telunjuk
-                                   extendedFingers.includes(2) && // Tengah
-                                   extendedFingers.includes(3);   // Manis
+            const isThree = extendedCount === 3 && extendedFingers.includes(1) && extendedFingers.includes(2) && extendedFingers.includes(3);
+            const isPinky = extendedCount === 1 && extendedFingers.includes(4);
+            const isOpen = extendedCount >= 5;
+            const isClosed = extendedCount === 0;
             
-            // Deteksi KELINGKING SAJA (hanya jari kelingking terbuka) - untuk reset
-            const isPinkyOnly = extendedCount === 1 && 
-                               extendedFingers.includes(4); // Hanya kelingking
-            
-            // Deteksi Buka Tangan (5 jari terbuka)
-            const isOpenHand = extendedCount >= 5;
-            
-            // Deteksi Tutup Tangan (0 jari terbuka, mengepal)
-            const isClosedHand = extendedCount === 0;
-            
-            // Tentukan gesture berdasarkan prioritas
-            if (isPinkyOnly) return 'KELINGKING';
-            if (isThreeFingers) return 'TIGA JARI';
-            if (isOpenHand) return 'BUKA TANGAN';
-            if (isClosedHand) return 'TUTUP TANGAN';
-            
-            return `${extendedCount} JARI TERBUKA`;
+            if (isPinky) return 'KELINGKING';
+            if (isThree) return 'TIGA JARI';
+            if (isOpen) return 'BUKA TANGAN';
+            if (isClosed) return 'TUTUP TANGAN';
+            return 'LAINNYA';
         }
+
+        // Fungsi untuk mendeteksi gesture tangan
+        function detectGesture(landmarks) {
+            if (!landmarks || landmarks.length === 0) return 'TIDAK ADA TANGAN';
+            
+            if (landmarks.length === 2) {
+                const s1 = detectSingleHand(landmarks[0]);
+                const s2 = detectSingleHand(landmarks[1]);
+                
+                // Rotasi jika dua-duanya tutup (kepal) atau dua-duanya buka (telapak)
+                if ((s1 === 'BUKA TANGAN' && s2 === 'BUKA TANGAN') || (s1 === 'TUTUP TANGAN' && s2 === 'TUTUP TANGAN')) {
+                    return 'DUA TANGAN PUTAR';
+                }
+                return 'DUA TANGAN GESER';
+            }
+            
+            return detectSingleHand(landmarks[0]);
+        }
+
 
         // Inisialisasi MediaPipe Hand Landmarker
         async function initHandLandmarker() {
@@ -1636,7 +1630,25 @@
                             }
                             
                             switch(gesture) {
-                                case 'DUA TANGAN':
+                                case 'DUA TANGAN PUTAR':
+                                    // Rotasi Kamera (Orbit)
+                                    const h1p = results.landmarks[0][9];
+                                    const h2p = results.landmarks[1][9];
+                                    const midXp = (h1p.x + h2p.x) / 2;
+                                    const midYp = (h1p.y + h2p.y) / 2;
+                                    
+                                    if (window.lastMidpoint) {
+                                        const dx = midXp - window.lastMidpoint.x;
+                                        const dy = midYp - window.lastMidpoint.y;
+                                        
+                                        // Orbit - Update rotasi controls
+                                        controls.rotateLeft(dx * 5);
+                                        controls.rotateUp(dy * 5);
+                                    }
+                                    window.lastMidpoint = { x: midXp, y: midYp };
+                                    break;
+
+                                case 'DUA TANGAN GESER':
                                     // Pindahkan kamera (Panning)
                                     const h1 = results.landmarks[0][9]; // Pangkal jari tengah
                                     const h2 = results.landmarks[1][9];
@@ -1658,6 +1670,7 @@
                                     }
                                     window.lastMidpoint = { x: midX, y: midY };
                                     break;
+
                                     
                                 case 'BUKA TANGAN':
                                     window.lastMidpoint = null;
