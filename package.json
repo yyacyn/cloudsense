@@ -1,6 +1,21 @@
 {
-  "name": "cloudsense",
+  "name": "cloudsense-hand-tracking",
+  "version": "1.0.0",
+  "description": "CloudSense with MediaPipe Hand Tracking",
+  "main": "server.js",
   "scripts": {
-    "build": "node build-config.js"
-  }
+    "start": "node server.js",
+    "dev": "live-server --port=3000"
+  },
+  "dependencies": {
+    "@mediapipe/hands": "^0.4.1675469247",
+    "@mediapipe/camera_utils": "^0.3.1675466867",
+    "@mediapipe/drawing_utils": "^0.3.1675466867"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": ["hand-tracking", "mediapipe", "threejs", "clouds"],
+  "author": "CloudSense",
+  "license": "MIT"
 }
