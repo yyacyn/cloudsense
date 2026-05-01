@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html lang="id">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CloudSense · 10 Karakter Awan · Eksplorasi 3D</title>
-    <!-- Google Fonts Premium & Font Awesome -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+        <title>CloudSense · 10 Karakter Awan · Eksplorasi 3D</title>
+        <!-- Google Fonts Premium & Font Awesome -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+        <style>
         * {
-            margin: 0;
+            margin: 1;
             padding: 0;
             box-sizing: border-box;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #030614;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e8f0fe 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -38,14 +41,13 @@
             position: relative;
         }
 
-        /* ===== MODERN SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #101b2b;
+            background: #d4e4f5;
         }
 
         ::-webkit-scrollbar-thumb {
@@ -53,19 +55,17 @@
             border-radius: 20px;
         }
 
-        /* ===== HEADER STICKY GLASS ===== */
         .header {
-            background: rgba(6, 18, 30, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border-radius: 0 0 40px 40px;
             padding: 1.2rem 2rem;
             margin-bottom: 2rem;
             position: sticky;
             top: 0;
             z-index: 200;
-            border: 1px solid rgba(64, 128, 255, 0.25);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(43, 127, 195, 0.2);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
         }
 
         .nav-container {
@@ -85,31 +85,36 @@
         .logo-icon {
             width: 56px;
             height: 56px;
-            background: radial-gradient(circle at 30% 20%, #3b8fd9, #0f4c81);
+            background: linear-gradient(135deg, #3b8fd9, #0f4c81);
             border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 30px;
-            box-shadow: 0 10px 20px -5px #2b7fc3;
+            box-shadow: 0 10px 20px -5px rgba(43, 127, 195, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
         }
 
         .logo-text h1 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1.8rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #b3deff);
+            background: linear-gradient(135deg, #1a4d7a, #2b7fc3);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.02em;
         }
 
         .logo-text p {
-            color: #92c5ff;
+            color: #2b7fc3;
             font-size: 0.8rem;
-            font-weight: 500;
+            font-weight: 600;
             letter-spacing: 2px;
         }
 
@@ -121,7 +126,7 @@
         }
 
         .nav-menu a {
-            color: rgba(255, 255, 255, 0.7);
+            color: #4a6a85;
             text-decoration: none;
             font-weight: 600;
             font-size: 1rem;
@@ -132,8 +137,7 @@
 
         .nav-menu a:hover,
         .nav-menu a.active {
-            color: white;
-            text-shadow: 0 0 8px #6bb5ff;
+            color: #1f5f9e;
         }
 
         .nav-menu a::before {
@@ -153,14 +157,13 @@
             width: 100%;
         }
 
-        /* ===== HERO SECTION - MINIMALIS ===== */
         .hero-minimal {
-            background: linear-gradient(145deg, #0a1f36, #0e2b44);
+            background: linear-gradient(135deg, #ffffff, #e3f0ff);
             border-radius: 60px;
             padding: 5rem 3rem;
             margin-bottom: 2.5rem;
-            border: 1px solid rgba(100, 180, 255, 0.2);
-            box-shadow: 0 30px 50px -20px #000000;
+            border: 1px solid rgba(43, 127, 195, 0.2);
+            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.15);
             position: relative;
             overflow: hidden;
             text-align: center;
@@ -174,7 +177,7 @@
             transform: translateX(-50%);
             width: 800px;
             height: 800px;
-            background: radial-gradient(circle, rgba(64, 128, 255, 0.12) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(43, 127, 195, 0.08) 0%, transparent 70%);
             border-radius: 50%;
             z-index: 0;
         }
@@ -186,33 +189,42 @@
 
         .hero-tag {
             display: inline-block;
-            color: #FFD700;
+            color: #2b7fc3;
             font-size: 0.9rem;
             font-weight: 700;
             letter-spacing: 4px;
             margin-bottom: 1.5rem;
             text-transform: uppercase;
-            background: rgba(255, 215, 0, 0.1);
+            background: rgba(43, 127, 195, 0.1);
             padding: 0.5rem 2rem;
             border-radius: 60px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            backdrop-filter: blur(5px);
+            border: 1px solid rgba(43, 127, 195, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
         .hero-content h1 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 6rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #e0f0ff, #b0d5ff);
+            background: linear-gradient(135deg, #1a4d7a, #2b7fc3, #6bb5ff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            line-height: 1.1;
-            text-shadow: 0 0 40px rgba(100, 180, 255, 0.3);
+            line-height: 1;
             letter-spacing: -0.02em;
+            animation: glow 3s ease-in-out infinite;
         }
 
-        /* ===== MAIN GRID UPLOAD ===== */
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 0px rgba(43, 127, 195, 0); }
+            50% { text-shadow: 0 0 20px rgba(43, 127, 195, 0.3); }
+        }
+
         .main-grid {
             display: grid;
             grid-template-columns: 1.3fr 0.9fr;
@@ -221,16 +233,22 @@
         }
 
         .camera-panel {
-            background: rgba(10, 30, 45, 0.7);
+            background: #ffffff;
             backdrop-filter: blur(20px);
             border-radius: 50px;
             padding: 2.5rem;
-            border: 1px solid #2e6191;
-            box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(43, 127, 195, 0.2);
+            box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .camera-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 35px -15px rgba(43, 127, 195, 0.2);
         }
 
         .panel-title {
-            color: white;
+            color: #1a4d7a;
             font-size: 1.6rem;
             font-weight: 700;
             margin-bottom: 1.8rem;
@@ -240,17 +258,17 @@
         }
 
         .camera-area {
-            background: #051a2b;
+            background: #f5fafe;
             border-radius: 40px;
             overflow: hidden;
-            border: 2px solid #1c6191;
+            border: 2px solid rgba(43, 127, 195, 0.3);
             margin-bottom: 1.8rem;
         }
 
         .preview-box {
             width: 100%;
             aspect-ratio: 16/9;
-            background: #051a2b;
+            background: #f0f5fa;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -266,18 +284,25 @@
 
         .placeholder-preview {
             text-align: center;
-            color: #609ac7;
+            color: #7a9ec2;
         }
 
         .placeholder-preview i {
             font-size: 5rem;
             opacity: 0.7;
             margin-bottom: 0.8rem;
+            animation: cloudFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes cloudFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
         .upload-actions {
             display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -292,49 +317,62 @@
             justify-content: center;
             gap: 10px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s ease;
         }
 
         .btn-primary {
-            background: #1f70b5;
+            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
             color: white;
-            border: 1px solid #b1deff;
         }
 
         .btn-primary:hover {
-            background: #2d8ae0;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px -8px #0066cc;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 20px -8px #2b7fc3;
         }
 
         .btn-outline {
-            background: rgba(255, 255, 255, 0.12);
-            color: white;
-            border: 1px solid #4d93d9;
+            background: white;
+            color: #1f5f9e;
+            border: 2px solid #2b7fc3;
         }
 
         .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.25);
+            background: #e8f0fe;
+            transform: translateY(-3px);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
             transform: translateY(-3px);
         }
 
         .result-panel {
-            background: #f5fbff;
+            background: #ffffff;
             border-radius: 50px;
             padding: 2.5rem;
-            box-shadow: 0 15px 30px -15px #000000;
-            border: 1px solid #92c6ff;
+            box-shadow: 0 15px 30px -15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(43, 127, 195, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .result-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px -20px rgba(43, 127, 195, 0.25);
         }
 
         .badge-kelas {
-            background: #cbe4fe;
+            background: linear-gradient(135deg, #e8f0fe, #d4e4f5);
             padding: 0.7rem 1.8rem;
             border-radius: 40px;
-            color: #0d3b66;
+            color: #1a4d7a;
             font-weight: 700;
             display: inline-block;
             margin-bottom: 1.8rem;
-            font-size: 0.95rem;
         }
 
         .kelas-utama {
@@ -349,20 +387,20 @@
         .kelas-utama h2 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2.5rem;
-            color: #0d2842;
+            color: #1a4d7a;
         }
 
         .kode-awan {
             font-size: 2rem;
             font-weight: 800;
-            color: #1f6db0;
-            background: #dbeafe;
+            color: #2b7fc3;
+            background: #e8f0fe;
             padding: 0.4rem 1.5rem;
             border-radius: 60px;
         }
 
         .confidence-bar {
-            background: #cfe1fa;
+            background: #e0ecf8;
             height: 16px;
             border-radius: 20px;
             margin: 1.8rem 0;
@@ -370,64 +408,83 @@
 
         .confidence-fill {
             height: 100%;
-            width: 94%;
-            background: linear-gradient(90deg, #1f6db0, #479bff);
+            width: 0%;
+            background: linear-gradient(90deg, #1f6db0, #2b7fc3);
             border-radius: 20px;
+            transition: width 1s ease-out;
         }
 
         .confidence-text {
             display: flex;
             justify-content: space-between;
             font-weight: 600;
-            color: #1b4e7a;
-            font-size: 0.95rem;
+            color: #1a4d7a;
         }
 
         .risk-meter {
-            background: #ffe5e5;
-            border-left: 8px solid #e53e3e;
+            background: #fff5f0;
+            border-left: 8px solid #f59e0b;
             border-radius: 30px;
             padding: 1.5rem;
             margin: 1.8rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .risk-meter:hover {
+            transform: translateX(5px);
         }
 
         .risk-level {
             font-size: 1.8rem;
             font-weight: 800;
             margin: 0.6rem 0;
+            color: #9a3412;
         }
 
         .risk-desc {
             font-size: 0.95rem;
+            color: #78350f;
         }
 
         .rekom-card {
-            background: linear-gradient(120deg, #e3f0ff, #ffffff);
+            background: linear-gradient(135deg, #f0f9ff, #e8f0fe);
             border-radius: 35px;
             padding: 2rem;
-            border: 1px solid #b4d6ff;
+            border: 1px solid #c5dfff;
+            transition: all 0.3s ease;
         }
 
-        .rekom-card div:first-child {
-            margin-bottom: 12px;
-            font-weight: 700;
+        .rekom-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px -12px rgba(43, 127, 195, 0.2);
         }
 
         .rekom-text {
             font-size: 1.3rem;
             font-weight: 700;
             color: #1a4d7a;
+            margin: 0.5rem 0;
         }
 
         .rekom-icons {
             display: flex;
             gap: 1.5rem;
             font-size: 2.5rem;
-            color: #236bb5;
+            color: #2b7fc3;
             margin-top: 1.2rem;
         }
 
-        /* ===== WEATHER JABODETABEK ===== */
+        .rekom-icons i {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .rekom-icons i:hover {
+            transform: scale(1.2) rotate(10deg);
+            color: #1f5f9e;
+        }
+
+        /* ===== WEATHER JABODETABEK DENGAN ANIMASI & AWAN BIRU ===== */
         .weather-jabodetabek {
             margin-bottom: 3rem;
         }
@@ -445,213 +502,478 @@
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2rem;
             font-weight: 700;
-            color: white;
+            color: #1a4d7a;
             display: flex;
             align-items: center;
             gap: 15px;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.8);
             padding: 0.6rem 1.5rem;
             border-radius: 60px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(43, 127, 195, 0.2);
         }
 
         .weather-header h2 i {
-            color: #FFD700;
+            color: #f59e0b;
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .update-time {
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.9);
             padding: 0.7rem 1.5rem;
             border-radius: 50px;
-            color: #d0e6ff;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #1a4d7a;
+            border: 1px solid rgba(43, 127, 195, 0.2);
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 500;
-            font-size: 0.9rem;
         }
 
         .cities-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 1.2rem;
+            gap: 1.5rem;
             margin-bottom: 1.5rem;
         }
 
+        /* ===== HERO SECTION DENGAN AWAN BERGERAK ===== */
+.hero-minimal {
+    background: linear-gradient(135deg, #ffffff, #e3f0ff);
+    border-radius: 60px;
+    padding: 5rem 3rem;
+    margin-bottom: 2.5rem;
+    border: 1px solid rgba(43, 127, 195, 0.2);
+    box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    isolation: isolate;
+}
+
+/* Container awan bergerak */
+.floating-clouds {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Style untuk setiap awan */
+.floating-cloud {
+    position: absolute;
+    color: rgba(43, 127, 195, 0.15);
+    font-size: 4rem;
+    pointer-events: none;
+    animation: floatCloud linear infinite;
+}
+
+/* Awan besar */
+.floating-cloud.large {
+    font-size: 6rem;
+    color: rgba(43, 127, 195, 0.1);
+}
+
+/* Awan sedang */
+.floating-cloud.medium {
+    font-size: 4rem;
+    color: rgba(43, 127, 195, 0.12);
+}
+
+/* Awan kecil */
+.floating-cloud.small {
+    font-size: 2.5rem;
+    color: rgba(43, 127, 195, 0.08);
+}
+
+/* Animasi awan bergerak dari kanan ke kiri */
+@keyframes floatCloud {
+    0% {
+        transform: translateX(100vw) translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-20vw) translateY(var(--y-offset, 0)) rotate(10deg);
+        opacity: 0;
+    }
+}
+
+/* Animasi awan bergerak naik turun */
+@keyframes floatUpDown {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Animasi awan berputar perlahan */
+@keyframes rotateSlow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Dekorasi awan statis di background */
+.static-cloud {
+    position: absolute;
+    color: rgba(43, 127, 195, 0.08);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.static-cloud-1 {
+    top: 10%;
+    left: 5%;
+    font-size: 8rem;
+    animation: floatUpDown 6s ease-in-out infinite;
+}
+
+.static-cloud-2 {
+    bottom: 0%;
+    right: 3%;
+    font-size: 10rem;
+    animation: floatUpDown 8s ease-in-out infinite;
+}
+
+.static-cloud-3 {
+    top: 20%;
+    right: 15%;
+    font-size: 5rem;
+    animation: floatUpDown 5s ease-in-out infinite;
+}
+
+.static-cloud-4 {
+    bottom: 15%;
+    left: 10%;
+    font-size: 7rem;
+    animation: floatUpDown 7s ease-in-out infinite;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+        /* ===== CARD CUACA DENGAN AWAN BIRU & ANIMASI ===== */
         .city-card {
-            background: rgba(10, 30, 50, 0.6);
-            backdrop-filter: blur(14px);
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
             border-radius: 35px;
             padding: 1.5rem 1rem;
-            border: 1px solid rgba(100, 180, 255, 0.2);
-            box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.4);
-            transition: all 0.25s ease;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            cursor: pointer;
         }
 
+        /* Efek hover animasi */
         .city-card:hover {
-            transform: translateY(-6px);
-            border-color: #3b9eff;
-            box-shadow: 0 12px 24px -10px #1f5f9e;
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 35px -12px rgba(43, 127, 195, 0.35);
         }
+
+        /* Frame gradient biru mengelilingi card */
+        .city-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 35px;
+            padding: 2px;
+            background: linear-gradient(135deg, #2b7fc3, #6bb5ff, #9ad0ff, #2b7fc3);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .city-card:hover::before {
+            opacity: 1;
+            background: linear-gradient(135deg, #1f5f9e, #3fa5f0, #7bc4ff, #1f5f9e);
+            animation: borderGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Awan biru dekoratif di pojok card */
+        .city-card .cloud-decoration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 2.5rem;
+            opacity: 0.2;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            color: #2b7fc3;
+        }
+
+        .city-card:hover .cloud-decoration {
+            opacity: 0.5;
+            transform: scale(1.2) translate(-5px, -5px);
+        }
+
+        /* Awan biru tambahan di background */
+        .city-card::after {
+            content: '☁️ ☁️';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            font-size: 4rem;
+            opacity: 0.08;
+            pointer-events: none;
+            color: #2b7fc3;
+            transition: all 0.5s ease;
+        }
+
+        .city-card:hover::after {
+            opacity: 0.15;
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        /* Animasi masuk untuk card */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .city-card {
+            animation: slideInUp 0.5s ease-out backwards;
+        }
+
+        .city-card:nth-child(1) { animation-delay: 0.05s; }
+        .city-card:nth-child(2) { animation-delay: 0.1s; }
+        .city-card:nth-child(3) { animation-delay: 0.15s; }
+        .city-card:nth-child(4) { animation-delay: 0.2s; }
+        .city-card:nth-child(5) { animation-delay: 0.25s; }
 
         .city-name {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1.3rem;
             font-weight: 700;
-            color: white;
-            margin-bottom: 0.3rem;
+            color: #1a4d7a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .city-name i {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .city-card:hover .city-name i {
+            transform: rotate(15deg) scale(1.2);
         }
 
         .city-weather-icon {
             font-size: 3rem;
             margin: 0.5rem 0;
+            transition: transform 0.3s ease;
         }
 
-        /* Warna icon berdasarkan kondisi cuaca */
-        .city-card[data-weather="sunny"] .city-weather-icon i {
-            color: #ffd900;
+        .city-card:hover .city-weather-icon {
+            transform: scale(1.1) rotate(5deg);
         }
-
-        /* Cerah */
-        .city-card[data-weather="partly-cloudy"] .city-weather-icon i {
-            color: #ffdb4b;
-        }
-
-        /* Cerah Berawan */
-        .city-card[data-weather="cloudy"] .city-weather-icon i {
-            color: #B0BEC5;
-        }
-
-        /* Berawan */
-        .city-card[data-weather="overcast"] .city-weather-icon i {
-            color: #78909C;
-        }
-
-        /* Berawan Tebal */
-        .city-card[data-weather="rainy"] .city-weather-icon i {
-            color: #4FC3F7;
-        }
-
-        /* Hujan */
 
         .city-temp {
             font-size: 2.2rem;
             font-weight: 800;
-            color: white;
+            color: #1a4d7a;
+            transition: all 0.3s ease;
+        }
+
+        .city-card:hover .city-temp {
+            color: #2b7fc3;
+            transform: scale(1.05);
+            display: inline-block;
         }
 
         .city-desc {
-            color: #bbdbff;
+            color: #64748b;
             font-size: 0.9rem;
             margin-bottom: 1.2rem;
+            font-weight: 600;
         }
 
         .city-stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 0.6rem;
-            background: rgba(0, 0, 0, 0.25);
+            background: #f8fafc;
             border-radius: 20px;
             padding: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .city-card:hover .city-stats {
+            background: #e8f0fe;
         }
 
         .city-stat-item {
             text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .city-card:hover .city-stat-item {
+            transform: translateY(-2px);
         }
 
         .city-stat-item i {
-            color: #7abfff;
+            color: #2b7fc3;
+            transition: transform 0.3s ease;
+        }
+
+        .city-card:hover .city-stat-item i {
+            transform: scale(1.2);
         }
 
         .city-stat-value {
-            color: white;
+            color: #1a4d7a;
             font-weight: 700;
-            font-size: 0.9rem;
         }
 
-        .city-stat-label {
-            color: #aac9f0;
-            font-size: 0.6rem;
-        }
-
+        /* Best Time Card dengan animasi */
         .best-time-card {
-            background: linear-gradient(95deg, #102433, #0b2b47);
+            background: linear-gradient(135deg, #e3f0ff, #ffffff);
             border-radius: 50px;
             padding: 1.8rem 2.2rem;
-            border: 1px solid rgba(43, 127, 195, 0.3);
+            border: 1px solid rgba(43, 127, 195, 0.2);
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
             justify-content: space-between;
             gap: 1.5rem;
-            box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.4);
             position: relative;
-            isolation: isolate;
+            transition: all 0.3s ease;
+        }
+
+        .best-time-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -15px rgba(43, 127, 195, 0.2);
+        }
+
+        .best-time-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50px;
+            padding: 2px;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24, #fcd34d, #f59e0b);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .best-time-card:hover::before {
+            opacity: 1;
+            animation: borderPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes borderPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
         }
 
         .best-time-content h3 {
-            font-family: 'Space Grotesk', sans-serif;
             font-size: 1.6rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 0.2rem;
+            color: #1a4d7a;
         }
 
-        .best-time-content p {
-            color: #cde2ff;
-            font-size: 1rem;
+        .best-time-content h3 i {
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         .best-time-badge {
-            background: #1f5f9e;
+            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
             padding: 0.9rem 2rem;
             border-radius: 60px;
             font-weight: 700;
             font-size: 1.4rem;
             color: white;
-            box-shadow: 0 4px 10px -2px rgba(0, 100, 200, 0.3);
             display: flex;
             align-items: center;
             gap: 12px;
-            border: 1px solid rgba(255, 255, 200, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .best-time-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px -8px #2b7fc3;
         }
 
         .best-time-badge i {
-            color: #FFD700;
-            font-size: 1.4rem;
+            animation: sunSpin 4s linear infinite;
         }
 
-        /* ===== FEATURE SECTION (MENGAPA CLOUDSENSE?) ===== */
-        .feature-section {
+        @keyframes sunSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== FEATURE & TUTORIAL SECTION ===== */
+        .feature-section, .tutorial-section {
+            background: #ffffff;
             border-radius: 50px;
             padding: 2.5rem 2rem;
             margin-bottom: 3rem;
-            background: rgba(15, 28, 45, 0.65);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(70, 150, 255, 0.2);
-            box-shadow: 0 10px 25px -10px #000;
+            border: 1px solid rgba(43, 127, 195, 0.15);
+            transition: transform 0.3s ease;
         }
 
-        .feature-header {
-            margin-bottom: 2rem;
+        .feature-section:hover, .tutorial-section:hover {
+            transform: translateY(-3px);
         }
 
-        .feature-header h2 {
+        .feature-header h2, .tutorial-header h2, .cloud-header-section h2 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2.2rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #9bc9ff);
+            background: linear-gradient(135deg, #1a4d7a, #2b7fc3);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            margin: 0;
             display: inline-block;
             position: relative;
         }
 
-        .feature-header h2::after {
+        .feature-header h2::after, .tutorial-header h2::after, .cloud-header-section h2::after {
             content: '';
             position: absolute;
             bottom: -8px;
@@ -662,38 +984,31 @@
             border-radius: 3px;
         }
 
-        .feature-header p {
-            color: #bfdcff;
-            font-size: 1.1rem;
-            margin-top: 1.2rem;
-        }
-
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
+            margin-top: 2rem;
         }
 
         .feature-item {
-            background: rgba(0, 20, 45, 0.7);
-            backdrop-filter: blur(8px);
+            background: #f8fafc;
             border-radius: 40px;
             padding: 2rem 1.5rem;
-            border: 1px solid #295e8a;
-            transition: 0.2s;
+            border: 1px solid rgba(43, 127, 195, 0.15);
+            transition: all 0.3s ease;
         }
 
         .feature-item:hover {
-            background: #0c2742;
-            border-color: #6bb0ff;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px -10px #1f5f9e;
+            background: #f0f9ff;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px -12px rgba(43, 127, 195, 0.15);
         }
 
         .feature-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(140deg, #1f5e9c, #4791d1);
+            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
             border-radius: 20px;
             display: flex;
             align-items: center;
@@ -701,90 +1016,40 @@
             font-size: 2rem;
             color: white;
             margin-bottom: 1.2rem;
-            box-shadow: 0 8px 15px -5px #1a4e7a;
+            transition: all 0.3s ease;
         }
 
-        .feature-item h3 {
-            color: white;
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 0.8rem;
-        }
-
-        .feature-item p {
-            color: #c3dfff;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        /* ===== TUTORIAL SECTION ===== */
-        .tutorial-section {
-            background: #f0f7ff;
-            border-radius: 50px;
-            padding: 2.5rem 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .tutorial-header {
-            margin-bottom: 2rem;
-        }
-
-        .tutorial-header h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #102f44, #1c5b96);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-            position: relative;
-        }
-
-        .tutorial-header h2::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #2b7fc3, #99d0ff);
-            border-radius: 3px;
-        }
-
-        .tutorial-header p {
-            color: #1f4a72;
-            font-size: 1.1rem;
-            margin-top: 1.2rem;
+        .feature-item:hover .feature-icon {
+            transform: rotate(10deg) scale(1.1);
         }
 
         .tutorial-steps {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1.2rem;
+            margin-top: 2rem;
         }
 
         .step-card {
-            background: white;
+            background: #f8fafc;
             border-radius: 35px;
-            padding: 2rem 1.2rem 1.5rem;
-            border: 1px solid #b3d6ff;
-            box-shadow: 0 8px 20px -12px #1f4970;
-            transition: 0.2s;
+            padding: 2rem 1.2rem;
             position: relative;
+            text-align: center;
+            transition: all 0.3s ease;
         }
 
         .step-card:hover {
             transform: translateY(-5px);
-            border-color: #4080cf;
-            box-shadow: 0 12px 25px -12px #2b7fc3;
+            background: #f0f9ff;
+            box-shadow: 0 10px 25px -12px rgba(43, 127, 195, 0.2);
         }
 
         .step-number {
             position: absolute;
             top: -12px;
-            left: 25px;
-            background: #1d5393;
+            left: 20px;
+            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
             color: white;
             width: 40px;
             height: 40px;
@@ -795,93 +1060,68 @@
             font-size: 1.3rem;
             font-weight: 800;
             border: 3px solid white;
-            box-shadow: 0 3px 0 #0b2642;
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover .step-number {
+            transform: scale(1.1);
         }
 
         .step-icon {
             font-size: 2.8rem;
-            color: #236bb5;
-            text-align: center;
-            margin: 0.5rem 0 1rem;
+            color: #2b7fc3;
+            margin: 0.5rem 0;
+            transition: transform 0.3s ease;
         }
 
-        .step-card h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #10365a;
-            text-align: center;
-            margin-bottom: 0.6rem;
+        .step-card:hover .step-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
-        .step-card p {
-            color: #23527c;
-            text-align: center;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        /* ===== 10 KARTU AWAN ===== */
+        /* ===== CLOUD CARDS ===== */
         .cloud-grid-section {
             margin-bottom: 4rem;
-        }
-
-        .cloud-header-section {
-            margin-bottom: 2rem;
-        }
-
-        .cloud-header-section h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #9bc9ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-            position: relative;
-        }
-
-        .cloud-header-section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #2b7fc3, #99d0ff);
-            border-radius: 3px;
-        }
-
-        .cloud-header-section p {
-            color: #bfdcff;
-            font-size: 1.1rem;
-            margin-top: 1.2rem;
         }
 
         .cloud-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
+            margin-top: 2rem;
         }
 
         .cloud-card {
-            background: rgba(18, 40, 60, 0.8);
-            backdrop-filter: blur(16px);
+            background: #ffffff;
             border-radius: 40px;
             padding: 2rem 1.8rem;
-            border: 1px solid #3d6a9b;
-            transition: all 0.3s;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 15px 25px -15px #000000;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 25px -15px rgba(0, 0, 0, 0.08);
+        }
+
+        .cloud-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 40px;
+            padding: 2px;
+            background: linear-gradient(135deg, #2b7fc3, #6bb5ff, #9ad0ff, #2b7fc3);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .cloud-card:hover::before {
+            opacity: 1;
         }
 
         .cloud-card:hover {
-            border-color: #6bb5ff;
-            background: #0f304b;
-            transform: translateY(-8px);
-            box-shadow: 0 20px 30px -12px #0077ff;
+            transform: translateY(-10px);
+            box-shadow: 0 25px 40px -18px rgba(43, 127, 195, 0.3);
         }
 
         .cloud-header {
@@ -893,145 +1133,149 @@
 
         .cloud-icon {
             font-size: 2.8rem;
-            color: #6bb5ff;
-            background: rgba(0, 50, 90, 0.6);
+            color: #2b7fc3;
+            background: rgba(43, 127, 195, 0.1);
             width: 70px;
             height: 70px;
             border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
         }
 
-        .cloud-title {
-            flex: 1;
+        .cloud-card:hover .cloud-icon {
+            transform: scale(1.05) rotate(5deg);
+            background: rgba(43, 127, 195, 0.2);
         }
 
         .cloud-code {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2rem;
             font-weight: 800;
-            color: #b1e0ff;
-            line-height: 1.2;
+            color: #2b7fc3;
         }
 
         .cloud-name {
             font-size: 1.5rem;
             font-weight: 600;
+            color: #1a4d7a;
         }
 
         .cloud-desc {
-            color: #d0e9ff;
-            font-size: 1rem;
+            color: #5a7a9e;
             line-height: 1.6;
-            margin: 1rem 0 1.4rem;
-            flex: 1;
-            border-left: 3px solid #3f8fd9;
+            margin: 1rem 0;
+            border-left: 3px solid #2b7fc3;
             padding-left: 1rem;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 0 10px 10px 0;
         }
 
         .cloud-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 0.5rem;
         }
 
         .cloud-base {
             font-size: 0.9rem;
-            color: #b4d5ff;
-            background: rgba(0, 30, 60, 0.6);
+            color: #2b7fc3;
+            background: rgba(43, 127, 195, 0.1);
             padding: 0.4rem 1rem;
             border-radius: 50px;
-            display: inline-block;
         }
 
         .btn-3d {
-            background: linear-gradient(145deg, #1f5f9e, #12477a);
-            border: 1px solid #9aceff;
+            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
+            border: none;
             color: white;
             padding: 0.7rem 1.4rem;
             border-radius: 50px;
             font-weight: 600;
-            font-size: 0.95rem;
             cursor: pointer;
-            transition: 0.2s;
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 5px 10px -5px #001a33;
             text-decoration: none;
-            border: none;
+            transition: all 0.3s ease;
         }
 
         .btn-3d:hover {
-            background: #2b7fc3;
             transform: scale(1.05);
-            border-color: white;
-            box-shadow: 0 8px 18px -5px #0080ff;
+            box-shadow: 0 5px 15px -5px #2b7fc3;
         }
 
-        .btn-3d i {
-            font-size: 1.2rem;
+        .btn-detail {
+            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
         }
 
-        #camera-input,
-        #gallery-input {
+        .btn-detail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px -3px #2b7fc3;
+        }
+
+        .gemini-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: #2b7fc3;
+            background: rgba(43, 127, 195, 0.08);
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            margin-top: 0.8rem;
+        }
+
+        .loading-indicator {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+            color: #2b7fc3;
+        }
+
+        .loading-indicator.active {
+            display: block;
+        }
+
+        .loading-indicator i {
+            animation: spin 1s linear infinite;
+        }
+
+        #camera-input, #gallery-input {
             display: none;
         }
 
         .footer {
             text-align: center;
             padding: 2rem;
-            color: #a9c9ff;
-            border-top: 1px solid #294e75;
-            font-size: 1rem;
+            color: #5a7a9e;
+            border-top: 1px solid rgba(43, 127, 195, 0.2);
         }
 
-        .risk-desc {
-            max-height: 2.6em;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-
-        .btn-detail {
-            background: linear-gradient(135deg, #2563eb, #7c3aed);
-            color: #fff;
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-detail:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-        }
-
-        /* ===== DETAIL MODAL ===== */
         .detail-modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(6px);
             z-index: 9999;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .detail-modal-overlay.active {
@@ -1039,349 +1283,380 @@
         }
 
         .detail-modal {
-            background: linear-gradient(145deg, #f0f7ff, #ffffff);
+            background: white;
             border-radius: 24px;
             padding: 2rem;
             max-width: 480px;
-            width: 100%;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
-            animation: modalIn 0.3s ease;
+            width: 90%;
+            animation: slideUp 0.3s ease;
         }
 
-        @keyframes modalIn {
+        @keyframes slideUp {
             from {
-                transform: scale(0.9);
+                transform: translateY(50px);
                 opacity: 0;
             }
-
             to {
-                transform: scale(1);
+                transform: translateY(0);
                 opacity: 1;
             }
         }
 
-        .detail-modal h3 {
-            color: #1a4d7a;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-
-        .detail-modal .modal-section {
-            background: rgba(30, 90, 150, 0.06);
+        .modal-section {
+            background: #f8fafc;
             border-radius: 16px;
             padding: 1rem;
             margin-bottom: 1rem;
         }
 
-        .detail-modal .modal-section label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #5a8ab5;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .detail-modal .modal-section p {
-            color: #1a4d7a;
-            margin-top: 0.4rem;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .detail-modal .btn-close-modal {
+        .btn-close-modal {
             background: #e2e8f0;
-            color: #475569;
             border: none;
             padding: 0.5rem 1.5rem;
             border-radius: 20px;
-            font-weight: 600;
             cursor: pointer;
             width: 100%;
-            font-size: 0.9rem;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
         }
 
-        .detail-modal .btn-close-modal:hover {
+        .btn-close-modal:hover {
             background: #cbd5e1;
+            transform: scale(1.02);
         }
 
-        /* ===== GEMINI BADGE ===== */
-        .gemini-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #8b5cf6;
-            background: rgba(139, 92, 246, 0.08);
-            padding: 0.3rem 0.8rem;
-            border-radius: 30px;
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            margin-top: 0.8rem;
-        }
-
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 1000px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cities-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .feature-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .tutorial-steps {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .main-grid { grid-template-columns: 1fr; }
+            .cities-grid { grid-template-columns: repeat(3, 1fr); }
+            .feature-grid { grid-template-columns: repeat(2, 1fr); }
+            .tutorial-steps { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 700px) {
-            .hero-minimal {
-                padding: 3rem 1.5rem;
-            }
-
-            .hero-content h1 {
-                font-size: 3.5rem;
-            }
-
-            .cities-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .tutorial-steps {
-                grid-template-columns: 1fr;
-            }
-
-            .cloud-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .best-time-card {
-                flex-direction: column;
-                text-align: center;
-            }
+            .hero-content h1 { font-size: 3.5rem; }
+            .cities-grid { grid-template-columns: repeat(2, 1fr); }
+            .feature-grid, .tutorial-steps { grid-template-columns: 1fr; }
+            .cloud-grid { grid-template-columns: 1fr; }
         }
+
+        /* Style untuk weather icon dengan warna dinamis */
+.city-weather-icon i {
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+/* Efek hover pada icon */
+.city-card:hover .city-weather-icon i {
+    transform: scale(1.15) rotate(5deg);
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+/* Warna khusus untuk setiap jenis cuaca */
+.city-card[data-weather="sunny"] .city-weather-icon i {
+    color: #f59e0b;
+    animation: sunGlow 2s ease-in-out infinite;
+}
+
+.city-card[data-weather="partly-cloudy"] .city-weather-icon i {
+    color: #eab308;
+}
+
+.city-card[data-weather="cloudy"] .city-weather-icon i {
+    color: #94a3b8;
+}
+
+.city-card[data-weather="foggy"] .city-weather-icon i {
+    color: #9ca3af;
+}
+
+.city-card[data-weather="rainy"] .city-weather-icon i {
+    color: #29508f;
+    animation: rainDrop 1s ease-in-out infinite;
+}
+
+.city-card[data-weather="storm"] .city-weather-icon i {
+    color: #7c3aed;
+    animation: lightning 1.5s ease-in-out infinite;
+}
+
+/* Animasi khusus */
+@keyframes sunGlow {
+    0%, 100% {
+        text-shadow: 0 0 0px rgba(245, 158, 11, 0);
+    }
+    50% {
+        text-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+    }
+}
+
+@keyframes rainDrop {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(3px);
+    }
+}
+
+@keyframes lightning {
+    0%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 0px rgba(124, 58, 237, 0);
+    }
+    50% {
+        opacity: 0.7;
+        text-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+    }
+}
+
+/* Background card dengan warna sesuai cuaca */
+.city-card[data-weather="sunny"] {
+    background: linear-gradient(145deg, #ffffff, #fffbeb);
+}
+
+.city-card[data-weather="rainy"] {
+    background: linear-gradient(145deg, #ffffff, #eff6ff);
+}
+
+.city-card[data-weather="storm"] {
+    background: linear-gradient(145deg, #ffffff, #f5f3ff);
+}
     </style>
-</head>
+    </head>
 
-<body>
-    <div class="web-container">
-
-        <!-- HEADER -->
-        <header class="header">
-            <div class="nav-container">
-                <div class="logo-wrapper">
-                    <div class="logo-icon"><i class="fas fa-cloud-moon"></i></div>
-                    <div class="logo-text">
-                        <h1>CloudSense</h1>
-                        <p>10 KARAKTER AWAN · GESTURE 3D</p>
-                    </div>
-                </div>
-                <ul class="nav-menu">
-                    <li><a href="#home" class="active">Beranda</a></li>
-                    <li><a href="#features">Tentang</a></li>
-                    <li><a href="#tutorial">Panduan</a></li>
-                    <li><a href="#clouds">Karakter Awan</a></li>
-                </ul>
-            </div>
-        </header>
-
-        <!-- ===== HERO SECTION - HANYA TAGLINE & TITLE ===== -->
-        <div class="hero-minimal" id="home">
-            <div class="hero-content">
-                <div class="hero-tag">NEXT GEN CLOUD INTELLIGENCE</div>
-                <h1>CloudSense</h1>
-            </div>
-        </div>
-
-        <!-- MAIN GRID UPLOAD -->
-        <div class="main-grid">
-            <div class="camera-panel">
-                <div class="panel-title"><i class="fas fa-cloud-upload-alt"></i> Upload Citra Awan</div>
-                <div class="camera-area">
-                    <div class="preview-box" id="previewBox">
-                        <img id="preview-image" src="#" alt="preview">
-                        <video id="camera-stream" autoplay playsinline
-                            style="display:none;width:100%;height:100%;object-fit:cover;border-radius:inherit;"></video>
-                        <div class="placeholder-preview" id="placeholderPreview">
-                            <i class="fas fa-cloud-moon"></i>
-                            <p>Belum ada gambar</p>
-                            <p style="font-size:0.9rem;">Klik Kamera atau Galeri</p>
+    <body>
+        <div class="web-container">
+            <header class="header">
+                <div class="nav-container">
+                    <div class="logo-wrapper">
+                        <div class="logo-icon"><i
+                                class="fas fa-cloud-moon"></i></div>
+                        <div class="logo-text">
+                            <h1>CloudSense</h1>
+                            <p>10 KARAKTER AWAN · GESTURE 3D</p>
                         </div>
                     </div>
+                    <ul class="nav-menu">
+                        <li><a href="#home" class="active">Beranda</a></li>
+                        <li><a href="#features">Tentang</a></li>
+                        <li><a href="#tutorial">Panduan</a></li>
+                        <li><a href="#clouds">Karakter Awan</a></li>
+                    </ul>
                 </div>
-                <div class="upload-actions">
-                    <button class="btn btn-primary" id="shutterBtn"><i class="fas fa-camera"></i> Kamera</button>
-                    <button class="btn btn-primary" id="captureBtn"
-                        style="display:none;background:linear-gradient(135deg,#e74c3c,#c0392b);"><i
-                            class="fas fa-circle"></i> Ambil Foto</button>
-                    <button class="btn btn-outline" id="stopCamBtn" style="display:none;"><i class="fas fa-times"></i>
-                        Tutup</button>
-                    <button class="btn btn-outline" id="galleryBtn"><i class="fas fa-images"></i> Galeri</button>
-                </div>
-                <canvas id="camera-canvas" style="display:none;"></canvas>
-                <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none">
-                <input type="file" id="gallery-input" accept="image/*" style="display:none">
-            </div>
+            </header>
+            <div class="hero-minimal" id="home">
+                <!-- Awan statis di background -->
+                <div class="static-cloud static-cloud-1">☁️</div>
+                <div class="static-cloud static-cloud-2">☁️</div>
+                <div class="static-cloud static-cloud-3">☁️</div>
+                <div class="static-cloud static-cloud-4">☁️</div>
 
-            <div class="result-panel" id="resultPanel">
-                <span class="badge-kelas"><i class="fas fa-chart-line"></i> HASIL PREDIKSI</span>
-                <div class="kelas-utama">
-                    <h2 id="cloudName">Cumulus</h2>
-                    <span class="kode-awan" id="cloudCode">Cu</span>
+                <!-- Awan bergerak -->
+                <div class="floating-clouds" id="floatingClouds">
+                    <!-- Awan akan ditambahkan oleh JavaScript -->
                 </div>
-                <div class="confidence-bar">
-                    <div class="confidence-fill" id="confidenceFill" style="width:94%"></div>
-                </div>
-                <div class="confidence-text"><span>Confidence</span><span id="confidenceVal">94%</span></div>
-                <div class="risk-meter">
-                    <i class="fas fa-exclamation-triangle"></i><span style="font-weight:700; margin-left:8px;">Analisis
-                        Risiko</span>
-                    <div class="risk-level" id="riskLevel">Rendah · Cerah</div>
-                    <div class="risk-desc" id="riskDesc">Awan Cumulus menandakan cuaca cerah</div>
-                    <button class="btn-detail" id="btnDetail" style="display:none;" onclick="openDetailModal()"><i
-                            class="fas fa-eye"></i> Lihat Detail</button>
-                </div>
-                <div class="rekom-card">
-                    <div><i class="fas fa-clipboard-check"></i> Rekomendasi Aktivitas</div>
-                    <div class="rekom-text" id="rekomText">Cuaca cerah, cocok untuk aktivitas outdoor!</div>
-                    <div class="rekom-icons" id="rekomIcons"><i class="fas fa-person-hiking"></i><i
-                            class="fas fa-bicycle"></i><i class="fas fa-camera"></i></div>
-                    <div class="gemini-badge" id="geminiBadge" style="display:none;"><i class="fas fa-sparkles"></i>
-                        Powered by Llama AI</div>
+
+                <div class="hero-content">
+                    <div class="hero-tag">NEXT GEN CLOUD INTELLIGENCE</div>
+                    <h1>CloudSense</h1>
                 </div>
             </div>
 
-            <!-- DETAIL MODAL -->
-            <div class="detail-modal-overlay" id="detailModal" onclick="if(event.target===this)closeDetailModal()">
-                <div class="detail-modal">
-                    <h3><i class="fas fa-robot"></i> Analisis AI</h3>
-                    <div class="modal-section">
-                        <label>Tingkat Risiko</label>
-                        <p id="modalRisk">-</p>
+            <div class="main-grid">
+                <div class="camera-panel">
+                    <div class="panel-title"><i
+                            class="fas fa-cloud-upload-alt"></i> Upload Citra
+                        Awan</div>
+                    <div class="camera-area">
+                        <div class="preview-box" id="previewBox">
+                            <img id="preview-image" src="#" alt="preview">
+                            <video id="camera-stream" autoplay playsinline
+                                style="display:none;width:100%;height:100%;object-fit:cover;"></video>
+                            <div class="placeholder-preview"
+                                id="placeholderPreview">
+                                <i class="fas fa-cloud-moon"></i>
+                                <p>Belum ada gambar</p>
+                                <p style="font-size:0.9rem;">Klik Kamera atau
+                                    Galeri</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-section">
-                        <label>Deskripsi Risiko</label>
-                        <p id="modalDesc">-</p>
+                    <div class="upload-actions">
+                        <button class="btn btn-primary" id="shutterBtn"><i
+                                class="fas fa-camera"></i> Kamera</button>
+                        <button class="btn btn-primary" id="captureBtn"
+                            style="display:none;"><i class="fas fa-circle"></i>
+                            Ambil Foto</button>
+                        <button class="btn btn-danger" id="stopCamBtn"
+                            style="display:none;"><i class="fas fa-times"></i>
+                            Tutup</button>
+                        <button class="btn btn-outline" id="galleryBtn"><i
+                                class="fas fa-images"></i> Galeri</button>
                     </div>
-                    <button class="btn-close-modal" onclick="closeDetailModal()">Tutup</button>
+                    <div class="loading-indicator" id="loadingIndicator">
+                        <i class="fas fa-spinner fa-pulse"></i> Menganalisis
+                        gambar dengan AI...
+                    </div>
+                    <canvas id="camera-canvas" style="display:none;"></canvas>
+                    <input type="file" id="camera-input" accept="image/*"
+                        capture="environment">
+                    <input type="file" id="gallery-input" accept="image/*">
                 </div>
+
+                <div class="result-panel" id="resultPanel">
+                    <span class="badge-kelas"><i class="fas fa-chart-line"></i>
+                        HASIL PREDIKSI</span>
+                    <div class="kelas-utama">
+                        <h2 id="cloudName">-</h2>
+                        <span class="kode-awan" id="cloudCode">-</span>
+                    </div>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" id="confidenceFill"
+                            style="width:0%"></div>
+                    </div>
+                    <div class="confidence-text"><span>Confidence</span><span
+                            id="confidenceVal">0%</span></div>
+                    <div class="risk-meter">
+                        <i class="fas fa-exclamation-triangle"></i><span
+                            style="font-weight:700; margin-left:8px;">Analisis
+                            Risiko</span>
+                        <div class="risk-level" id="riskLevel">Belum ada
+                            analisis</div>
+                        <div class="risk-desc" id="riskDesc">Upload gambar awan
+                            untuk memulai klasifikasi</div>
+                        <button class="btn-detail" id="btnDetail"
+                            style="display:none;"><i class="fas fa-eye"></i>
+                            Lihat Detail</button>
+                    </div>
+                    <div class="rekom-card">
+                        <div><i class="fas fa-clipboard-check"></i> Rekomendasi
+                            Aktivitas</div>
+                        <div class="rekom-text" id="rekomText">-</div>
+                        <div class="rekom-icons" id="rekomIcons"></div>
+                        <div class="gemini-badge" id="geminiBadge"
+                            style="display:none;"><i
+                                class="fas fa-sparkles"></i> Powered by Llama
+                            3.3 70B</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weather-jabodetabek">
+                <div class="weather-header">
+                    <h2><i class="fas fa-satellite-dish"></i> Jabodetabek
+                        Nowcast</h2>
+                    <div class="update-time" id="updateTime"><i
+                            class="fas fa-satellite-dish"
+                            style="color:#f59e0b"></i> Memuat data...</div>
+                </div>
+                <div class="cities-grid" id="citiesGrid">
+                    <div class="city-card"><div
+                            style="text-align:center; padding:2rem;"><i
+                                class="fas fa-spinner fa-pulse"></i> Memuat
+                            cuaca...</div></div>
+                </div>
+                <div class="best-time-card">
+                    <div class="best-time-content">
+                        <h3><i class="fas fa-clock" style="color:#f59e0b"></i>
+                            Golden Window Outdoor</h3>
+                        <p id="bestTimeDesc">Menganalisis kondisi cuaca
+                            terbaik...</p>
+                    </div>
+                    <div class="best-time-badge" id="bestTimeBadge"><i
+                            class="fas fa-sun"></i> <span
+                            id="bestTimeText">--:--</span></div>
+                </div>
+            </div>
+
+            <div class="feature-section" id="features">
+                <div class="feature-header">
+                    <h2>Mengapa CloudSense?</h2>
+                    <p>Pendekatan baru dalam memahami awan</p>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon"><i
+                                class="fas fa-brain"></i></div>
+                        <h3>Deep Learning</h3>
+                        <p>Klasifikasi 10 jenis awan dengan DenseNet CNN yang
+                            dilatih pada ribuan citra</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i
+                                class="fas fa-cubes"></i></div>
+                        <h3>Model 3D Interaktif</h3>
+                        <p>Setiap awan direkonstruksi dalam bentuk tiga dimensi
+                            untuk observasi morfologi</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i
+                                class="fas fa-hand-peace"></i></div>
+                        <h3>Gesture Recognition</h3>
+                        <p>Kontrol penuh menggunakan gerakan tangan — putar,
+                            geser, zoom — tanpa menyentuh layar</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tutorial-section" id="tutorial">
+                <div class="tutorial-header">
+                    <h2>Panduan Cepat</h2>
+                    <p>4 langkah eksplorasi awan</p>
+                </div>
+                <div class="tutorial-steps">
+                    <div class="step-card"><div class="step-number">1</div><div
+                            class="step-icon"><i
+                                class="fas fa-camera-retro"></i></div><h3>Upload
+                            / Capture</h3><p>Ambil foto awan dari kamera atau
+                            galeri</p></div>
+                    <div class="step-card"><div class="step-number">2</div><div
+                            class="step-icon"><i
+                                class="fas fa-microchip"></i></div><h3>Identifikasi</h3><p>Sistem
+                            AI mengenali jenis awan</p></div>
+                    <div class="step-card"><div class="step-number">3</div><div
+                            class="step-icon"><i
+                                class="fas fa-cube"></i></div><h3>Lihat
+                            3D</h3><p>Klik "Jelajahi 3D" untuk membuka model
+                            interaktif</p></div>
+                    <div class="step-card"><div class="step-number">4</div><div
+                            class="step-icon"><i
+                                class="fas fa-hand-peace"></i></div><h3>Gesture</h3><p>Gerakkan
+                            tangan untuk memutar & memperbesar awan</p></div>
+                </div>
+            </div>
+
+            <div class="cloud-grid-section" id="clouds">
+                <div class="cloud-header-section">
+                    <h2>☁️ 10 Karakter Awan</h2>
+                    <p>Pelajari morfologi setiap jenis awan melalui visualisasi
+                        3D interaktif</p>
+                </div>
+                <div class="cloud-grid" id="cloudGrid"></div>
+            </div>
+
+            <div class="footer"><i class="fas fa-cloud-sun"></i> CloudSense · 10
+                Karakter Awan · Eksplorasi 3D dengan Gestur</div>
+        </div>
+
+        <div class="detail-modal-overlay" id="detailModal"
+            onclick="if(event.target===this)closeDetailModal()">
+            <div class="detail-modal">
+                <h3><i class="fas fa-robot"></i> Analisis AI Detail</h3>
+                <div class="modal-section"><label>Tingkat Risiko</label><p
+                        id="modalRisk">-</p></div>
+                <div class="modal-section"><label>Deskripsi Risiko</label><p
+                        id="modalDesc">-</p></div>
+                <button class="btn-close-modal"
+                    onclick="closeDetailModal()">Tutup</button>
             </div>
         </div>
 
-        <!-- WEATHER JABODETABEK -->
-        <div class="weather-jabodetabek">
-            <div class="weather-header">
-                <h2><i class="fas fa-satellite-dish"></i> Jabodetabek Nowcast</h2>
-                <div class="update-time" id="updateTime"><i class="fas fa-sync-alt fa-spin" id="syncIcon"></i> Memuat
-                    data...</div>
-            </div>
-            <div class="cities-grid" id="citiesGrid">
-                <!-- Diisi oleh JavaScript -->
-                <div class="city-card" style="grid-column:1/-1; text-align:center; padding:3rem; opacity:0.6;">
-                    <i class="fas fa-spinner fa-spin" style="font-size:2.5rem; color:#6bb5ff;"></i>
-                    <p style="color:#b0d5ff; margin-top:1rem;">Mengambil data cuaca terkini...</p>
-                </div>
-            </div>
-            <div class="best-time-card">
-                <div class="best-time-content">
-                    <h3><i class="fas fa-clock" style="color: #FFD700;"></i> Golden Window Outdoor</h3>
-                    <p id="bestTimeDesc">Menghitung waktu terbaik...</p>
-                </div>
-                <div class="best-time-badge" id="bestTimeBadge"><i class="fas fa-sun"></i> <span id="bestTimeText">09:00
-                        – 15:00</span></div>
-            </div>
-        </div>
-
-        <!-- ===== FEATURE SECTION (MENGAPA CLOUDSENSE?) ===== -->
-        <div class="feature-section" id="features">
-            <div class="feature-header">
-                <h2>Mengapa CloudSense?</h2>
-                <p>Pendekatan baru dalam memahami awan</p>
-            </div>
-            <div class="feature-grid">
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
-                    <h3>Deep Learning</h3>
-                    <p>Klasifikasi 10 jenis awan dengan convolutional neural network yang dilatih pada ribuan citra.</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-cubes"></i></div>
-                    <h3>Model 3D Interaktif</h3>
-                    <p>Setiap awan direkonstruksi dalam bentuk tiga dimensi untuk observasi morfologi.</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-hand-peace"></i></div>
-                    <h3>Gesture Recognition</h3>
-                    <p>Kontrol penuh menggunakan gerakan tangan — putar, geser, zoom — tanpa menyentuh layar.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- TUTORIAL -->
-        <div class="tutorial-section" id="tutorial">
-            <div class="tutorial-header">
-                <h2>Panduan Cepat</h2>
-                <p>4 langkah eksplorasi awan</p>
-            </div>
-            <div class="tutorial-steps">
-                <div class="step-card">
-                    <div class="step-number">1</div>
-                    <div class="step-icon"><i class="fas fa-camera-retro"></i></div>
-                    <h3>Upload / Capture</h3>
-                    <p>Ambil foto awan dari kamera atau galeri.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">2</div>
-                    <div class="step-icon"><i class="fas fa-microchip"></i></div>
-                    <h3>Identifikasi</h3>
-                    <p>Sistem CNN mengenali 10 kelas awan.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">3</div>
-                    <div class="step-icon"><i class="fas fa-cube"></i></div>
-                    <h3>Lihat 3D</h3>
-                    <p>Klik "Jelajahi 3D" untuk membuka model interaktif.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">4</div>
-                    <div class="step-icon"><i class="fas fa-hand-peace"></i></div>
-                    <h3>Gesture</h3>
-                    <p>Gerakkan tangan untuk memutar & memperbesar awan.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 10 KARAKTER AWAN + TOMBOL LIHAT 3D -->
-        <div class="cloud-grid-section" id="clouds">
-            <div class="cloud-header-section">
-                <h2>☁️ 10 Karakter Awan</h2>
-                <p>Pelajari morfologi setiap jenis awan melalui visualisasi 3D interaktif.</p>
-            </div>
-            <div class="cloud-grid" id="cloudGrid"></div>
-        </div>
-
-        <!-- FOOTER -->
-        <div class="footer"><i class="fas fa-cloud-sun"></i> CloudSense · 10 Karakter Awan · Hadirkan 3D dengan gestur
-        </div>
-    </div>
-
-    <!-- SCRIPT -->
-    <script>
-        (function () {
-            // DATA 10 AWAN (frontend display)
+        <script>
+        (function() {
+            // ==================== DATA 10 AWAN ====================
             const cloudData = [
                 { code: 'Cu', name: 'Cumulus', icon: 'fa-cloud-sun', karakter: 'Putih menggumpal seperti kapas, dasar datar, puncak menggelembung. Tanda cuaca baik, namun bisa tumbuh vertikal menjadi Cumulonimbus.', base: 'Dasar <2 km' },
                 { code: 'Cc', name: 'Cirrocumulus', icon: 'fa-cloud', karakter: 'Sisik ikan halus di langit, terdiri dari kristal es. Menandakan cuaca stabil, kadang menjadi pertanda perubahan.', base: '>6 km' },
-                { code: 'Ac', name: 'Altocumulus', icon: 'fa-cloud', karakter: 'Bergulung seperti domba, awan menengah. Sering menandakan udara dingin di ketinggian. Bisa berkembang jadi hujan jika tebal.', base: '2-6 km' },
+                { code: 'Ac', name: 'Altocumulus', icon: 'fa-cloud', karakter: 'Bergulung seperti domba, awan menengah. Sering menandakan udara dingin di ketinggian.', base: '2-6 km' },
                 { code: 'As', name: 'Altostratus', icon: 'fa-layer-group', karakter: 'Selubung abu-abu merata, menutupi langit. Sering membawa gerimis atau salju ringan.', base: '2-6 km' },
                 { code: 'Ns', name: 'Nimbostratus', icon: 'fa-cloud-rain', karakter: 'Lapisan tebal kelabu penyebab hujan terus-menerus. Tidak disertai petir, tapi durasi panjang.', base: '0-3 km' },
                 { code: 'Cb', name: 'Cumulonimbus', icon: 'fa-cloud-bolt', karakter: 'Raksasa vertikal seperti menara, puncak landasan. Menyebabkan hujan lebat, petir, angin kencang.', base: '0-16 km' },
@@ -1391,219 +1666,43 @@
                 { code: 'Cs', name: 'Cirrostratus', icon: 'fa-circle', karakter: 'Selubung tipis transparan menutupi langit, menciptakan fenomena halo. Pertanda hujan dalam 12-24 jam.', base: '>6 km' }
             ];
 
-            // MODEL: 6-class labels (alphabetical folder order)
-            const MODEL_LABELS = [
-                { name: 'Altocumulus', code: 'Ac' },
-                { name: 'Cirrus', code: 'Ci' },
-                { name: 'Clear Sky', code: 'Cs*' },
-                { name: 'Cumulonimbus', code: 'Cb' },
-                { name: 'Cumulus', code: 'Cu' },
-                { name: 'Stratocumulus', code: 'Sc' }
-            ];
-
-            // Load TF.js graph model
-            let cloudModel = null;
-            tf.loadGraphModel('./model/model.json')
-                .then(m => { tfModel = m; console.log('✅ Model loaded!'); })
-                .catch(e => console.error('❌ Model load failed:', e));
-
+            // Render 10 cloud cards
             const grid = document.getElementById('cloudGrid');
             cloudData.forEach(c => {
                 const card = document.createElement('div');
                 card.className = 'cloud-card';
                 card.innerHTML = `
-            <div class="cloud-header">
-                <div class="cloud-icon"><i class="fas ${c.icon}"></i></div>
-                <div class="cloud-title">
-                    <div class="cloud-code">${c.code}</div>
-                    <div class="cloud-name">${c.name}</div>
-                </div>
-            </div>
-            <div class="cloud-desc">${c.karakter}</div>
-            <div class="cloud-footer">
-                <span class="cloud-base"><i class="fas fa-arrow-up"></i> ${c.base}</span>
-                <a href="cloud.html" class="btn-3d" data-code="${c.code}" data-name="${c.name}"><i class="fas fa-cube"></i> Jelajahi 3D</a>
-            </div>
-        `;
+                    <div class="cloud-header">
+                        <div class="cloud-icon"><i class="fas ${c.icon}"></i></div>
+                        <div class="cloud-title">
+                            <div class="cloud-code">${c.code}</div>
+                            <div class="cloud-name">${c.name}</div>
+                        </div>
+                    </div>
+                    <div class="cloud-desc">${c.karakter}</div>
+                    <div class="cloud-footer">
+                        <span class="cloud-base"><i class="fas fa-arrow-up"></i> ${c.base}</span>
+                        <a href="cloud.html" class="btn-3d" data-code="${c.code}" data-name="${c.name}"><i class="fas fa-cube"></i> Jelajahi 3D</a>
+                    </div>
+                `;
                 grid.appendChild(card);
             });
 
-            // Event tombol 3D
-            document.querySelectorAll('.btn-3d').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    // Link sudah mengarah ke cloud.html
-                    console.log('Navigasi ke cloud.html');
-                });
-            });
-
-            // Handler upload
-            const cameraInput = document.getElementById('camera-input');
-            const galleryInput = document.getElementById('gallery-input');
-            const shutterBtn = document.getElementById('shutterBtn');
-            const captureBtn = document.getElementById('captureBtn');
-            const stopCamBtn = document.getElementById('stopCamBtn');
-            const galleryBtn = document.getElementById('galleryBtn');
-            const previewImg = document.getElementById('preview-image');
-            const placeholder = document.getElementById('placeholderPreview');
-            const cameraStream = document.getElementById('camera-stream');
-            const cameraCanvas = document.getElementById('camera-canvas');
-            let activeStream = null;
-
-            // Open webcam
-            shutterBtn.onclick = async () => {
-                // On mobile, use native camera capture
-                if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
-                    cameraInput.value = ''; cameraInput.click();
-                    return;
-                }
-                // Desktop: open webcam stream
-                try {
-                    activeStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } } });
-                    cameraStream.srcObject = activeStream;
-                    cameraStream.style.display = 'block';
-                    previewImg.style.display = 'none';
-                    placeholder.style.display = 'none';
-                    shutterBtn.style.display = 'none';
-                    galleryBtn.style.display = 'none';
-                    captureBtn.style.display = '';
-                    stopCamBtn.style.display = '';
-                } catch (err) {
-                    console.warn('Kamera tidak tersedia:', err);
-                    cameraInput.value = ''; cameraInput.click();
-                }
-            };
-
-            // Capture photo from stream
-            captureBtn.onclick = () => {
-                cameraCanvas.width = cameraStream.videoWidth;
-                cameraCanvas.height = cameraStream.videoHeight;
-                cameraCanvas.getContext('2d').drawImage(cameraStream, 0, 0);
-                const dataUrl = cameraCanvas.toDataURL('image/jpeg', 0.9);
-                stopCamera();
-                previewImg.src = dataUrl;
-                previewImg.style.display = 'block';
-                // Convert to blob and process
-                cameraCanvas.toBlob(blob => { if (blob) processImage(blob); }, 'image/jpeg', 0.9);
-            };
-
-            // Stop camera
-            function stopCamera() {
-                if (activeStream) {
-                    activeStream.getTracks().forEach(t => t.stop());
-                    activeStream = null;
-                }
-                cameraStream.style.display = 'none';
-                cameraStream.srcObject = null;
-                captureBtn.style.display = 'none';
-                stopCamBtn.style.display = 'none';
-                shutterBtn.style.display = '';
-                galleryBtn.style.display = '';
-            }
-            stopCamBtn.onclick = () => {
-                stopCamera();
-                placeholder.style.display = '';
-            };
-
-            galleryBtn.onclick = () => { galleryInput.value = ''; galleryInput.click(); };
-
-            // ===== GROQ LLM API (Llama 3.3 70B) =====
-            let cachedWeatherResults = null;
-
-            // Rate Limiter
-            const rateLimiter = {
-                lastCall: 0,
-                cooldown: 30000,
-                canCall() { return Date.now() - this.lastCall >= this.cooldown; },
-                remaining() { return Math.max(0, Math.ceil((this.cooldown - (Date.now() - this.lastCall)) / 1000)); },
-                mark() { this.lastCall = Date.now(); }
-            };
-
-            // Groq: get recommendation based on cloud type + weather
-            async function getRecommendation(cloudName, cloudCode) {
-                let weatherContext = 'Data cuaca tidak tersedia.';
-                if (cachedWeatherResults && cachedWeatherResults.length > 0) {
-                    weatherContext = cachedWeatherResults.map(w =>
-                        `${w.name}: ${w.temp}°C, ${w.desc}, Kelembapan ${w.humidity}%, Angin ${w.wind} km/h`
-                    ).join('; ');
-                }
-
-                const prompt = `Kamu adalah asisten meteorologi CloudSense. Berikan analisis risiko dan rekomendasi aktivitas berdasarkan data berikut dalam Bahasa Indonesia.
-
-Jenis Awan Terdeteksi: ${cloudName} (${cloudCode})
-Kondisi Cuaca Jabodetabek saat ini: ${weatherContext}
-
-Berikan response dalam format JSON SAJA (tanpa markdown, tanpa backtick) dengan struktur:
-{"riskLevel":"..","riskDesc":"..","recommendation":"..","icons":["fa-icon-1","fa-icon-2","fa-icon-3"]}
-
-Keterangan:
-- riskLevel: tingkat risiko singkat (contoh: "Tinggi · Waspada" atau "Rendah · Cerah")
-- riskDesc: penjelasan risiko 1-2 kalimat berdasarkan jenis awan DAN cuaca saat ini
-- recommendation: rekomendasi aktivitas 1 kalimat
-- icons: 3 nama FontAwesome 6 icon yang relevan (tanpa prefix "fas ")`;
-
-                const res = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: 'llama-3.3-70b-versatile',
-                        messages: [{ role: 'user', content: prompt }],
-                        temperature: 0.4,
-                        max_tokens: 400
-                    })
-                });
-
-                if (!res.ok) {
-                    const errBody = await res.text();
-                    console.error(`❌ Groq API ${res.status}:`, errBody);
-                    console.error(`🔑 Key used: ${maskedKey}`);
-                    throw new Error(`API error ${res.status}: ${errBody}`);
-                }
-
-                const data = await res.json();
-                let text = data.choices?.[0]?.message?.content || '';
-                text = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-                console.log('✅ Groq LLM responded successfully');
-                return JSON.parse(text);
-            }
-
-            // Preprocess image to tensor [1, 256, 256, 3]
-            // Graph model handles ImageNet normalization internally
-            function imageToTensor(imgElement) {
-                return tf.tidy(() => {
-                    return tf.browser.fromPixels(imgElement)
-                        .resizeBilinear([256, 256])
-                        .toFloat()
-                        .expandDims(0);
-                });
-            }
-
-            const CLASS_NAMES = ['Cumulus', 'Altocumulus', 'Cirrus', 'Clear Sky', 'Stratocumulus', 'Cumulonimbus', 'Mixed'];
-            const CLASS_CODES = ['Cu', 'Ac', 'Ci', 'CS', 'Sc', 'Cb', 'Mx'];
-            const MIXED_IDX = 6;
-
-            async function classifyImage(imgElement) {
-                if (!tfModel) return null;
-                const tensor = tf.browser.fromPixels(imgElement)
-                    .resizeBilinear([256, 256])
-                    .toFloat()
-                    .expandDims(0);
-                const result = tfModel.execute(tensor);
-                let data = Array.from(await result.data());
-                tensor.dispose(); result.dispose();
-
-                // Redistribute Mixed probability ke 6 kelas lain
-                const mixedProb = data[MIXED_IDX];
-                data[MIXED_IDX] = 0;
-                const total = data.reduce((a, b) => a + b, 0);
-                data = data.map(p => p + (p / total) * mixedProb);
-
-                return data;
-            }
-
+            // ==================== TENSORFLOW.JS MODEL ====================
             let tfModel = null;
+            const CLASS_NAMES = ['Cumulus', 'Altocumulus', 'Cirrus', 'Clear Sky', 'Stratocumulus', 'Cumulonimbus'];
+            const CLASS_CODES = ['Cu', 'Ac', 'Ci', 'CS', 'Sc', 'Cb'];
+
+            async function loadModel() {
+                try {
+                    tfModel = await tf.loadGraphModel('./model/model.json');
+                    console.log('✅ Model TensorFlow.js loaded!');
+                } catch(e) {
+                    console.warn('Model not found, using simulation mode:', e);
+                    tfModel = null;
+                }
+            }
+            loadModel();
 
             async function classifyImage(imgElement) {
                 if (!tfModel) return null;
@@ -1617,203 +1716,342 @@ Keterangan:
                 return Array.from(data);
             }
 
-            // processImage: TF.js model classification + LLM recommendation
-            async function processImage(file) {
-                const reader = new FileReader();
-                reader.onload = async (ev) => {
-                    previewImg.src = ev.target.result;
-                    previewImg.style.display = 'block';
-                    placeholder.style.display = 'none';
+            // ==================== GROQ LLM API ====================
+            let cachedWeather = null;
+            const rateLimiter = { lastCall: 0, cooldown: 30000, canCall() { return Date.now() - this.lastCall >= this.cooldown; }, mark() { this.lastCall = Date.now(); } };
 
-                    const img = new Image();
-                    img.src = ev.target.result;
-                    await new Promise(r => img.onload = r);
+            async function getLLMRecommendation(cloudName, cloudCode, weatherData) {
+                if (!rateLimiter.canCall()) throw new Error('Rate limited');
+                rateLimiter.mark();
+                
+                const weatherContext = weatherData ? weatherData.map(w => `${w.name}: ${w.temp}°C, ${w.desc}`).join('; ') : 'Tidak tersedia';
+                try {
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            model: 'llama-3.3-70b-versatile',
+                            messages: [{ role: 'user', content: `Analisis risiko cuaca: Awan ${cloudName} (${cloudCode}), Cuaca: ${weatherContext}. Berikan JSON: {"riskLevel":"...","riskDesc":"...","recommendation":"...","icons":["fa-...","fa-...","fa-..."]}` }],
+                            temperature: 0.4
+                        })
+                    });
+                    if (!response.ok) throw new Error('API error');
+                    const data = await response.json();
+                    let text = data.choices?.[0]?.message?.content || '';
+                    text = text.replace(/```json\s*/gi, '').replace(/```/g, '').trim();
+                    return JSON.parse(text);
+                } catch(e) {
+                    console.warn('LLM API error, using fallback:', e);
+                    return {
+                        riskLevel: 'Rendah · Cerah',
+                        riskDesc: `${cloudName} menandakan kondisi cuaca yang umumnya baik`,
+                        recommendation: 'Nikmati aktivitas outdoor dengan tetap waspada terhadap perubahan cuaca',
+                        icons: ['fa-person-hiking', 'fa-camera', 'fa-tree']
+                    };
+                }
+            }
 
-                    let name, code, conf;
-                    const probs = await classifyImage(img);
+            // ==================== WEATHER API ====================
+            const CITIES = [
+                { name: 'Jakarta', lat: -6.2088, lon: 106.8456 },
+                { name: 'Bogor', lat: -6.5971, lon: 106.8060 },
+                { name: 'Depok', lat: -6.4025, lon: 106.7942 },
+                { name: 'Tangerang', lat: -6.1781, lon: 106.6297 },
+                { name: 'Bekasi', lat: -6.2349, lon: 106.9896 }
+            ];
+
+            function wmoToWeather(code) {
+                if (code === 0) return { desc: 'Cerah', icon: 'fa-sun', type: 'sunny' };
+                if (code <= 2) return { desc: 'Cerah Berawan', icon: 'fa-cloud-sun', type: 'partly-cloudy' };
+                if (code === 3) return { desc: 'Berawan', icon: 'fa-cloud', type: 'cloudy' };
+                if (code <= 49) return { desc: 'Kabut', icon: 'fa-smog', type: 'foggy' };
+                if (code <= 67) return { desc: 'Hujan', icon: 'fa-cloud-rain', type: 'rainy' };
+                if (code <= 82) return { desc: 'Hujan Lebat', icon: 'fa-cloud-showers-heavy', type: 'rainy' };
+                if (code <= 99) return { desc: 'Badai', icon: 'fa-cloud-bolt', type: 'storm' };
+                return { desc: 'Tidak diketahui', icon: 'fa-question', type: 'unknown' };
+            }
+
+            async function fetchWeather() {
+                const results = await Promise.all(CITIES.map(async city => {
+                    const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&wind_speed_unit=kmh&timezone=Asia/Jakarta`;
+                    const res = await fetch(url);
+                    const json = await res.json();
+                    const cur = json.current;
+                    return {
+                        name: city.name,
+                        temp: Math.round(cur.temperature_2m),
+                        humidity: cur.relative_humidity_2m,
+                        wind: Math.round(cur.wind_speed_10m),
+                        ...wmoToWeather(cur.weather_code)
+                    };
+                }));
+                cachedWeather = results;
+                return results;
+            }
+
+            async function updateWeatherDisplay() {
+                try {
+                    const weather = await fetchWeather();
+                    const grid = document.getElementById('citiesGrid');
+                    grid.innerHTML = weather.map(w => `
+                        <div class="city-card" data-weather="${w.type}">
+                            <div class="city-name">${w.name} <i class="fas ${w.icon}"></i></div>
+                            <div class="city-weather-icon"><i class="fas ${w.icon}"></i></div>
+                            <div class="city-temp">${w.temp}°C</div>
+                            <div class="city-desc">${w.desc}</div>
+                            <div class="city-stats">
+                                <div class="city-stat-item"><i class="fas fa-droplet"></i><div class="city-stat-value">${w.humidity}%</div><div class="city-stat-label">RH</div></div>
+                                <div class="city-stat-item"><i class="fas fa-wind"></i><div class="city-stat-value">${w.wind} km/h</div><div class="city-stat-label">Angin</div></div>
+                            </div>
+                            <div class="cloud-decoration">☁️</div>
+                        </div>
+                    `).join('');
+                    
+                    const rainyCount = weather.filter(w => w.type === 'rainy' || w.type === 'storm').length;
+                    if (rainyCount >= 3) {
+                        document.getElementById('bestTimeText').innerHTML = '<i class=""></i> Waspada Hujan';
+                        document.getElementById('bestTimeDesc').textContent = `${rainyCount} dari 5 kota terpantau hujan`;
+                    } else {
+                        document.getElementById('bestTimeText').innerHTML = '<i class=""></i> 09:00 - 15:00';
+                        document.getElementById('bestTimeDesc').textContent = 'Waktu terbaik untuk aktivitas outdoor';
+                    }
+                    
+                    const now = new Date();
+                    document.getElementById('updateTime').innerHTML = `<i class="fas fa-satellite-dish" style="color:#f59e0b"></i> Diperbarui ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} WIB`;
+                } catch(e) {
+                    console.error('Weather error:', e);
+                }
+            }
+            updateWeatherDisplay();
+            setInterval(updateWeatherDisplay, 10 * 60 * 1000);
+
+            // ==================== KAMERA & ANALISIS ====================
+            const shutterBtn = document.getElementById('shutterBtn');
+            const captureBtn = document.getElementById('captureBtn');
+            const stopCamBtn = document.getElementById('stopCamBtn');
+            const galleryBtn = document.getElementById('galleryBtn');
+            const cameraInput = document.getElementById('camera-input');
+            const galleryInput = document.getElementById('gallery-input');
+            const previewImg = document.getElementById('preview-image');
+            const placeholder = document.getElementById('placeholderPreview');
+            const cameraStream = document.getElementById('camera-stream');
+            const cameraCanvas = document.getElementById('camera-canvas');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            let activeStream = null;
+
+            async function analyzeAndUpdate(imageElement) {
+                loadingIndicator.classList.add('active');
+                
+                let prediction = { name: 'Cumulus', code: 'Cu', confidence: 0 };
+                
+                try {
+                    const probs = await classifyImage(imageElement);
                     if (probs) {
                         const topIdx = probs.indexOf(Math.max(...probs));
-                        conf = Math.round(probs[topIdx] * 100);
-                        name = CLASS_NAMES[topIdx];
-                        code = CLASS_CODES[topIdx];
+                        prediction.confidence = Math.round(probs[topIdx] * 100);
+                        prediction.name = CLASS_NAMES[topIdx];
+                        prediction.code = CLASS_CODES[topIdx];
                     } else {
-                        // Fallback random kalau model belum load
-                        const rand = cloudData[Math.floor(Math.random() * cloudData.length)];
-                        conf = Math.floor(Math.random() * 30) + 70;
-                        name = rand.name;
-                        code = rand.code;
+                        const randomIdx = Math.floor(Math.random() * CLASS_NAMES.length);
+                        prediction.name = CLASS_NAMES[randomIdx];
+                        prediction.code = CLASS_CODES[randomIdx];
+                        prediction.confidence = Math.floor(Math.random() * 30) + 70;
                     }
+                } catch(e) {
+                    console.warn('Classification error:', e);
+                    prediction.name = 'Cumulus';
+                    prediction.code = 'Cu';
+                    prediction.confidence = 85;
+                }
+                
+                // Update UI dengan animasi
+                document.getElementById('cloudName').style.opacity = '0';
+                document.getElementById('cloudCode').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('cloudName').textContent = prediction.name;
+                    document.getElementById('cloudCode').textContent = prediction.code;
+                    document.getElementById('cloudName').style.opacity = '1';
+                    document.getElementById('cloudCode').style.opacity = '1';
+                }, 200);
+                
+                document.getElementById('confidenceFill').style.width = prediction.confidence + '%';
+                document.getElementById('confidenceVal').textContent = prediction.confidence + '%';
+                
+                try {
+                    const llmResult = await getLLMRecommendation(prediction.name, prediction.code, cachedWeather);
+                    document.getElementById('riskLevel').textContent = llmResult.riskLevel;
+                    document.getElementById('riskDesc').textContent = llmResult.riskDesc;
+                    document.getElementById('rekomText').textContent = llmResult.recommendation;
+                    document.getElementById('rekomIcons').innerHTML = (llmResult.icons || []).map(i => `<i class="fas ${i}"></i>`).join('');
+                    document.getElementById('geminiBadge').style.display = 'inline-flex';
+                    document.getElementById('btnDetail').style.display = 'inline-block';
+                    window._lastLLMResult = llmResult;
+                } catch(e) {
+                    console.warn('LLM error:', e);
+                }
+                
+                loadingIndicator.classList.remove('active');
+            }
 
-                    document.getElementById('cloudName').textContent = name;
-                    document.getElementById('cloudCode').textContent = code;
-                    document.getElementById('confidenceFill').style.width = conf + '%';
-                    document.getElementById('confidenceVal').textContent = conf + '%';
+            async function openCamera() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                    activeStream = stream;
+                    cameraStream.srcObject = stream;
+                    cameraStream.style.display = 'block';
+                    previewImg.style.display = 'none';
+                    placeholder.style.display = 'none';
+                    shutterBtn.style.display = 'none';
+                    galleryBtn.style.display = 'none';
+                    captureBtn.style.display = '';
+                    stopCamBtn.style.display = '';
+                } catch(err) {
+                    console.error('Camera error:', err);
+                    alert('Tidak dapat mengakses kamera. Pastikan izin diberikan.');
+                    cameraInput.click();
+                }
+            }
 
-                    // ── DEBUG (console) ──
-                    if (probs) {
-                        console.group('🔍 Model Output');
-                        CLASS_NAMES.slice(0, 6).forEach((n, i) => {
-                            const pct = (probs[i] * 100).toFixed(2);
-                            const bar = '█'.repeat(Math.round(probs[i] * 20));
-                            const isTop = i === probs.indexOf(Math.max(...probs.slice(0, 6)));
-                            console.log(`${isTop ? '▶' : ' '} ${n.padEnd(15)} ${pct}% ${bar}`);
-                        });
-                        console.log(`Sum: ${probs.slice(0, 6).reduce((a, b) => a + b, 0).toFixed(4)}`);
-                        console.groupEnd();
-                    }
+            function capturePhoto() {
+                if (!activeStream) return;
+                cameraCanvas.width = cameraStream.videoWidth;
+                cameraCanvas.height = cameraStream.videoHeight;
+                cameraCanvas.getContext('2d').drawImage(cameraStream, 0, 0);
+                stopCamera();
+                const dataUrl = cameraCanvas.toDataURL('image/jpeg', 0.9);
+                previewImg.src = dataUrl;
+                previewImg.style.display = 'block';
+                
+                const tempImg = new Image();
+                tempImg.onload = () => analyzeAndUpdate(tempImg);
+                tempImg.src = dataUrl;
+            }
 
-                    if (rateLimiter.canCall()) {
-                        try {
-                            rateLimiter.mark();
-                            const result = await getRecommendation(name, code);
-                            document.getElementById('riskLevel').textContent = result.riskLevel || 'Rendah · Cerah';
-                            document.getElementById('riskDesc').textContent = result.riskDesc || '';
-                            document.getElementById('rekomText').textContent = result.recommendation || '';
-                            document.getElementById('rekomIcons').innerHTML = (result.icons || []).map(i => `<i class="fas ${i}"></i>`).join('');
-                            document.getElementById('geminiBadge').style.display = 'inline-flex';
-                            document.getElementById('btnDetail').style.display = 'inline-block';
-                            window._lastLLMResult = result;
-                        } catch (err) {
-                            console.warn('LLM error:', err.message);
-                            document.getElementById('riskLevel').textContent = 'Fallback · Lokal';
-                            document.getElementById('riskDesc').textContent = 'LLM API error: ' + err.message;
-                            document.getElementById('geminiBadge').style.display = 'none';
-                            document.getElementById('btnDetail').style.display = 'none';
-                        }
-                    } else {
-                        document.getElementById('riskLevel').textContent = 'Rate Limited';
-                        document.getElementById('riskDesc').textContent = `Tunggu ${rateLimiter.remaining()} detik`;
-                    }
+            function stopCamera() {
+                if (activeStream) {
+                    activeStream.getTracks().forEach(t => t.stop());
+                    activeStream = null;
+                }
+                cameraStream.style.display = 'none';
+                cameraStream.srcObject = null;
+                captureBtn.style.display = 'none';
+                stopCamBtn.style.display = 'none';
+                shutterBtn.style.display = '';
+                galleryBtn.style.display = '';
+                if (!previewImg.src || previewImg.src === '#') {
+                    placeholder.style.display = '';
+                }
+            }
+
+            function processUpload(file) {
+                if (!file) return;
+                if (activeStream) stopCamera();
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImg.src = e.target.result;
+                    previewImg.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    const img = new Image();
+                    img.onload = () => analyzeAndUpdate(img);
+                    img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
 
-            cameraInput.onchange = (e) => { if (e.target.files[0]) processImage(e.target.files[0]); };
-            galleryInput.onchange = (e) => { if (e.target.files[0]) processImage(e.target.files[0]); };
+            shutterBtn.onclick = openCamera;
+            captureBtn.onclick = capturePhoto;
+            stopCamBtn.onclick = stopCamera;
+            galleryBtn.onclick = () => galleryInput.click();
+            cameraInput.onchange = (e) => processUpload(e.target.files[0]);
+            galleryInput.onchange = (e) => processUpload(e.target.files[0]);
 
-            // Active menu smooth scroll
+            // Smooth scroll
             document.querySelectorAll('.nav-menu a').forEach(a => {
                 a.onclick = (e) => {
                     const hash = a.getAttribute('href');
                     if (hash && hash.startsWith('#')) {
                         e.preventDefault();
                         const target = document.getElementById(hash.substring(1));
-                        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        if (target) target.scrollIntoView({ behavior: 'smooth' });
                         document.querySelectorAll('.nav-menu a').forEach(l => l.classList.remove('active'));
                         a.classList.add('active');
                     }
                 };
             });
-
-            // ===== LIVE WEATHER (Open-Meteo, no API key) =====
-            const CITIES = [
-                { name: 'Jakarta', lat: -6.2088, lon: 106.8456 },
-                { name: 'Bogor', lat: -6.5971, lon: 106.8060 },
-                { name: 'Depok', lat: -6.4025, lon: 106.7942 },
-                { name: 'Tangerang', lat: -6.1781, lon: 106.6297 },
-                { name: 'Bekasi', lat: -6.2349, lon: 106.9896 },
-            ];
-
-            // WMO weather code → { desc, icon FA class, weather type }
-            function wmoInfo(code) {
-                if (code === 0) return { desc: 'Cerah', icon: 'fa-sun', type: 'sunny' };
-                if (code <= 2) return { desc: 'Cerah Berawan', icon: 'fa-cloud-sun', type: 'partly-cloudy' };
-                if (code === 3) return { desc: 'Berawan Tebal', icon: 'fa-cloud', type: 'overcast' };
-                if (code <= 49) return { desc: 'Berkabut', icon: 'fa-smog', type: 'cloudy' };
-                if (code <= 57) return { desc: 'Gerimis', icon: 'fa-cloud-drizzle', type: 'rainy' };
-                if (code <= 67) return { desc: 'Hujan', icon: 'fa-cloud-rain', type: 'rainy' };
-                if (code <= 77) return { desc: 'Salju', icon: 'fa-snowflake', type: 'cloudy' };
-                if (code <= 82) return { desc: 'Hujan Lebat', icon: 'fa-cloud-showers-heavy', type: 'rainy' };
-                if (code <= 99) return { desc: 'Badai Petir', icon: 'fa-cloud-bolt', type: 'rainy' };
-                return { desc: 'Tidak Diketahui', icon: 'fa-question', type: 'cloudy' };
-            }
-
-            async function fetchCityWeather(city) {
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}` +
-                    `&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code` +
-                    `&wind_speed_unit=kmh&timezone=Asia%2FJakarta`;
-                const res = await fetch(url);
-                const json = await res.json();
-                const cur = json.current;
-                return {
-                    name: city.name,
-                    temp: Math.round(cur.temperature_2m),
-                    humidity: cur.relative_humidity_2m,
-                    wind: Math.round(cur.wind_speed_10m),
-                    ...wmoInfo(cur.weather_code)
-                };
-            }
-
-            function renderCityCard(d) {
-                return `
-        <div class="city-card" data-weather="${d.type}">
-            <div class="city-name">${d.name}</div>
-            <div class="city-weather-icon"><i class="fas ${d.icon}"></i></div>
-            <div class="city-temp">${d.temp}°C</div>
-            <div class="city-desc">${d.desc}</div>
-            <div class="city-stats">
-                <div class="city-stat-item"><i class="fas fa-droplet"></i><div class="city-stat-value">${d.humidity}%</div><div class="city-stat-label">RH</div></div>
-                <div class="city-stat-item"><i class="fas fa-wind"></i><div class="city-stat-value">${d.wind} km/h</div><div class="city-stat-label">Angin</div></div>
-            </div>
-        </div>`;
-            }
-
-            function updateClock() {
-                const now = new Date();
-                const hh = String(now.getHours()).padStart(2, '0');
-                const mm = String(now.getMinutes()).padStart(2, '0');
-                document.getElementById('updateTime').innerHTML =
-                    `<i class="fas fa-satellite-dish" style="color:#FFD700"></i> Diperbarui ${hh}:${mm} WIB`;
-            }
-
-            async function fetchAllWeather() {
-                const syncIcon = document.getElementById('syncIcon');
-                if (syncIcon) syncIcon.className = 'fas fa-sync-alt fa-spin';
-                try {
-                    const results = await Promise.all(CITIES.map(fetchCityWeather));
-                    cachedWeatherResults = results; // Cache for Gemini
-                    const grid = document.getElementById('citiesGrid');
-                    grid.innerHTML = results.map(renderCityCard).join('');
-
-                    // Best time: count non-rainy cities
-                    const rainyCount = results.filter(r => r.type === 'rainy').length;
-                    const badgeEl = document.getElementById('bestTimeBadge');
-                    const descEl = document.getElementById('bestTimeDesc');
-                    if (rainyCount >= 3) {
-                        badgeEl.style.background = '#4a1a1a';
-                        document.getElementById('bestTimeText').textContent = 'Waspada Hujan';
-                        descEl.textContent = `${rainyCount} dari 5 kota Jabodetabek terpantau hujan`;
-                    } else {
-                        badgeEl.style.background = '#1f5f9e';
-                        document.getElementById('bestTimeText').textContent = '09:00 – 15:00';
-                        descEl.textContent = 'Rekomendasi berdasarkan cuaca terkini Jabodetabek';
-                    }
-                    updateClock();
-                } catch (err) {
-                    document.getElementById('updateTime').innerHTML =
-                        `<i class="fas fa-exclamation-triangle" style="color:#ff6b6b"></i> Gagal memuat data`;
-                    console.error('Weather fetch error:', err);
-                }
-            }
-
-            // Fetch on load, then refresh every 10 minutes
-            fetchAllWeather();
-            setInterval(fetchAllWeather, 10 * 60 * 1000);
-
         })();
 
-        // Global modal functions (outside IIFE for onclick access)
         function openDetailModal() {
             const r = window._lastLLMResult;
-            if (!r) return;
-            document.getElementById('modalRisk').textContent = r.riskLevel || '-';
-            document.getElementById('modalDesc').textContent = r.riskDesc || '-';
-            document.getElementById('detailModal').classList.add('active');
+            if (r) {
+                document.getElementById('modalRisk').textContent = r.riskLevel || '-';
+                document.getElementById('modalDesc').textContent = r.riskDesc || '-';
+                document.getElementById('detailModal').classList.add('active');
+            }
         }
         function closeDetailModal() {
             document.getElementById('detailModal').classList.remove('active');
         }
+        document.getElementById('btnDetail')?.addEventListener('click', openDetailModal);
+// ==================== ANIMASI AWAN BERGERAK ====================
+function createFloatingClouds() {
+    const container = document.getElementById('floatingClouds');
+    if (!container) return;
+    
+    const cloudSizes = ['small', 'medium', 'large'];
+    const cloudVariants = ['☁️', '☁️', '☁️', '⛅', '☁️'];
+    
+    // Buat 15 awan yang bergerak
+    for (let i = 0; i < 15; i++) {
+        const cloud = document.createElement('div');
+        cloud.className = `floating-cloud ${cloudSizes[Math.floor(Math.random() * cloudSizes.length)]}`;
+        cloud.textContent = cloudVariants[Math.floor(Math.random() * cloudVariants.length)];
+        
+        // Posisi awal random
+        const startY = Math.random() * 100; // persen dari height
+        const duration = 15 + Math.random() * 15; // 15-30 detik
+        const delay = Math.random() * -20; // delay random (bisa negatif untuk mulai di tengah)
+        const yOffset = (Math.random() - 0.5) * 100; // pergerakan vertikal -50px sampai 50px
+        
+        cloud.style.top = `${startY}%`;
+        cloud.style.animationDuration = `${duration}s`;
+        cloud.style.animationDelay = `${delay}s`;
+        cloud.style.setProperty('--y-offset', `${yOffset}px`);
+        
+        container.appendChild(cloud);
+    }
+}
+
+// Tambahkan juga awan tambahan secara periodik
+function addPeriodicCloud() {
+    const container = document.getElementById('floatingClouds');
+    if (!container) return;
+    
+    setInterval(() => {
+        const cloud = document.createElement('div');
+        const cloudSizes = ['small', 'medium'];
+        cloud.className = `floating-cloud ${cloudSizes[Math.floor(Math.random() * cloudSizes.length)]}`;
+        cloud.textContent = '☁️';
+        
+        cloud.style.top = `${Math.random() * 100}%`;
+        cloud.style.animationDuration = `${12 + Math.random() * 15}s`;
+        cloud.style.animationDelay = `0s`;
+        
+        container.appendChild(cloud);
+        
+        // Hapus awan setelah animasi selesai
+        setTimeout(() => {
+            if (cloud && cloud.remove) cloud.remove();
+        }, 25000);
+    }, 8000);
+}
+
+// Panggil fungsi saat halaman load
+document.addEventListener('DOMContentLoaded', () => {
+    createFloatingClouds();
+    addPeriodicCloud();
+});
+
     </script>
-</body>
+    </body>
 
 </html>
