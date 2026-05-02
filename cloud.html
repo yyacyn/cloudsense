@@ -1332,6 +1332,162 @@ function createRealisticCloud(type, baseColor) {
             group.add(sphere);
         }
     }
+    else if (type === 'cirrocumulus') {
+        // ============================================================
+        // AWAN CIRROCUMULUS - GUMPALAN KECIL BERDERET (RIBBED/PATTERN)
+        // ============================================================
+        
+        const cirrocumulusMaterial = new THREE.MeshStandardMaterial({
+            color: 0xeef4ff,
+            roughness: 0.22,
+            metalness: 0.0,
+            emissive: 0xaaccff,
+            emissiveIntensity: 0.08,
+            transparent: true,
+            opacity: 0.82
+        });
+        
+        const cirrocumulusMaterialGelap = new THREE.MeshStandardMaterial({
+            color: 0xdde4f0,
+            roughness: 0.28,
+            metalness: 0.0,
+            emissive: 0x88aacc,
+            emissiveIntensity: 0.06,
+            transparent: true,
+            opacity: 0.78
+        });
+        
+        // Membuat baris-baris gumpalan kecil (seperti ripple effect)
+        // Baris 1
+        for (let x = -2.0; x <= 2.0; x += 0.45) {
+            const sphere = new THREE.Mesh(
+                new THREE.SphereGeometry(0.22 + Math.random() * 0.08, 20, 20),
+                cirrocumulusMaterial
+            );
+            sphere.position.set(x, 1.05 + Math.sin(x * 1.5) * 0.08, -0.45);
+            group.add(sphere);
+        }
+        
+        // Baris 2
+        for (let x = -1.8; x <= 1.8; x += 0.48) {
+            const sphere = new THREE.Mesh(
+                new THREE.SphereGeometry(0.20 + Math.random() * 0.07, 20, 20),
+                cirrocumulusMaterialGelap
+            );
+            sphere.position.set(x, 1.12 + Math.cos(x * 1.8) * 0.06, -0.18);
+            group.add(sphere);
+        }
+        
+        // Baris 3
+        for (let x = -1.9; x <= 1.9; x += 0.47) {
+            const sphere = new THREE.Mesh(
+                new THREE.SphereGeometry(0.21 + Math.random() * 0.07, 20, 20),
+                cirrocumulusMaterial
+            );
+            sphere.position.set(x, 1.08 + Math.sin(x * 1.6) * 0.07, 0.1);
+            group.add(sphere);
+        }
+        
+        // Baris 4
+        for (let x = -2.1; x <= 2.1; x += 0.50) {
+            const sphere = new THREE.Mesh(
+                new THREE.SphereGeometry(0.19 + Math.random() * 0.06, 20, 20),
+                cirrocumulusMaterialGelap
+            );
+            sphere.position.set(x, 1.15 + Math.cos(x * 1.7) * 0.05, 0.38);
+            group.add(sphere);
+        }
+        
+        // Gumpalan kecil tambahan untuk mengisi celah
+        for (let i = 0; i < 45; i++) {
+            const sphere = new THREE.Mesh(
+                new THREE.SphereGeometry(0.16 + Math.random() * 0.09, 18, 18),
+                cirrocumulusMaterial
+            );
+            sphere.position.set(
+                -2.3 + Math.random() * 4.6,
+                0.98 + Math.random() * 0.28,
+                -0.65 + Math.random() * 1.3
+            );
+            group.add(sphere);
+        }
+    }
+    else if (type === 'cirrostratus') {
+        // ============================================================
+        // AWAN CIRROSTRATUS - TIPIS MERATA SEPERTI SELUBUNG (HALUS)
+        // ============================================================
+        
+        const cirrostratusMaterial = new THREE.MeshStandardMaterial({
+            color: 0xf0f6ff,
+            roughness: 0.18,
+            metalness: 0.0,
+            emissive: 0xbbddff,
+            emissiveIntensity: 0.15,
+            transparent: true,
+            opacity: 0.68
+        });
+        
+        const cirrostratusMaterialTipis = new THREE.MeshStandardMaterial({
+            color: 0xf5faff,
+            roughness: 0.15,
+            metalness: 0.0,
+            emissive: 0xcceeFF,
+            emissiveIntensity: 0.12,
+            transparent: true,
+            opacity: 0.60
+        });
+        
+        // Lapisan tipis merata (seperti selubung)
+        // Layer 1 (bawah)
+        for (let x = -2.5; x <= 2.5; x += 0.35) {
+            for (let z = -1.0; z <= 1.0; z += 0.45) {
+                const sphere = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.18 + Math.random() * 0.08, 16, 16),
+                    cirrostratusMaterialTipis
+                );
+                sphere.position.set(x, 0.85 + Math.cos(x * 1.2 + z) * 0.05, z);
+                group.add(sphere);
+            }
+        }
+        
+        // Layer 2 (tengah)
+        for (let x = -2.3; x <= 2.3; x += 0.38) {
+            for (let z = -0.9; z <= 0.9; z += 0.48) {
+                const sphere = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.17 + Math.random() * 0.07, 16, 16),
+                    cirrostratusMaterial
+                );
+                sphere.position.set(x, 1.05 + Math.sin(x * 1.0 + z * 0.8) * 0.04, z);
+                group.add(sphere);
+            }
+        }
+        
+        // Layer 3 (atas)
+        for (let x = -2.4; x <= 2.4; x += 0.36) {
+            for (let z = -0.8; z <= 0.8; z += 0.50) {
+                const sphere = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.16 + Math.random() * 0.08, 16, 16),
+                    cirrostratusMaterialTipis
+                );
+                sphere.position.set(x, 1.28 + Math.cos(x * 1.1 + z * 0.9) * 0.04, z);
+                group.add(sphere);
+            }
+        }
+        
+        // Serabut sangat halus yang menyebar (efek halo)
+        for (let i = 0; i < 200; i++) {
+            const sphere = new THREE.Mesh(
+                new THREE.SphereGeometry(0.06 + Math.random() * 0.08, 12, 12),
+                cirrostratusMaterial
+            );
+            sphere.position.set(
+                -3.0 + Math.random() * 6.0,
+                0.75 + Math.random() * 0.9,
+                -1.2 + Math.random() * 2.4
+            );
+            group.add(sphere);
+        }
+    }
     else if (type === 'cumulonimbus') {
         // ============================================================
         // AWAN CUMULONIMBUS - AWAN BADAI YANG NORMAL (MENGGUMPAL BESAR)
