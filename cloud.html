@@ -1,37 +1,73 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>CloudSense · 10 Karakter Awan 3D + Gesture</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Three.js untuk 3D -->
-    <script type="importmap">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=yes">
+        <title>CloudSense · Eksplorasi 3D Cloud</title>
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet">
+        <!-- Font Awesome -->
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- Three.js untuk 3D -->
+        <script type="importmap">
         {
             "imports": {
                 "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
             }
         }
     </script>
-    <style>
-        /* ===== HEADER STICKY GLASS ===== */
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e8f0fe 100%);
+            color: #1a4d7a;
+            overflow-x: hidden;
+        }
+
+        .web-container {
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #d4e4f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(145deg, #2b7fc3, #3fa5f0);
+            border-radius: 20px;
+        }
+
         .header {
-            background: rgba(6, 18, 30, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 0 0 40px 40px;
-            padding: 1.2rem 2rem;
+            padding: 1rem 2rem;
             margin-bottom: 2rem;
             position: sticky;
             top: 0;
             z-index: 200;
-            border: 1px solid rgba(64, 128, 255, 0.25);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(43, 127, 195, 0.2);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
         }
 
         .nav-container {
@@ -42,121 +78,10 @@
             gap: 1rem;
         }
 
-        .logo-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .logo-icon {
-            width: 56px;
-            height: 56px;
-            background: radial-gradient(circle at 30% 20%, #3b8fd9, #0f4c81);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 30px;
-            box-shadow: 0 10px 20px -5px #2b7fc3;
-        }
-
-        .logo-text h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #b3deff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.02em;
-        }
-
-        .logo-text p {
-            color: #92c5ff;
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 2px;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-            flex-wrap: wrap;
-        }
-
-        .nav-menu a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            padding: 0.5rem 0;
-            position: relative;
-            transition: 0.2s;
-        }
-
-        .nav-menu a:hover,
-        .nav-menu a.active {
-            color: white;
-            text-shadow: 0 0 8px #6bb5ff;
-        }
-
-        .nav-menu a::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: linear-gradient(90deg, #2b7fc3, #9ad0ff);
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-
-        .nav-menu a:hover::before,
-        .nav-menu a.active::before {
-            width: 100%;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0A0F1F;
-            color: white;
-            overflow-x: hidden;
-        }
-
-        .web-container {
-            max-width: 1600px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* ===== MODERN SCROLLBAR ===== */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #101b2b;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(145deg, #2b7fc3, #3fa5f0);
-            border-radius: 20px;
-        }
-
-        /* ===== BACK BUTTON ===== */
         .back-button {
             width: 40px;
             height: 40px;
-            background: rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -165,170 +90,102 @@
             font-size: 1.2rem;
             cursor: pointer;
             transition: 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            margin-right: 10px;
+            box-shadow: 0 5px 10px -3px rgba(43, 127, 195, 0.3);
         }
 
         .back-button:hover {
-            background: #2b7fc3;
             transform: scale(1.1);
+            box-shadow: 0 8px 15px -3px rgba(43, 127, 195, 0.4);
         }
 
-        .header-content {
+        .logo-wrapper {
             display: flex;
             align-items: center;
+            gap: 18px;
         }
 
-        /* ===== HELP BUTTON & MODAL ===== */
-        .help-btn {
-            background: rgba(43, 127, 195, 0.2);
-            border: 1px solid rgba(135, 206, 250, 0.4);
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3b8fd9, #0f4c81);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
+            font-size: 28px;
+            box-shadow: 0 10px 20px -5px rgba(43, 127, 195, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .logo-text h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1a4d7a, #2b7fc3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-text p {
+            color: #2b7fc3;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .tutorial-btn {
+            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 40px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 10px;
             transition: 0.3s;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px -5px #2b7fc3;
         }
-        .help-btn:hover {
-            background: rgba(43, 127, 195, 0.4);
+
+        .tutorial-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            border-color: #FFD700;
+            box-shadow: 0 8px 20px -8px #2b7fc3;
         }
 
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 5, 15, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 9999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-overlay.active { display: flex; }
-
-        .help-modal {
-            background: rgba(20, 30, 50, 0.95);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 40px;
-            padding: 40px;
-            max-width: 550px;
-            width: 100%;
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
-            animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes modalIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .help-modal h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            color: white;
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .help-modal h2 i { color: #FFD700; }
-
-        .help-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .help-item {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px 25px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.2s;
-        }
-        .help-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 215, 0, 0.2);
-        }
-
-        .help-item i {
-            width: 35px;
-            font-size: 1.4rem;
-            color: #FFD700;
-            text-align: center;
-        }
-
-        .help-item span {
-            color: #aac9ff;
-            font-size: 1rem;
-        }
-
-        .help-item strong {
-            color: white;
-            font-weight: 700;
-        }
-
-        .close-help {
-            margin-top: 30px;
-            background: linear-gradient(135deg, #1f5f9e, #2d8ae0);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 35px;
-            width: 100%;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 10px 20px -8px #0066cc;
-        }
-        .close-help:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px -10px #0088ff;
-        }
-
-        /* ===== POSE CONTROL (DEPRECATED - Moved to Modal) ===== */
-
-
-        /* ===== MAIN CONTAINER ===== */
         .main-container {
             display: flex;
             padding: 20px 0;
             gap: 20px;
-            height: calc(100vh - 180px);
-            margin-top: 10px;
+            align-items: stretch;
         }
 
-        /* ===== LEFT PANEL - 10 KARAKTER AWAN ===== */
         .left-panel {
-            width: 400px;
-            background: rgba(20, 30, 50, 0.7);
+            width: 380px;
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
             border-radius: 40px;
             padding: 25px;
-            border: 1px solid rgba(100, 180, 255, 0.2);
+            border: 1px solid rgba(43, 127, 195, 0.2);
             overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #2b7fc3 #1a2a40;
+            box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 180px);
         }
 
         .left-panel::-webkit-scrollbar {
             width: 6px;
         }
         .left-panel::-webkit-scrollbar-track {
-            background: #1a2a40;
+            background: #e0ecf8;
             border-radius: 10px;
         }
         .left-panel::-webkit-scrollbar-thumb {
@@ -337,141 +194,143 @@
         }
 
         .panel-header {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(43, 127, 195, 0.2);
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 10;
+            border-radius: 20px;
         }
 
         .panel-header h2 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #fff, #9bc9ff);
+            background: linear-gradient(135deg, #1a4d7a, #2b7fc3);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
         .panel-header p {
-            color: #aac9f0;
-            font-size: 0.95rem;
-            margin-top: 8px;
+            color: #5a7a9e;
+            font-size: 0.8rem;
+            margin-top: 6px;
         }
 
         .cloud-cards {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
+            flex: 1;
         }
 
         .cloud-card {
-            background: rgba(30, 45, 70, 0.6);
-            border-radius: 30px;
-            padding: 20px;
-            border: 1px solid rgba(100, 180, 255, 0.2);
+            background: #ffffff;
+            border-radius: 25px;
+            padding: 16px;
+            border: 1px solid rgba(43, 127, 195, 0.15);
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 5px 12px -8px rgba(0, 0, 0, 0.08);
         }
 
         .cloud-card:hover {
             transform: translateY(-4px);
-            border-color: #3b9eff;
-            box-shadow: 0 15px 30px -15px #0088ff;
-            background: rgba(40, 60, 90, 0.8);
+            box-shadow: 0 15px 30px -12px rgba(43, 127, 195, 0.2);
         }
 
         .cloud-card.active {
-            border-color: #FFD700;
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
-            background: rgba(50, 70, 100, 0.9);
+            background: linear-gradient(135deg, #f0f9ff, #e8f0fe);
+            border-color: #2b7fc3;
         }
 
         .cloud-card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .cloud-code {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: 800;
-            color: #FFD700;
+            color: #2b7fc3;
             line-height: 1;
         }
 
         .cloud-icon {
-            font-size: 2.2rem;
-            color: #b1dcff;
+            font-size: 1.8rem;
+            color: #2b7fc3;
         }
 
         .cloud-name {
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            color: white;
-            margin-bottom: 10px;
+            color: #1a4d7a;
+            margin-bottom: 6px;
         }
 
         .cloud-desc {
-            color: #c3dfff;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
+            color: #5a7a9e;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .cloud-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 10px;
         }
 
         .cloud-altitude {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 5px 15px;
+            background: rgba(43, 127, 195, 0.1);
+            padding: 4px 10px;
             border-radius: 30px;
-            color: #aac9f0;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #2b7fc3;
+            font-size: 0.65rem;
+            font-weight: 600;
         }
 
         .explore-btn {
-            background: transparent;
-            border: 1px solid #3b9eff;
-            color: #3b9eff;
-            padding: 8px 18px;
+            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
+            border: none;
+            color: white;
+            padding: 6px 14px;
             border-radius: 30px;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             font-weight: 600;
             cursor: pointer;
             transition: 0.2s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 5px;
         }
 
         .explore-btn:hover {
-            background: #3b9eff;
-            color: white;
+            transform: scale(1.05);
         }
 
-        .explore-btn i {
-            font-size: 0.8rem;
-        }
-
-        /* ===== CENTER PANEL - 3D VIEWER ===== */
         .center-panel {
             flex: 1;
-            background: #0A0F1F;
+            background: #0a0f1f;
             border-radius: 40px;
             overflow: hidden;
-            border: 1px solid rgba(100, 180, 255, 0.3);
+            border: 1px solid rgba(43, 127, 195, 0.3);
             position: relative;
-            box-shadow: 0 20px 40px -15px #000;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+            height: calc(100vh - 180px);
         }
 
         #canvas-container {
@@ -481,62 +340,63 @@
 
         .viewer-overlay {
             position: absolute;
-            bottom: 30px;
-            left: 30px;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
             z-index: 10;
         }
 
         .cloud-info-overlay {
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
-            border-radius: 60px;
-            padding: 15px 30px;
+            border-radius: 30px;
+            padding: 12px 24px;
             border: 1px solid rgba(255, 215, 0, 0.3);
-            box-shadow: 0 10px 30px -10px #000;
         }
 
         .current-cloud {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: white;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .current-cloud span {
             color: #FFD700;
-            font-size: 1.2rem;
+            font-size: 1rem;
             background: rgba(255, 215, 0, 0.15);
-            padding: 5px 15px;
-            border-radius: 40px;
+            padding: 4px 12px;
+            border-radius: 30px;
         }
 
         .current-desc {
             color: #aac9f0;
-            font-size: 1rem;
-            margin-top: 8px;
-            max-width: 400px;
+            font-size: 0.85rem;
+            margin-top: 6px;
         }
 
-        /* ===== RIGHT PANEL - VIDEO & LANDMARK ===== */
         .right-panel {
             width: 380px;
-            background: rgba(20, 30, 50, 0.7);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
             border-radius: 40px;
-            padding: 25px;
-            border: 1px solid rgba(100, 180, 255, 0.2);
+            padding: 20px;
+            border: 1px solid rgba(43, 127, 195, 0.2);
             display: flex;
             flex-direction: column;
+            box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.1);
+            height: calc(100vh - 180px);
         }
 
         .video-section {
-            background: #0A0F1F;
-            border-radius: 35px;
-            padding: 20px;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            background: #ffffff;
+            border-radius: 30px;
+            padding: 18px;
+            border: 1px solid rgba(43, 127, 195, 0.15);
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -546,533 +406,466 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .video-header h3 {
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 600;
+            color: #1a4d7a;
+            font-size: 1.1rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .video-header h3 i {
-            color: #FFD700;
+        .button-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
         .live-badge {
-            background: #ff4444;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
             color: white;
-            padding: 5px 15px;
-            border-radius: 40px;
-            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 30px;
+            font-size: 0.65rem;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
-        .live-badge i {
-            font-size: 0.6rem;
+        .live-badge.active {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
         }
 
-        .video-preview {
-            aspect-ratio: 16/9;
-            background: #1a2a40;
-            border-radius: 25px;
+        .camera-control-btn, .capture-btn {
+            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
+            border: none;
+            border-radius: 30px;
+            padding: 5px 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #4a6a8a;
-            font-size: 4rem;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,215,0,0.2);
-            position: relative;
-            overflow: hidden;
+            gap: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: white;
+            font-weight: 600;
+            font-size: 0.7rem;
         }
 
-        #camera-stream {
+        .capture-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .camera-control-btn:hover, .capture-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .gesture-canvas-container {
+            aspect-ratio: 16/9;
+            background: #0a0f1f;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            border: 2px solid rgba(43, 127, 195, 0.3);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        #gesture-canvas {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none;
         }
 
-        .placeholder-preview {
+        .placeholder-gesture {
             position: absolute;
             text-align: center;
-            color: #609ac7;
+            color: #4a6a8a;
+            pointer-events: none;
         }
 
-        .placeholder-preview i {
-            font-size: 5rem;
-            opacity: 0.7;
-            margin-bottom: 0.8rem;
+        .placeholder-gesture i {
+            font-size: 2.5rem;
+            opacity: 0.5;
+            margin-bottom: 0.5rem;
         }
 
-        .placeholder-preview p {
-            font-size: 0.9rem;
+        .placeholder-gesture p {
+            font-size: 0.7rem;
         }
 
-        .landmark-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
+        .gesture-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #5a7a9e;
+            font-size: 0.65rem;
+            padding: 6px 10px;
+            background: #f8fafc;
+            border-radius: 30px;
+            margin-top: 8px;
         }
 
-        .landmark-box {
-            background: #1a2a40;
-            border-radius: 25px;
-            padding: 15px 10px;
+        .gesture-name-box {
+            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
+            border-radius: 20px;
+            padding: 8px;
             text-align: center;
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            transition: 0.2s;
+            margin-top: 8px;
         }
 
-        .landmark-box:hover {
-            border-color: #FFD700;
-            transform: translateY(-2px);
+        .gesture-name-box .label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            margin-bottom: 3px;
         }
 
-        .landmark-value {
+        .gesture-name-box .value {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #FFD700;
-            line-height: 1.2;
-        }
-
-        .landmark-label {
-            color: #aac9f0;
-            font-size: 0.8rem;
-            margin-top: 5px;
-            letter-spacing: 0.5px;
-        }
-
-        .stream-status {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #aac9f0;
             font-size: 0.9rem;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .stream-status i {
-            color: #44ff44;
-            font-size: 0.7rem;
-            filter: drop-shadow(0 0 5px #00ff00);
-        }
-
-        .stream-status i.off {
-            color: #ff4444;
-        }
-
-        /* ===== BUTTON KAMERA ===== */
-        .camera-button {
-            background: linear-gradient(135deg, #1f5f9e, #2d8ae0);
-            border: 1px solid rgba(255, 215, 0, 0.4);
-            border-radius: 50px;
-            padding: 18px 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 20px;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 10px 20px -8px #0066cc;
-        }
-
-        .camera-button:hover {
-            background: #2d8ae0;
-            border-color: #FFD700;
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px -10px #0088ff;
-        }
-
-        .camera-button span {
-            color: white;
             font-weight: 700;
-            font-size: 1.1rem;
+            color: #FFD700;
+        }
+
+        .tutorial-sidebar {
+            position: fixed;
+            top: 50%;
+            right: -320px;
+            transform: translateY(-50%);
+            width: 300px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 30px 0 0 30px;
+            padding: 20px;
+            border: 1px solid rgba(43, 127, 195, 0.2);
+            box-shadow: -10px 0 30px -10px rgba(0, 0, 0, 0.2);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .tutorial-sidebar.active {
+            right: 0;
+        }
+
+        .tutorial-sidebar h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: #1a4d7a;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding-bottom: 10px;
+        }
+
+        .tutorial-sidebar h3 i {
+            color: #f59e0b;
+        }
+
+        .tutorial-list {
+            display: flex;
+            flex-direction: column;
             gap: 12px;
         }
 
-        .camera-button i {
-            color: #FFD700;
-            font-size: 1.4rem;
-        }
-
-        .camera-button .arrow-icon {
-            color: white;
-            font-size: 1.2rem;
-            opacity: 0.8;
-        }
-
-        /* ===== CAPTURE BUTTON ===== */
-        .capture-button {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            border: 1px solid rgba(255, 215, 0, 0.4);
-            border-radius: 50px;
-            padding: 12px 20px;
+        .tutorial-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-            cursor: pointer;
+            gap: 12px;
+            background: #f8fafc;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(43, 127, 195, 0.1);
             transition: 0.2s;
-            display: none;
         }
 
-        .capture-button:hover {
-            background: #c0392b;
-            transform: translateY(-2px);
+        .tutorial-item:hover {
+            background: #e8f0fe;
+            transform: translateX(-5px);
         }
 
-        /* ===== ACTIVATE WINDOWS ===== */
-        .activate-windows {
+        .tutorial-item i {
+            width: 30px;
+            font-size: 1.3rem;
+            color: #f59e0b;
             text-align: center;
-            margin-top: 10px;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.7rem;
-            letter-spacing: 1px;
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1400px) {
+        .tutorial-item .info {
+            flex: 1;
+        }
+
+        .tutorial-item .gesture {
+            font-weight: 700;
+            color: #1a4d7a;
+            font-size: 0.85rem;
+        }
+
+        .tutorial-item .action {
+            font-size: 0.7rem;
+            color: #5a7a9e;
+        }
+
+        .close-tutorial {
+            margin-top: 15px;
+            background: none;
+            border: 1px solid rgba(43, 127, 195, 0.3);
+            padding: 8px;
+            border-radius: 25px;
+            width: 100%;
+            cursor: pointer;
+            color: #2b7fc3;
+            font-weight: 600;
+            transition: 0.2s;
+            position: sticky;
+            bottom: 0;
+            background: white;
+        }
+
+        .close-tutorial:hover {
+            background: #2b7fc3;
+            color: white;
+        }
+
+        @media (max-width: 1200px) {
             .main-container {
                 flex-wrap: wrap;
-                height: auto;
             }
             .left-panel, .right-panel {
                 width: 100%;
+                height: auto;
+                min-height: 400px;
             }
             .center-panel {
-                height: 500px;
-                width: 100%;
+                min-height: 450px;
+                height: auto;
             }
-            .pose-control {
-                display: none;
+            .tutorial-sidebar {
+                width: 280px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .web-container {
+                padding: 0 1rem;
+            }
+            .nav-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .tutorial-sidebar {
+                width: 260px;
+            }
+            .video-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .button-group {
+                flex-wrap: wrap;
             }
         }
     </style>
-</head>
-<body>
-    <!-- HEADER -->
-    <header class="header">
-        <div class="nav-container">
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <div class="back-button" onclick="window.location.href='index.html'">
-                    <i class="fas fa-arrow-left"></i>
-                </div>
-                <div class="logo-wrapper">
-                    <div class="logo-icon"><i class="fas fa-cloud"></i></div>
-                    <div class="logo-text">
-                        <h1>CloudSense</h1>
-                        <p>10 KARAKTER AWAN · GESTURE 3D</p>
+    </head>
+    <body>
+        <header class="header">
+            <div class="nav-container">
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div class="back-button"
+                        onclick="window.location.href='index.html'">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                    <div class="logo-wrapper">
+                        <div class="logo-icon"><i
+                                class="fas fa-cloud-moon"></i></div>
+                        <div class="logo-text">
+                            <h1>CloudSense</h1>
+                            <p>10 KARAKTER AWAN · GESTURE 3D</p>
+                        </div>
                     </div>
                 </div>
+                <button class="tutorial-btn" id="tutorialBtn">
+                    <i class="fas fa-graduation-cap"></i> Tutorial Gesture
+                </button>
             </div>
-            
-            <button class="help-btn" onclick="openHelpModal()">
-                <i class="fas fa-question-circle"></i> Cara Menggunakan
-            </button>
+        </header>
+
+        <div class="tutorial-sidebar" id="tutorialSidebar">
+            <h3><i class="fas fa-hand-peace"></i> Panduan Hand Gesture</h3>
+            <div class="tutorial-list">
+                <div class="tutorial-item"><i class="fas fa-hand-peace"></i><div
+                        class="info"><div class="gesture">☝️ Telunjuk
+                            Saja</div><div class="action">Putar Awan ke KANAN
+                            90°</div></div></div>
+                <div class="tutorial-item"><i class="fas fa-hand-peace"></i><div
+                        class="info"><div class="gesture">✌️ Dua Jari</div><div
+                            class="action">Putar Awan ke KIRI
+                            90°</div></div></div>
+                <div class="tutorial-item"><i class="fas fa-hand-fist"></i><div
+                        class="info"><div class="gesture">✊ Mengepal (1
+                            Tangan)</div><div class="action">Zoom In
+                            (Mendekat)</div></div></div>
+                <div class="tutorial-item"><i class="fas fa-hand-paper"></i><div
+                        class="info"><div class="gesture">🖐️ Buka Tangan (1
+                            Tangan)</div><div class="action">Zoom Out
+                            (Menjauh)</div></div></div>
+                <div class="tutorial-item"><i
+                        class="fas fa-hand-back-fist"></i><div class="info"><div
+                            class="gesture">🤟 Tiga Jari</div><div
+                            class="action">Auto Rotate</div></div></div>
+                <div class="tutorial-item"><i
+                        class="fas fa-hand-pointer"></i><div class="info"><div
+                            class="gesture">🤙 Kelingking</div><div
+                            class="action">Reset View</div></div></div>
+                <div class="tutorial-item"><i class="fas fa-hand-fist"></i><div
+                        class="info"><div class="gesture">✊✊ Dua Tangan
+                            Mengepal</div><div class="action">Awan TURUN ke
+                            Bawah (Vertikal)</div></div></div>
+                <div class="tutorial-item"><i class="fas fa-hand-paper"></i><div
+                        class="info"><div class="gesture">🖐️🖐️ Dua Tangan
+                            Terbuka</div><div class="action">Awan NAIK ke Atas
+                            (Vertikal)</div></div></div>
+                <div class="tutorial-item"><i
+                        class="fas fa-arrows-spin"></i><div class="info"><div
+                            class="gesture">🤲 Dua Tangan (Beda
+                            Posisi)</div><div class="action">Rotasi / Geser
+                            Kamera</div></div></div>
+            </div>
+            <button class="close-tutorial" id="closeTutorial">Tutup
+                Panduan</button>
         </div>
-    </header>
 
-    <!-- MAIN CONTAINER -->
-    <div class="web-container">
-        <div class="main-container">
-            <!-- LEFT PANEL - 10 KARAKTER AWAN -->
-            <div class="left-panel">
-                <div class="panel-header">
-                    <h2>10 Karakter Awan</h2>
-                    <p>Pelajari morfologi setiap jenis awan melalui visualisasi 3D interaktif</p>
+        <div class="web-container">
+            <div class="main-container">
+                <div class="left-panel">
+                    <div class="panel-header">
+                        <h2>☁️ 10 Karakter Awan</h2>
+                        <p>Pelajari morfologi setiap jenis awan melalui
+                            visualisasi 3D interaktif</p>
+                    </div>
+                    <div class="cloud-cards" id="cloudCards"></div>
                 </div>
-                
-                <div class="cloud-cards" id="cloudCards">
-                    <!-- Akan diisi oleh JavaScript -->
-                </div>
-            </div>
 
-            <!-- CENTER PANEL - 3D VIEWER -->
-            <div class="center-panel">
-                <div id="canvas-container"></div>
-                
-                <!-- OVERLAY INFO -->
-                <div class="viewer-overlay">
-                    <div class="cloud-info-overlay" id="cloudInfoOverlay">
-                        <div class="current-cloud">
-                            Cumulus <span id="currentCloudCode">Cu</span>
+                <div class="center-panel">
+                    <div id="canvas-container"></div>
+                    <div class="viewer-overlay">
+                        <div class="cloud-info-overlay">
+                            <div class="current-cloud">
+                                <span id="currentCloudName">Cumulus</span>
+                                <span id="currentCloudCode">Cu</span>
+                            </div>
+                            <div class="current-desc" id="currentCloudDesc">Awan
+                                putih mengumpul seperti kapas</div>
                         </div>
-                        <div class="current-desc" id="currentCloudDesc">
-                            Awan putih mengumpul seperti kapas
+                    </div>
+                </div>
+
+                <div class="right-panel">
+                    <div class="video-section">
+                        <div class="video-header">
+                            <h3><i class="fas fa-hand-peace"></i> HAND
+                                TRACKING</h3>
+                            <div class="button-group">
+                                <div class="live-badge" id="liveBadge"><i
+                                        class="fas fa-circle"></i> OFF</div>
+                                <button class="camera-control-btn"
+                                    id="cameraBtn"><i class="fas fa-camera"></i>
+                                    Aktifkan</button>
+                                <button class="capture-btn" id="captureBtn"
+                                    style="display: none;"><i
+                                        class="fas fa-camera-retro"></i>
+                                    Foto</button>
+                            </div>
+                        </div>
+
+                        <div class="gesture-canvas-container">
+                            <canvas id="gesture-canvas" width="640"
+                                height="480"></canvas>
+                            <div class="placeholder-gesture"
+                                id="placeholderGesture">
+                                <i class="fas fa-hand-peace"></i>
+                                <p>Aktifkan kamera</p>
+                            </div>
+                        </div>
+
+                        <div class="gesture-name-box">
+                            <div class="label">GESTURE TERDETEKSI</div>
+                            <div class="value" id="gestureName">--</div>
+                        </div>
+
+                        <div class="gesture-status">
+                            <i class="fas fa-circle" id="statusIndicator"></i>
+                            <span id="statusText">Kamera tidak aktif</span>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- RIGHT PANEL - VIDEO & LANDMARK -->
-            <div class="right-panel">
-                <div class="video-section">
-                    <div class="video-header">
-                        <h3><i class="fas fa-video"></i> VIDEO REAL-TIME</h3>
-                        <div class="live-badge" id="liveBadge">
-                            <i class="fas fa-circle"></i> OFF
-                        </div>
-                    </div>
-                    
-                    <div class="video-preview" id="videoPreview">
-                        <video id="camera-stream" autoplay playsinline></video>
-                        <div class="placeholder-preview" id="placeholderPreview">
-                            <i class="fas fa-cloud-moon"></i>
-                            <p>Kamera nonaktif</p>
-                            <p style="font-size:0.9rem;">Klik Aktifkan Kamera</p>
-                        </div>
-                    </div>
-                    
-                    <div class="landmark-grid">
-                        <div class="landmark-box">
-                            <div class="landmark-value" id="gestureName">--</div>
-                            <div class="landmark-label">GESTURE</div>
-                        </div>
-                    </div>
-                    
-                    <div class="stream-status">
-                        <i class="fas fa-circle" id="statusIndicator"></i>
-                        <span id="statusText">Kamera tidak aktif</span>
-                    </div>
-                </div> <!-- Penutup video-section -->
-                
-                <!-- BUTTON KAMERA (di luar video-section) -->
-                <div class="camera-button" id="cameraBtn">
-                    <span>
-                        <i class="fas fa-camera"></i> Aktifkan Kamera
-                    </span>
-                    <i class="fas fa-arrow-right arrow-icon"></i>
-                </div>
-                
-                <!-- CAPTURE BUTTON (ditambahkan) -->
-                <div class="capture-button" id="captureBtn">
-                    <i class="fas fa-camera-retro"></i> Ambil Foto
-                </div>
-                
-                <!-- ACTIVATE WINDOWS -->
-                <div class="activate-windows">
-                    Activate Windows
-                </div>
-            </div> <!-- Penutup right-panel -->
-        </div> <!-- Penutup main-container -->
-    </div> <!-- Penutup web-container -->
-
-    <!-- Canvas untuk capture foto -->
-    <canvas id="capture-canvas" style="display: none;"></canvas>
-
-    <!-- HELP MODAL -->
-    <div class="modal-overlay" id="helpModalOverlay">
-        <div class="help-modal">
-            <h2><i class="fas fa-hand-dots"></i> Panduan Gesture</h2>
-            <div class="help-grid">
-                <div class="help-item">
-                    <i class="fas fa-hand-paper"></i>
-                    <span>Buka tangan = <strong>Zoom Out</strong> (Menjauh)</span>
-                </div>
-                <div class="help-item">
-                    <i class="fas fa-hand-fist"></i>
-                    <span>Tutup tangan = <strong>Zoom In</strong> (Mendekat)</span>
-                </div>
-                <div class="help-item">
-                    <i class="fas fa-hand-scissors"></i>
-                    <span>Dua jari = <strong>Orbit View</strong> (Putar Manual)</span>
-                </div>
-                <div class="help-item">
-                    <i class="fas fa-hand-back-fist"></i>
-                    <span>Tiga jari = <strong>Auto Rotate</strong> (Putar Awan)</span>
-                </div>
-                <div class="help-item">
-                    <i class="fas fa-hand-pointer"></i>
-                    <span>Kelingking = <strong>Reset View</strong> (Kembali Awal)</span>
-                </div>
-                <div class="help-item">
-                    <i class="fas fa-arrows-to-eye"></i>
-                    <span>Dua tangan / mengepal = <strong>Orbit View</strong> (Putar Kamera)</span>
-                </div>
-                <div class="help-item">
-                    <i class="fas fa-hand-holding-hand"></i>
-                    <span>Dua tangan (bebas) = <strong>Pindah Kamera</strong> (Geser/Pan)</span>
-                </div>
-            </div>
-            <button class="close-help" onclick="closeHelpModal()">Saya Mengerti</button>
         </div>
-    </div>
 
-    <script type="module">
+        <canvas id="temp-canvas" style="display: none;"></canvas>
+
+        <script type="module">
         import * as THREE from 'three';
         import { OrbitControls } from 'https://unpkg.com/three@0.128.0/examples/jsm/controls/OrbitControls.js';
         import { HandLandmarker, FilesetResolver } from 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3';
 
-        // ===== DATA 10 KARAKTER AWAN =====
         const cloudData = [
-            {
-                code: 'Cu',
-                name: 'Cumulus',
-                icon: 'fa-cloud-sun',
-                desc: 'Awan putih mengumpul seperti kapas, dasar datar, puncak menggelembung. Tanda cuaca baik.',
-                longDesc: 'Cumulus adalah awan putih mengumpul seperti kapas dengan dasar yang datar dan puncak yang menggelembung. Terbentuk dari arus konveksi udara panas. Biasanya menandakan cuaca cerah, namun bisa tumbuh vertikal menjadi Cumulonimbus.',
-                altitude: '↑ Dasar <2 km',
-                color: 0xffffff,
-                type: 'cumulus'
-            },
-            {
-                code: 'Cc',
-                name: 'Cirrocumulus',
-                icon: 'fa-cloud-sun',
-                desc: 'Awan tinggi berupa gumpalan kecil seperti sisik ikan. Terdiri dari kristal es.',
-                longDesc: 'Cirrocumulus adalah awan tinggi yang terdiri dari kristal es. Bentuknya seperti sisik ikan atau riak pasir di langit. Menandakan cuaca stabil, kadang menjadi pertanda perubahan cuaca.',
-                altitude: '↑ >6 km',
-                color: 0xe0f0ff,
-                type: 'cirrocumulus'
-            },
-            {
-                code: 'Ac',
-                name: 'Altocumulus',
-                icon: 'fa-cloud',
-                desc: 'Awan menengah bergulung seperti domba. Sering muncul sebelum badai petir.',
-                longDesc: 'Altocumulus adalah awan menengah berbentuk gulungan atau lembaran dengan bongkahan-bongkahan kecil seperti domba di langit. Sering muncul sebelum badai petir di sore hari.',
-                altitude: '↑ 2–6 km',
-                color: 0xd0e0f0,
-                type: 'altocumulus'
-            },
-            {
-                code: 'As',
-                name: 'Altostratus',
-                icon: 'fa-cloud',
-                desc: 'Selubung abu-abu merata yang menutupi langit. Sering membawa gerimis.',
-                longDesc: 'Altostratus adalah awan tebal berwarna abu-abu yang menutupi seluruh langit. Matahari tampak seperti melalui kaca buram. Sering membawa hujan gerimis atau salju ringan.',
-                altitude: '↑ 2–6 km',
-                color: 0xa0b0c0,
-                type: 'altostratus'
-            },
-            {
-                code: 'Ci',
-                name: 'Cirrus',
-                icon: 'fa-cloud',
-                desc: 'Awan tinggi halus berserat seperti bulu. Terdiri dari kristal es.',
-                longDesc: 'Cirrus adalah awan tinggi yang halus dan berserat seperti bulu. Terbentuk dari kristal es di ketinggian di atas 6 km. Menandakan cuaca cerah namun bisa menjadi pertanda perubahan cuaca.',
-                altitude: '↑ >6 km',
-                color: 0xf0f8ff,
-                type: 'cirrus'
-            },
-            {
-                code: 'Cs',
-                name: 'Cirrostratus',
-                icon: 'fa-cloud-sun',
-                desc: 'Selubung tipis transparan yang menutupi langit. Menyebabkan fenomena halo.',
-                longDesc: 'Cirrostratus adalah awan tipis seperti selubung yang menutupi seluruh langit. Terdiri dari kristal es dan sering menyebabkan fenomena halo di sekitar matahari atau bulan.',
-                altitude: '↑ >6 km',
-                color: 0xe8f0fe,
-                type: 'cirrostratus'
-            },
-            {
-                code: 'Cb',
-                name: 'Cumulonimbus',
-                icon: 'fa-cloud-rain',
-                desc: 'Awan besar vertikal seperti gunung. Penyebab hujan lebat, petir, angin kencang.',
-                longDesc: 'Cumulonimbus adalah awan vertikal yang menjulang tinggi seperti gunung. Bagian atas bisa melebar seperti landasan. Penyebab hujan lebat, petir, angin kencang, bahkan tornado.',
-                altitude: '↑ Dasar <2 km',
-                color: 0x4a5a6a,
-                type: 'cumulonimbus'
-            },
-            {
-                code: 'Ns',
-                name: 'Nimbostratus',
-                icon: 'fa-cloud-rain',
-                desc: 'Awan tebal kelabu gelap yang membawa hujan terus-menerus. Menutupi seluruh langit.',
-                longDesc: 'Nimbostratus adalah awan tebal berwarna kelabu gelap yang membawa hujan terus-menerus. Menutupi seluruh langit dan mengurangi visibilitas.',
-                altitude: '↑ <3 km',
-                color: 0x3a4a5a,
-                type: 'nimbostratus'
-            },
-            {
-                code: 'Sc',
-                name: 'Stratocumulus',
-                icon: 'fa-cloud',
-                desc: 'Gumpalan abu-abu rendah yang sering menutupi langit. Dapat menghasilkan gerimis.',
-                longDesc: 'Stratocumulus adalah awan rendah bergumpal-gumpal, seringkali menutupi seluruh langit. Dapat menghasilkan hujan rintik atau gerimis ringan.',
-                altitude: '↑ <2 km',
-                color: 0x8a9aad,
-                type: 'stratocumulus'
-            },
-            {
-                code: 'St',
-                name: 'Stratus',
-                icon: 'fa-smog',
-                desc: 'Awan rendah seragam seperti kabut. Menyebabkan gerimis atau kabut.',
-                longDesc: 'Stratus adalah awan rendah seragam berwarna abu-abu, mirip kabut yang naik. Sering menyebabkan gerimis atau kabut. Mengurangi jarak pandang.',
-                altitude: '↑ <2 km',
-                color: 0x9aabbc,
-                type: 'stratus'
-            }
+            { code: 'Cu', name: 'Cumulus', icon: 'fa-cloud-sun', shortDesc: 'Awan putih mengumpul seperti kapas.', longDesc: 'Cumulus adalah awan putih mengumpul seperti kapas dengan dasar yang datar dan puncak yang menggelembung.', altitude: 'Dasar <2 km', color: 0xffffff, type: 'cumulus' },
+            { code: 'Cc', name: 'Cirrocumulus', icon: 'fa-cloud', shortDesc: 'Gumpalan kecil seperti sisik ikan.', longDesc: 'Cirrocumulus adalah awan tinggi yang terdiri dari kristal es. Bentuknya seperti sisik ikan.', altitude: '>6 km', color: 0xe0f0ff, type: 'cirrocumulus' },
+            { code: 'Ac', name: 'Altocumulus', icon: 'fa-cloud', shortDesc: 'Bergulung seperti domba.', longDesc: 'Altocumulus berbentuk gulungan dengan bongkahan kecil seperti domba.', altitude: '2–6 km', color: 0xd0e0f0, type: 'altocumulus' },
+            { code: 'As', name: 'Altostratus', icon: 'fa-cloud', shortDesc: 'Selubung abu-abu merata.', longDesc: 'Altostratus menutupi seluruh langit, matahari tampak buram.', altitude: '2–6 km', color: 0xa0b0c0, type: 'altostratus' },
+            { code: 'Ci', name: 'Cirrus', icon: 'fa-cloud', shortDesc: 'Halus berserat seperti bulu.', longDesc: 'Cirrus adalah awan tinggi halus berserat dari kristal es.', altitude: '>6 km', color: 0xf0f8ff, type: 'cirrus' },
+            { code: 'Cs', name: 'Cirrostratus', icon: 'fa-cloud-sun', shortDesc: 'Selubung tipis transparan.', longDesc: 'Cirrostratus menyebabkan fenomena halo di sekitar matahari.', altitude: '>6 km', color: 0xe8f0fe, type: 'cirrostratus' },
+            { code: 'Cb', name: 'Cumulonimbus', icon: 'fa-cloud-rain', shortDesc: 'Awan vertikal raksasa.', longDesc: 'Cumulonimbus penyebab hujan lebat, petir, dan angin kencang.', altitude: 'Dasar <2 km', color: 0x4a5a6a, type: 'cumulonimbus' },
+            { code: 'Ns', name: 'Nimbostratus', icon: 'fa-cloud-rain', shortDesc: 'Kelabu gelap pembawa hujan.', longDesc: 'Nimbostratus membawa hujan terus-menerus.', altitude: '<3 km', color: 0x3a4a5a, type: 'nimbostratus' },
+            { code: 'Sc', name: 'Stratocumulus', icon: 'fa-cloud', shortDesc: 'Gumpalan abu-abu rendah.', longDesc: 'Stratocumulus sering menutupi langit, dapat menghasilkan gerimis.', altitude: '<2 km', color: 0x8a9aad, type: 'stratocumulus' },
+            { code: 'St', name: 'Stratus', icon: 'fa-smog', shortDesc: 'Seragam seperti kabut.', longDesc: 'Stratus adalah awan rendah mirip kabut, mengurangi jarak pandang.', altitude: '<2 km', color: 0x9aabbc, type: 'stratus' }
         ];
 
-        // ===== CEK ELEMEN YANG DIPERLUKAN =====
-        function getRequiredElements() {
-            const elements = {
-                container: document.getElementById('canvas-container'),
-                cameraBtn: document.getElementById('cameraBtn'),
-                captureBtn: document.getElementById('captureBtn'),
-                videoElement: document.getElementById('camera-stream'),
-                placeholderPreview: document.getElementById('placeholderPreview'),
-                liveBadge: document.getElementById('liveBadge'),
-                statusIndicator: document.getElementById('statusIndicator'),
-                statusText: document.getElementById('statusText'),
-                gestureName: document.getElementById('gestureName'),
-                captureCanvas: document.getElementById('capture-canvas'),
-                cloudCards: document.getElementById('cloudCards'),
-                currentCloudCode: document.getElementById('currentCloudCode'),
-                currentCloudDesc: document.getElementById('currentCloudDesc')
-            };
-            
-            // Cek elemen yang null dan beri warning
-            Object.entries(elements).forEach(([key, value]) => {
-                if (!value) {
-                    console.warn(`Elemen dengan ID '${key}' tidak ditemukan di HTML`);
-                }
-            });
-            
-            return elements;
-        }
+        const elements = {
+            container: document.getElementById('canvas-container'),
+            cameraBtn: document.getElementById('cameraBtn'),
+            captureBtn: document.getElementById('captureBtn'),
+            gestureCanvas: document.getElementById('gesture-canvas'),
+            placeholderGesture: document.getElementById('placeholderGesture'),
+            liveBadge: document.getElementById('liveBadge'),
+            statusIndicator: document.getElementById('statusIndicator'),
+            statusText: document.getElementById('statusText'),
+            gestureName: document.getElementById('gestureName'),
+            cloudCards: document.getElementById('cloudCards'),
+            currentCloudName: document.getElementById('currentCloudName'),
+            currentCloudCode: document.getElementById('currentCloudCode'),
+            currentCloudDesc: document.getElementById('currentCloudDesc')
+        };
 
-        const elements = getRequiredElements();
-
-        // ===== SETUP THREE.JS =====
-        if (!elements.container) {
-            console.error('Container canvas tidak ditemukan!');
-        } else {
+        // Setup Three.js
+        if (elements.container) {
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x0A0F1F);
+            scene.background = new THREE.Color(0x0a0f1f);
+            scene.fog = new THREE.FogExp2(0x0a0f1f, 0.008);
             
-            // Camera
             const camera = new THREE.PerspectiveCamera(45, elements.container.clientWidth / elements.container.clientHeight, 0.1, 1000);
             camera.position.set(5, 3, 10);
             
-            // Renderer
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(elements.container.clientWidth, elements.container.clientHeight);
             renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-            renderer.setPixelRatio(window.devicePixelRatio);
             elements.container.appendChild(renderer.domElement);
             
-            // Controls
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
@@ -1082,1310 +875,393 @@
             controls.enablePan = true;
             controls.maxPolarAngle = Math.PI / 2;
             
-            // Simpan referensi controls untuk gesture
             window.controls = controls;
             window.camera = camera;
             
-            // Lighting
-            const ambientLight = new THREE.AmbientLight(0x404060);
+            const ambientLight = new THREE.AmbientLight(0x404060, 0.6);
             scene.add(ambientLight);
-            
-            const sunLight = new THREE.DirectionalLight(0xfff5e6, 1.8);
+            const sunLight = new THREE.DirectionalLight(0xfff5e6, 1.2);
             sunLight.position.set(5, 10, 7);
             sunLight.castShadow = true;
-            sunLight.receiveShadow = true;
-            sunLight.shadow.mapSize.width = 2048;
-            sunLight.shadow.mapSize.height = 2048;
-            const d = 15;
-            sunLight.shadow.camera.left = -d;
-            sunLight.shadow.camera.right = d;
-            sunLight.shadow.camera.top = d;
-            sunLight.shadow.camera.bottom = -d;
-            sunLight.shadow.camera.near = 1;
-            sunLight.shadow.camera.far = 25;
             scene.add(sunLight);
-            
-            const fillLight = new THREE.PointLight(0x4466cc, 0.8);
-            fillLight.position.set(-5, 2, 5);
+            const fillLight = new THREE.PointLight(0x4466cc, 0.5);
+            fillLight.position.set(-3, 2, 4);
             scene.add(fillLight);
             
-            const backLight = new THREE.PointLight(0x3355aa, 0.6);
-            backLight.position.set(0, 3, -8);
-            scene.add(backLight);
-            
-            // Efek kabut tipis
-            scene.fog = new THREE.FogExp2(0x0A0F1F, 0.02);
-            
-            // Ground
-            const groundGeometry = new THREE.CircleGeometry(30, 32);
+            const groundGeometry = new THREE.CircleGeometry(20, 32);
             const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x1a2a40, roughness: 0.8 });
             const ground = new THREE.Mesh(groundGeometry, groundMaterial);
             ground.rotation.x = -Math.PI / 2;
-            ground.position.y = -1.5;
+            ground.position.y = -1.2;
             ground.receiveShadow = true;
             scene.add(ground);
             
-            // Grid
-            const gridHelper = new THREE.GridHelper(30, 20, 0x3b9eff, 0x1a3a5a);
-            gridHelper.position.y = -1.4;
+            const gridHelper = new THREE.GridHelper(25, 20, 0x2b7fc3, 0x1a3a5a);
+            gridHelper.position.y = -1.1;
             scene.add(gridHelper);
             
-            // Bintang
             const starsGeometry = new THREE.BufferGeometry();
-            const starsCount = 1500;
+            const starsCount = 1000;
             const starsPositions = new Float32Array(starsCount * 3);
             for (let i = 0; i < starsCount * 3; i += 3) {
                 starsPositions[i] = (Math.random() - 0.5) * 200;
-                starsPositions[i+1] = (Math.random() - 0.5) * 200;
-                starsPositions[i+2] = (Math.random() - 0.5) * 200 - 50;
+                starsPositions[i+1] = (Math.random() - 0.5) * 100;
+                starsPositions[i+2] = (Math.random() - 0.5) * 100 - 50;
             }
             starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
-            const starsMaterial = new THREE.PointsMaterial({color: 0xffffff, size: 0.15, transparent: true});
+            const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1 });
             const stars = new THREE.Points(starsGeometry, starsMaterial);
             scene.add(stars);
-
-            // ===== FUNGSI MEMBUAT AWAN 3D REALISTIK =====
-          // ===== FUNGSI MEMBUAT AWAN 3D REALISTIK UNTUK EDUKASI =====
-let currentCloudGroup = null;
-
-function createRealisticCloud(type, baseColor) {
-    const group = new THREE.Group();
-    
-    // Material yang lebih natural dan lembut
-    const mainMaterial = new THREE.MeshStandardMaterial({
-        color: baseColor,
-        roughness: 0.45,
-        metalness: 0.02,
-        emissive: 0x221133,
-        emissiveIntensity: 0.08,
-        flatShading: false
-    });
-    
-    const highlightMaterial = new THREE.MeshStandardMaterial({
-        color: Math.min(baseColor + 0x111111, 0xffffff),
-        roughness: 0.35,
-        metalness: 0.01,
-        emissive: 0x331144,
-        emissiveIntensity: 0.05
-    });
-    
-    const shadowMaterial = new THREE.MeshStandardMaterial({
-        color: Math.max(baseColor - 0x222222, 0x666666),
-        roughness: 0.55,
-        metalness: 0.01
-    });
-    
-    if (type === 'cumulus') {
-        // Awan Cumulus - bentuk bergumpal rapi seperti kapas
-        const positions = [
-            // Lapisan dasar (bawah)
-            { x: -1.2, y: 0.1, z: -0.8, r: 0.85, m: shadowMaterial },
-            { x: -0.5, y: 0, z: -1.0, r: 0.9, m: shadowMaterial },
-            { x: 0.3, y: 0.05, z: -0.9, r: 0.88, m: mainMaterial },
-            { x: 1.0, y: 0.1, z: -0.7, r: 0.82, m: mainMaterial },
-            { x: 1.5, y: 0.2, z: -0.3, r: 0.78, m: shadowMaterial },
-            { x: -1.5, y: 0.15, z: -0.2, r: 0.8, m: mainMaterial },
-            { x: -1.0, y: 0.2, z: 0.3, r: 0.84, m: mainMaterial },
-            { x: -0.3, y: 0.1, z: 0.5, r: 0.86, m: mainMaterial },
-            { x: 0.5, y: 0.15, z: 0.4, r: 0.85, m: highlightMaterial },
-            { x: 1.2, y: 0.2, z: 0.2, r: 0.8, m: mainMaterial },
             
-            // Lapisan tengah
-            { x: -1.1, y: 0.7, z: -0.6, r: 0.9, m: mainMaterial },
-            { x: -0.4, y: 0.85, z: -0.7, r: 0.95, m: highlightMaterial },
-            { x: 0.4, y: 0.8, z: -0.5, r: 0.92, m: mainMaterial },
-            { x: 1.1, y: 0.7, z: -0.4, r: 0.85, m: mainMaterial },
-            { x: -0.8, y: 0.75, z: 0.1, r: 0.88, m: mainMaterial },
-            { x: 0.0, y: 0.9, z: 0.0, r: 0.93, m: highlightMaterial },
-            { x: 0.8, y: 0.75, z: -0.1, r: 0.87, m: mainMaterial },
+            function createCloud() {
+                const group = new THREE.Group();
+                const material = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4 });
+                const positions = [
+                    { x: -1.2, y: 0.1, z: -0.8, r: 0.85 }, { x: -0.5, y: 0, z: -1.0, r: 0.9 },
+                    { x: 0.3, y: 0.05, z: -0.9, r: 0.88 }, { x: 1.0, y: 0.1, z: -0.7, r: 0.82 },
+                    { x: 1.5, y: 0.2, z: -0.3, r: 0.78 }, { x: -1.5, y: 0.15, z: -0.2, r: 0.8 },
+                    { x: -1.0, y: 0.2, z: 0.3, r: 0.84 }, { x: -0.3, y: 0.1, z: 0.5, r: 0.86 },
+                    { x: 0.5, y: 0.15, z: 0.4, r: 0.85 }, { x: 1.2, y: 0.2, z: 0.2, r: 0.8 },
+                    { x: -1.1, y: 0.7, z: -0.6, r: 0.9 }, { x: -0.4, y: 0.85, z: -0.7, r: 0.95 },
+                    { x: 0.4, y: 0.8, z: -0.5, r: 0.92 }, { x: 0.0, y: 0.9, z: 0.0, r: 0.93 },
+                    { x: -0.7, y: 1.4, z: -0.4, r: 0.82 }, { x: 0.0, y: 1.55, z: -0.3, r: 0.85 }
+                ];
+                positions.forEach(p => {
+                    const sphere = new THREE.Mesh(new THREE.SphereGeometry(p.r, 32, 32), material);
+                    sphere.position.set(p.x, p.y, p.z);
+                    group.add(sphere);
+                });
+                return group;
+            }
             
-            // Lapisan atas (puncak)
-            { x: -0.7, y: 1.4, z: -0.4, r: 0.82, m: highlightMaterial },
-            { x: 0.0, y: 1.55, z: -0.3, r: 0.85, m: highlightMaterial },
-            { x: 0.7, y: 1.45, z: -0.2, r: 0.8, m: highlightMaterial },
-            { x: -0.3, y: 1.3, z: 0.1, r: 0.78, m: mainMaterial },
-            { x: 0.4, y: 1.35, z: 0.0, r: 0.79, m: mainMaterial },
+            let currentCloudGroup = createCloud();
+            currentCloudGroup.position.set(0, 1, 0);
+            currentCloudGroup.scale.set(0.7, 0.7, 0.7);
+            scene.add(currentCloudGroup);
             
-            // Lapisan puncak tertinggi
-            { x: -0.2, y: 2.0, z: -0.2, r: 0.7, m: highlightMaterial },
-            { x: 0.3, y: 1.9, z: -0.1, r: 0.68, m: highlightMaterial }
-        ];
-        
-        positions.forEach(p => {
-            const sphere = new THREE.Mesh(new THREE.SphereGeometry(p.r, 32, 32), p.m);
-            sphere.position.set(p.x, p.y, p.z);
-            sphere.castShadow = true;
-            sphere.receiveShadow = false;
-            group.add(sphere);
-        });
-    }
-    else if (type === 'stratus') {
-        // Awan Stratus - bentuk berlapis dan melebar
-        for (let layer = 0; layer < 3; layer++) {
-            const yOffset = layer * 0.45;
-            const material = layer === 1 ? highlightMaterial : (layer === 0 ? shadowMaterial : mainMaterial);
+            let currentRotationAngle = 0;
+            let rotationAnimation = null;
+            let currentYPosition = 1;
+            let yAnimation = null;
             
-            for (let i = 0; i < 12; i++) {
-                const x = -2.2 + (i * 0.42);
-                const z = (Math.sin(i * 0.8) * 0.6) + (layer === 1 ? 0.2 : 0);
-                const radius = 0.45 + (layer === 1 ? 0.1 : 0) + (Math.sin(i) * 0.05);
+            window.rotateCloud90Degrees = function(direction) {
+                if (rotationAnimation) cancelAnimationFrame(rotationAnimation);
+                const targetAngle = currentRotationAngle + (direction === 'right' ? Math.PI / 2 : -Math.PI / 2);
+                const startAngle = currentRotationAngle;
+                const duration = 500;
+                const startTime = performance.now();
+                function animate(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(1, elapsed / duration);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    currentRotationAngle = startAngle + (targetAngle - startAngle) * ease;
+                    currentCloudGroup.rotation.y = currentRotationAngle;
+                    if (progress < 1) rotationAnimation = requestAnimationFrame(animate);
+                    else rotationAnimation = null;
+                }
+                rotationAnimation = requestAnimationFrame(animate);
+            };
+            
+            // Fungsi untuk menggerakkan awan secara vertikal
+            window.moveCloudVertical = function(direction) {
+                if (yAnimation) cancelAnimationFrame(yAnimation);
+                const targetY = currentYPosition + (direction === 'up' ? 0.3 : -0.3);
+                const targetYClamped = Math.max(-0.5, Math.min(2.5, targetY));
+                const startY = currentYPosition;
+                const duration = 400;
+                const startTime = performance.now();
                 
-                const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 28, 28), material);
-                sphere.position.set(x, yOffset + 0.2, z);
-                sphere.castShadow = true;
-                group.add(sphere);
-            }
-        }
-        
-        // Tambah sedikit variasi
-        for (let i = 0; i < 6; i++) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.4 + Math.random() * 0.15, 24, 24),
-                mainMaterial
-            );
-            sphere.position.set(-1.5 + Math.random() * 3, 0.4 + Math.random() * 0.5, -0.8 + Math.random() * 1.6);
-            group.add(sphere);
-        }
-    }
-    else if (type === 'cirrus') {
-        // ============================================================
-        // AWAN CIRRUS - TIPIS, BERSERABUT, MEMANJANG (BOLA-BOLA KECIL)
-        // ============================================================
-        
-        // Material tipis untuk cirrus
-        const cirrusMaterial = new THREE.MeshStandardMaterial({
-            color: 0xe8f0ff,
-            roughness: 0.25,
-            metalness: 0.0,
-            emissive: 0x88aacc,
-            emissiveIntensity: 0.12,
-            transparent: true,
-            opacity: 0.75
-        });
-        
-        const cirrusMaterialTipis = new THREE.MeshStandardMaterial({
-            color: 0xf0f4ff,
-            roughness: 0.20,
-            metalness: 0.0,
-            emissive: 0xaaccff,
-            emissiveIntensity: 0.10,
-            transparent: true,
-            opacity: 0.65
-        });
-        
-        // Garis memanjang tipis (seperti serabut) - dibuat dari bola-bola kecil
-        // Garis 1 - memanjang kiri ke kanan
-        for (let x = -2.2; x <= 2.2; x += 0.18) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.09 + Math.random() * 0.07, 12, 12),
-                cirrusMaterial
-            );
-            sphere.position.set(x, 1.25 + Math.sin(x * 0.8) * 0.08, -0.2 + Math.cos(x * 0.6) * 0.12);
-            group.add(sphere);
-        }
-        
-        // Garis 2 - di atasnya, lebih tipis
-        for (let x = -2.0; x <= 2.0; x += 0.20) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.07 + Math.random() * 0.06, 12, 12),
-                cirrusMaterialTipis
-            );
-            sphere.position.set(x, 1.52 + Math.cos(x * 0.9) * 0.06, 0.1 + Math.sin(x * 0.7) * 0.10);
-            group.add(sphere);
-        }
-        
-        // Garis 3 - lebih rendah
-        for (let x = -2.1; x <= 2.1; x += 0.22) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.08 + Math.random() * 0.06, 12, 12),
-                cirrusMaterial
-            );
-            sphere.position.set(x, 0.95 + Math.sin(x * 0.7) * 0.10, -0.55 + Math.cos(x * 0.5) * 0.15);
-            group.add(sphere);
-        }
-        
-        // Serabut halus yang menyebar (efek seperti bulu)
-        for (let i = 0; i < 120; i++) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.05 + Math.random() * 0.08, 10, 10),
-                cirrusMaterialTipis
-            );
-            sphere.position.set(
-                -2.4 + Math.random() * 4.8,
-                0.85 + Math.random() * 1.1,
-                -0.8 + Math.random() * 1.4
-            );
-            group.add(sphere);
-        }
-        
-        // Gumpalan tipis kecil yang tersebar (agar terlihat seperti awan, bukan garis)
-        for (let i = 0; i < 25; i++) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.12 + Math.random() * 0.10, 14, 14),
-                cirrusMaterial
-            );
-            sphere.position.set(
-                -1.8 + Math.random() * 3.6,
-                1.05 + Math.random() * 0.7,
-                -0.5 + Math.random() * 1.0
-            );
-            group.add(sphere);
-        }
-    }
-    else if (type === 'cirrocumulus') {
-        // ============================================================
-        // AWAN CIRROCUMULUS - GUMPALAN KECIL BERDERET (RIBBED/PATTERN)
-        // ============================================================
-        
-        const cirrocumulusMaterial = new THREE.MeshStandardMaterial({
-            color: 0xeef4ff,
-            roughness: 0.22,
-            metalness: 0.0,
-            emissive: 0xaaccff,
-            emissiveIntensity: 0.08,
-            transparent: true,
-            opacity: 0.82
-        });
-        
-        const cirrocumulusMaterialGelap = new THREE.MeshStandardMaterial({
-            color: 0xdde4f0,
-            roughness: 0.28,
-            metalness: 0.0,
-            emissive: 0x88aacc,
-            emissiveIntensity: 0.06,
-            transparent: true,
-            opacity: 0.78
-        });
-        
-        // Membuat baris-baris gumpalan kecil (seperti ripple effect)
-        // Baris 1
-        for (let x = -2.0; x <= 2.0; x += 0.45) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.22 + Math.random() * 0.08, 20, 20),
-                cirrocumulusMaterial
-            );
-            sphere.position.set(x, 1.05 + Math.sin(x * 1.5) * 0.08, -0.45);
-            group.add(sphere);
-        }
-        
-        // Baris 2
-        for (let x = -1.8; x <= 1.8; x += 0.48) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.20 + Math.random() * 0.07, 20, 20),
-                cirrocumulusMaterialGelap
-            );
-            sphere.position.set(x, 1.12 + Math.cos(x * 1.8) * 0.06, -0.18);
-            group.add(sphere);
-        }
-        
-        // Baris 3
-        for (let x = -1.9; x <= 1.9; x += 0.47) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.21 + Math.random() * 0.07, 20, 20),
-                cirrocumulusMaterial
-            );
-            sphere.position.set(x, 1.08 + Math.sin(x * 1.6) * 0.07, 0.1);
-            group.add(sphere);
-        }
-        
-        // Baris 4
-        for (let x = -2.1; x <= 2.1; x += 0.50) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.19 + Math.random() * 0.06, 20, 20),
-                cirrocumulusMaterialGelap
-            );
-            sphere.position.set(x, 1.15 + Math.cos(x * 1.7) * 0.05, 0.38);
-            group.add(sphere);
-        }
-        
-        // Gumpalan kecil tambahan untuk mengisi celah
-        for (let i = 0; i < 45; i++) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.16 + Math.random() * 0.09, 18, 18),
-                cirrocumulusMaterial
-            );
-            sphere.position.set(
-                -2.3 + Math.random() * 4.6,
-                0.98 + Math.random() * 0.28,
-                -0.65 + Math.random() * 1.3
-            );
-            group.add(sphere);
-        }
-    }
-    else if (type === 'cirrostratus') {
-        // ============================================================
-        // AWAN CIRROSTRATUS - TIPIS MERATA SEPERTI SELUBUNG (HALUS)
-        // ============================================================
-        
-        const cirrostratusMaterial = new THREE.MeshStandardMaterial({
-            color: 0xf0f6ff,
-            roughness: 0.18,
-            metalness: 0.0,
-            emissive: 0xbbddff,
-            emissiveIntensity: 0.15,
-            transparent: true,
-            opacity: 0.68
-        });
-        
-        const cirrostratusMaterialTipis = new THREE.MeshStandardMaterial({
-            color: 0xf5faff,
-            roughness: 0.15,
-            metalness: 0.0,
-            emissive: 0xcceeFF,
-            emissiveIntensity: 0.12,
-            transparent: true,
-            opacity: 0.60
-        });
-        
-        // Lapisan tipis merata (seperti selubung)
-        // Layer 1 (bawah)
-        for (let x = -2.5; x <= 2.5; x += 0.35) {
-            for (let z = -1.0; z <= 1.0; z += 0.45) {
-                const sphere = new THREE.Mesh(
-                    new THREE.SphereGeometry(0.18 + Math.random() * 0.08, 16, 16),
-                    cirrostratusMaterialTipis
-                );
-                sphere.position.set(x, 0.85 + Math.cos(x * 1.2 + z) * 0.05, z);
-                group.add(sphere);
-            }
-        }
-        
-        // Layer 2 (tengah)
-        for (let x = -2.3; x <= 2.3; x += 0.38) {
-            for (let z = -0.9; z <= 0.9; z += 0.48) {
-                const sphere = new THREE.Mesh(
-                    new THREE.SphereGeometry(0.17 + Math.random() * 0.07, 16, 16),
-                    cirrostratusMaterial
-                );
-                sphere.position.set(x, 1.05 + Math.sin(x * 1.0 + z * 0.8) * 0.04, z);
-                group.add(sphere);
-            }
-        }
-        
-        // Layer 3 (atas)
-        for (let x = -2.4; x <= 2.4; x += 0.36) {
-            for (let z = -0.8; z <= 0.8; z += 0.50) {
-                const sphere = new THREE.Mesh(
-                    new THREE.SphereGeometry(0.16 + Math.random() * 0.08, 16, 16),
-                    cirrostratusMaterialTipis
-                );
-                sphere.position.set(x, 1.28 + Math.cos(x * 1.1 + z * 0.9) * 0.04, z);
-                group.add(sphere);
-            }
-        }
-        
-        // Serabut sangat halus yang menyebar (efek halo)
-        for (let i = 0; i < 200; i++) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.06 + Math.random() * 0.08, 12, 12),
-                cirrostratusMaterial
-            );
-            sphere.position.set(
-                -3.0 + Math.random() * 6.0,
-                0.75 + Math.random() * 0.9,
-                -1.2 + Math.random() * 2.4
-            );
-            group.add(sphere);
-        }
-    }
-    else if (type === 'cumulonimbus') {
-        // ============================================================
-        // AWAN CUMULONIMBUS - AWAN BADAI YANG NORMAL (MENGGUMPAL BESAR)
-        // ============================================================
-        
-        // Lapisan dasar (bawah) - lebar dan gelap
-        for (let x = -1.8; x <= 1.8; x += 0.45) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.65 + Math.random() * 0.2, 28, 28),
-                shadowMaterial
-            );
-            sphere.position.set(x, 0.1, Math.sin(x) * 0.5);
-            group.add(sphere);
-        }
-        
-        // Badan utama - gumpalan besar seperti cumulus tapi lebih besar
-        const badan = [
-            { x: -1.4, y: 0.55, z: -0.6, r: 0.88, m: mainMaterial },
-            { x: -0.7, y: 0.62, z: -0.7, r: 0.92, m: shadowMaterial },
-            { x: 0.0, y: 0.65, z: -0.65, r: 0.95, m: mainMaterial },
-            { x: 0.7, y: 0.60, z: -0.55, r: 0.91, m: mainMaterial },
-            { x: 1.4, y: 0.52, z: -0.4, r: 0.86, m: mainMaterial },
-            { x: -1.2, y: 0.58, z: 0.1, r: 0.85, m: mainMaterial },
-            { x: -0.5, y: 0.65, z: 0.0, r: 0.90, m: highlightMaterial },
-            { x: 0.5, y: 0.63, z: -0.1, r: 0.89, m: mainMaterial },
-            { x: 1.2, y: 0.55, z: 0.05, r: 0.84, m: mainMaterial },
-            { x: -1.0, y: 0.60, z: 0.7, r: 0.83, m: mainMaterial },
-            { x: -0.2, y: 0.68, z: 0.6, r: 0.88, m: mainMaterial },
-            { x: 0.6, y: 0.65, z: 0.5, r: 0.86, m: highlightMaterial },
-            { x: 1.3, y: 0.58, z: 0.4, r: 0.82, m: mainMaterial }
-        ];
-        
-        badan.forEach(b => {
-            const sphere = new THREE.Mesh(new THREE.SphereGeometry(b.r, 32, 32), b.m);
-            sphere.position.set(b.x, b.y, b.z);
-            group.add(sphere);
-        });
-        
-        // Lapisan tengah - gumpalan membesar
-        const tengah = [
-            { x: -1.1, y: 1.15, z: -0.5, r: 0.85, m: mainMaterial },
-            { x: -0.4, y: 1.25, z: -0.55, r: 0.90, m: highlightMaterial },
-            { x: 0.4, y: 1.22, z: -0.45, r: 0.89, m: mainMaterial },
-            { x: 1.1, y: 1.12, z: -0.3, r: 0.84, m: mainMaterial },
-            { x: -0.8, y: 1.20, z: 0.15, r: 0.86, m: mainMaterial },
-            { x: 0.0, y: 1.28, z: 0.05, r: 0.91, m: highlightMaterial },
-            { x: 0.8, y: 1.18, z: -0.05, r: 0.85, m: mainMaterial }
-        ];
-        
-        tengah.forEach(t => {
-            const sphere = new THREE.Mesh(new THREE.SphereGeometry(t.r, 32, 32), t.m);
-            sphere.position.set(t.x, t.y, t.z);
-            group.add(sphere);
-        });
-        
-        // Lapisan atas - puncak membulat (tidak lonjong)
-        const atas = [
-            { x: -0.8, y: 1.75, z: -0.4, r: 0.78, m: highlightMaterial },
-            { x: -0.2, y: 1.85, z: -0.45, r: 0.82, m: highlightMaterial },
-            { x: 0.5, y: 1.80, z: -0.35, r: 0.80, m: highlightMaterial },
-            { x: -0.5, y: 1.80, z: 0.1, r: 0.79, m: mainMaterial },
-            { x: 0.2, y: 1.88, z: 0.0, r: 0.83, m: highlightMaterial },
-            { x: 0.9, y: 1.78, z: -0.1, r: 0.77, m: mainMaterial }
-        ];
-        
-        atas.forEach(a => {
-            const sphere = new THREE.Mesh(new THREE.SphereGeometry(a.r, 30, 30), a.m);
-            sphere.position.set(a.x, a.y, a.z);
-            group.add(sphere);
-        });
-        
-        // Puncak tertinggi (membulat normal)
-        const puncak = [
-            { x: -0.3, y: 2.35, z: -0.3, r: 0.68, m: highlightMaterial },
-            { x: 0.3, y: 2.40, z: -0.25, r: 0.70, m: highlightMaterial },
-            { x: 0.0, y: 2.10, z: 0.05, r: 0.65, m: mainMaterial }
-        ];
-        
-        puncak.forEach(p => {
-            const sphere = new THREE.Mesh(new THREE.SphereGeometry(p.r, 30, 30), p.m);
-            sphere.position.set(p.x, p.y, p.z);
-            group.add(sphere);
-        });
-        
-        // Gumpalan tambahan untuk efek besar
-        for (let i = 0; i < 35; i++) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.45 + Math.random() * 0.35, 26, 26),
-                Math.random() > 0.6 ? highlightMaterial : mainMaterial
-            );
-            sphere.position.set(
-                -1.5 + Math.random() * 3.0,
-                0.3 + Math.random() * 2.3,
-                -1.2 + Math.random() * 2.0
-            );
-            group.add(sphere);
-        }
-    }
-    else if (type === 'altocumulus') {
-        // ============================================================
-        // AWAN ALTOKUMULUS - BERGELOMBANG (WARNA ABU/PUTIH NORMAL, TIDAK KUNING)
-        // ============================================================
-        
-        // Buat material khusus untuk altocumulus (TANPA emissive/efek kuning)
-        const altocumulusPutih = new THREE.MeshStandardMaterial({
-            color: 0xf0f4f8,
-            roughness: 0.40,
-            metalness: 0.0,
-            emissive: 0x000000,
-            emissiveIntensity: 0
-        });
-        
-        const altocumulusAbu = new THREE.MeshStandardMaterial({
-            color: 0xd0d8e0,
-            roughness: 0.45,
-            metalness: 0.0,
-            emissive: 0x000000,
-            emissiveIntensity: 0
-        });
-        
-        const altocumulusGelap = new THREE.MeshStandardMaterial({
-            color: 0xb0b8c0,
-            roughness: 0.50,
-            metalness: 0.0,
-            emissive: 0x000000,
-            emissiveIntensity: 0
-        });
-        
-        // Gelombang 1 (bawah) - warna lebih gelap
-        for (let col = 0; col < 5; col++) {
-            const x = -1.6 + (col * 0.8);
-            const z = -0.9;
-            const yVar = Math.sin(col * 0.8) * 0.15;
+                function animate(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(1, elapsed / duration);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    currentYPosition = startY + (targetYClamped - startY) * ease;
+                    currentCloudGroup.position.y = currentYPosition;
+                    if (progress < 1) yAnimation = requestAnimationFrame(animate);
+                    else yAnimation = null;
+                }
+                yAnimation = requestAnimationFrame(animate);
+            };
             
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.52, 28, 28),
-                altocumulusGelap
-            );
-            sphere.position.set(x, 0.4 + yVar, z);
-            group.add(sphere);
-        }
-        
-        // Gelombang 2 (tengah) - warna abu
-        for (let col = 0; col < 5; col++) {
-            const x = -1.4 + (col * 0.8);
-            const z = -0.2;
-            const yVar = Math.cos(col * 0.8) * 0.12;
+            window.resetCloudRotation = function() {
+                if (rotationAnimation) cancelAnimationFrame(rotationAnimation);
+                if (yAnimation) cancelAnimationFrame(yAnimation);
+                currentRotationAngle = 0;
+                currentYPosition = 1;
+                currentCloudGroup.rotation.y = 0;
+                currentCloudGroup.position.y = 1;
+            };
             
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.54, 28, 28),
-                altocumulusAbu
-            );
-            sphere.position.set(x, 0.65 + yVar, z);
-            group.add(sphere);
-        }
-        
-        // Gelombang 3 (atas) - warna putih
-        for (let col = 0; col < 5; col++) {
-            const x = -1.5 + (col * 0.8);
-            const z = 0.5;
-            const yVar = Math.sin(col * 0.9) * 0.10;
-            
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.50, 28, 28),
-                altocumulusPutih
-            );
-            sphere.position.set(x, 0.90 + yVar, z);
-            group.add(sphere);
-        }
-        
-        // Puncak gelombang - warna putih bersih
-        for (let col = 0; col < 4; col++) {
-            const x = -1.2 + (col * 0.9);
-            
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.44, 26, 26),
-                altocumulusPutih
-            );
-            sphere.position.set(x, 1.20, -0.15);
-            group.add(sphere);
-        }
-        
-        // Gumpalan kecil tambahan (abu-abu normal)
-        for (let i = 0; i < 20; i++) {
-            const sphere = new THREE.Mesh(
-                new THREE.SphereGeometry(0.32 + Math.random() * 0.15, 24, 24),
-                altocumulusAbu
-            );
-            sphere.position.set(
-                -1.8 + Math.random() * 3.6,
-                0.35 + Math.random() * 1.0,
-                -1.0 + Math.random() * 1.8
-            );
-            group.add(sphere);
-        }
-    }
-    else {
-        // Default: awan biasa yang rapi
-        const positions = [
-            { x: -1.0, y: 0, z: -0.5, r: 0.8 }, { x: -0.3, y: -0.1, z: -0.6, r: 0.85 },
-            { x: 0.4, y: 0, z: -0.5, r: 0.82 }, { x: 1.0, y: 0.05, z: -0.3, r: 0.78 },
-            { x: -0.8, y: 0.6, z: -0.3, r: 0.85 }, { x: -0.2, y: 0.75, z: -0.4, r: 0.9 },
-            { x: 0.5, y: 0.7, z: -0.3, r: 0.88 }, { x: 0, y: 1.3, z: -0.2, r: 0.8 }
-        ];
-        
-        positions.forEach(p => {
-            const sphere = new THREE.Mesh(new THREE.SphereGeometry(p.r, 32, 32), mainMaterial);
-            sphere.position.set(p.x, p.y, p.z);
-            group.add(sphere);
-        });
-    }
-    
-    // Atur skala agar proporsional
-    group.userData = { type: type };
-    return group;
-}
-
-            // ===== RENDER KARTU AWAN =====
             if (elements.cloudCards) {
-                cloudData.forEach((cloud, index) => {
+                cloudData.forEach((cloud, idx) => {
                     const card = document.createElement('div');
-                    card.className = 'cloud-card' + (index === 0 ? ' active' : '');
-                    card.dataset.index = index;
-                    
+                    card.className = 'cloud-card' + (idx === 0 ? ' active' : '');
                     card.innerHTML = `
-                        <div class="cloud-card-header">
-                            <div class="cloud-code">${cloud.code}</div>
-                            <div class="cloud-icon"><i class="fas ${cloud.icon}"></i></div>
-                        </div>
+                        <div class="cloud-card-header"><div class="cloud-code">${cloud.code}</div><div class="cloud-icon"><i class="fas ${cloud.icon}"></i></div></div>
                         <div class="cloud-name">${cloud.name}</div>
-                        <div class="cloud-desc">${cloud.longDesc}</div>
-                        <div class="cloud-footer">
-                            <div class="cloud-altitude">${cloud.altitude}</div>
-                            <div class="explore-btn" data-code="${cloud.code}">
-                                Jelajahi 3D <i class="fas fa-arrow-right"></i>
-                            </div>
-                        </div>
+                        <div class="cloud-desc">${cloud.longDesc.substring(0, 80)}...</div>
+                        <div class="cloud-footer"><div class="cloud-altitude">↑ ${cloud.altitude}</div><div class="explore-btn">Jelajahi 3D <i class="fas fa-arrow-right"></i></div></div>
                     `;
-                    
-                    card.addEventListener('click', (e) => {
+                    card.onclick = () => {
                         document.querySelectorAll('.cloud-card').forEach(c => c.classList.remove('active'));
                         card.classList.add('active');
-                        
-                        if (currentCloudGroup) {
-                            scene.remove(currentCloudGroup);
-                        }
-                        currentCloudGroup = createRealisticCloud(cloud.type, cloud.color);
-                        currentCloudGroup.position.set(0, 1, 0);
-                        currentCloudGroup.scale.set(0.7, 0.7, 0.7);
-                        scene.add(currentCloudGroup);
-                        
-                        if (elements.currentCloudCode) {
-                            elements.currentCloudCode.textContent = cloud.code;
-                        }
-                        if (elements.currentCloudDesc) {
-                            elements.currentCloudDesc.textContent = cloud.desc;
-                        }
-                        
+                        if (elements.currentCloudName) elements.currentCloudName.textContent = cloud.name;
+                        if (elements.currentCloudCode) elements.currentCloudCode.textContent = cloud.code;
+                        if (elements.currentCloudDesc) elements.currentCloudDesc.textContent = cloud.shortDesc;
                         controls.autoRotate = true;
-                    });
-                    
+                    };
                     elements.cloudCards.appendChild(card);
-                    
-                    const exploreBtn = card.querySelector('.explore-btn');
-                    if (exploreBtn) {
-                        exploreBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            card.click();
-                        });
-                    }
                 });
-
-                // Load default cloud (Cumulus)
-                currentCloudGroup = createRealisticCloud('cumulus', 0xffffff);
-                currentCloudGroup.position.set(0, 1, 0);
-                currentCloudGroup.scale.set(0.7, 0.7, 0.7);
-                scene.add(currentCloudGroup);
             }
-
-            // ===== ANIMASI =====
+            
             function animate() {
                 requestAnimationFrame(animate);
                 controls.update();
                 renderer.render(scene, camera);
             }
-            
             animate();
-
-            // ===== RESIZE HANDLER =====
-            window.addEventListener('resize', onWindowResize, false);
-            function onWindowResize() {
+            
+            window.addEventListener('resize', () => {
                 camera.aspect = elements.container.clientWidth / elements.container.clientHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(elements.container.clientWidth, elements.container.clientHeight);
-            }
+            });
         }
-
-        // ===== FUNGSI KAMERA LIVE DENGAN LANDMARK =====
+        
+        // Hand Landmarker dengan gestur 2 tangan mengepal (turun) dan 2 tangan terbuka (naik)
+        let handLandmarker = null;
         let stream = null;
         let isCameraActive = false;
-        let handLandmarker = null;
-        let lastVideoTime = -1;
+        let videoElement = null;
+        let isProcessing = false;
+        let lastGestureTime = 0;
+        const gestureCooldown = 600;
         
-        // Variabel untuk gesture
-        let lastGesture = '';
-        let lastClapTime = 0;
-        let clapCooldown = 1000;
-        let isProcessingHand = false;
+        const connections = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[0,9],[9,10],[10,11],[11,12],[0,13],[13,14],[14,15],[15,16],[0,17],[17,18],[18,19],[19,20],[5,9],[9,13],[13,17]];
         
-        // Canvas untuk menggambar landmark
-        const landmarkCanvas = document.createElement('canvas');
-        const landmarkCtx = landmarkCanvas.getContext('2d');
-        let overlayCanvas = null;
-
-        // Warna untuk koneksi landmark (sesuai diagram MediaPipe)
-        const connections = [
-            [0, 1], [1, 2], [2, 3], [3, 4], // Ibu jari
-            [0, 5], [5, 6], [6, 7], [7, 8], // Jari telunjuk
-            [0, 9], [9, 10], [10, 11], [11, 12], // Jari tengah
-            [0, 13], [13, 14], [14, 15], [15, 16], // Jari manis
-            [0, 17], [17, 18], [18, 19], [19, 20], // Jari kelingking
-            [5, 9], [9, 13], [13, 17] // Koneksi antar jari
-        ];
-        
-        // Helper: Deteksi gesture satu tangan
         function detectSingleHand(hand) {
-            if (!hand) return '';
-            
-            const fingerTips = [4, 8, 12, 16, 20];
-            const fingerMCPs = [2, 5, 9, 13, 17];
-            
-            let extendedCount = 0;
-            let extendedFingers = [];
-            
-            fingerTips.forEach((tip, index) => {
-                const tip_y = hand[tip].y;
-                const mcp_y = hand[fingerMCPs[index]].y;
-                if (index === 0) {
-                    const tip_x = hand[tip].x;
-                    const mcp_x = hand[fingerMCPs[index]].x;
-                    if (tip_x > mcp_x) { extendedCount++; extendedFingers.push(index); }
+            const tips = [4,8,12,16,20];
+            const mcps = [2,5,9,13,17];
+            let count = 0, fingers = [];
+            tips.forEach((tip, i) => {
+                if (i === 0) {
+                    if (hand[tip].x > hand[mcps[i]].x) { count++; fingers.push(i); }
                 } else {
-                    if (tip_y < mcp_y) { extendedCount++; extendedFingers.push(index); }
+                    if (hand[tip].y < hand[mcps[i]].y) { count++; fingers.push(i); }
                 }
             });
-            
-            const isThree = extendedCount === 3 && extendedFingers.includes(1) && extendedFingers.includes(2) && extendedFingers.includes(3);
-            const isTwo = extendedCount === 2 && extendedFingers.includes(1) && extendedFingers.includes(2);
-            const isPinky = extendedCount === 1 && extendedFingers.includes(4);
-            const isOpen = extendedCount >= 5;
-            const isClosed = extendedCount === 0;
-            
-            if (isPinky) return 'KELINGKING';
-            if (isThree) return 'TIGA JARI';
-            if (isTwo) return 'DUA JARI';
-            if (isOpen) return 'BUKA TANGAN';
-            if (isClosed) return 'TUTUP TANGAN';
+            if (count === 1 && fingers.includes(1)) return 'TELUNJUK';
+            if (count === 2 && fingers.includes(1) && fingers.includes(2)) return 'DUA JARI';
+            if (count === 1 && fingers.includes(4)) return 'KELINGKING';
+            if (count === 3 && fingers.includes(1) && fingers.includes(2) && fingers.includes(3)) return 'TIGA JARI';
+            if (count >= 5) return 'BUKA TANGAN';
+            if (count === 0) return 'TUTUP TANGAN';
             return 'LAINNYA';
         }
-
-        // Fungsi untuk mendeteksi gesture tangan
+        
         function detectGesture(landmarks) {
-            if (!landmarks || landmarks.length === 0) return 'TIDAK ADA TANGAN';
-            
+            if (!landmarks?.length) return 'TIDAK ADA TANGAN';
             if (landmarks.length === 2) {
                 const s1 = detectSingleHand(landmarks[0]);
                 const s2 = detectSingleHand(landmarks[1]);
                 
-                // Rotasi jika dua-duanya tutup (kepal) atau dua-duanya buka (telapak)
-                if ((s1 === 'BUKA TANGAN' && s2 === 'BUKA TANGAN') || (s1 === 'TUTUP TANGAN' && s2 === 'TUTUP TANGAN')) {
-                    return 'DUA TANGAN PUTAR';
-                }
+                // Dua tangan mengepal (keduanya TUTUP TANGAN) -> Awan turun
+                if (s1 === 'TUTUP TANGAN' && s2 === 'TUTUP TANGAN') return 'DUA TANGAN KEPAL';
+                // Dua tangan terbuka (keduanya BUKA TANGAN) -> Awan naik
+                if (s1 === 'BUKA TANGAN' && s2 === 'BUKA TANGAN') return 'DUA TANGAN BUKA';
+                // Kombinasi lain untuk rotasi/geser
+                if ((s1 === 'BUKA TANGAN' && s2 === 'TUTUP TANGAN') || (s1 === 'TUTUP TANGAN' && s2 === 'BUKA TANGAN')) return 'DUA TANGAN PUTAR';
                 return 'DUA TANGAN GESER';
             }
-            
             return detectSingleHand(landmarks[0]);
         }
-
-
-        // Inisialisasi MediaPipe Hand Landmarker
-        async function initHandLandmarker() {
-            try {
-                const resolver = await FilesetResolver.forVisionTasks(
-                    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
-                );
-
-                handLandmarker = await HandLandmarker.createFromOptions(resolver, {
-                    baseOptions: {
-                        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-                        delegate: "CPU"
-                    },
-                    runningMode: "VIDEO",
-                    numHands: 2,
-                    minHandDetectionConfidence: 0.5,
-                    minHandPresenceConfidence: 0.5,
-                    minTrackingConfidence: 0.5
-                });
-
-                console.log("✅ Hand Landmarker siap");
-                if (elements.statusText) {
-                    elements.statusText.textContent = 'MediaPipe siap - Aktifkan kamera';
-                }
-            } catch (error) {
-                console.error("❌ Gagal inisialisasi Hand Landmarker:", error);
-                if (elements.statusText) {
-                    elements.statusText.textContent = 'Gagal load MediaPipe';
-                }
-            }
-        }
-
-        // Fungsi untuk menggambar landmark di canvas
-        function drawHandLandmarks(landmarks, handiness, canvas, ctx) {
-            if (!landmarks || landmarks.length === 0) return;
-            
-            const width = canvas.width;
-            const height = canvas.height;
-            
-            // Bersihkan canvas
-            ctx.clearRect(0, 0, width, height);
-            
-            // Gambar background semi-transparan untuk efek
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.fillRect(0, 0, width, height);
-            
-            landmarks.forEach((hand, handIndex) => {
-                const isRightHand = handiness && handiness[handIndex] === 'Right';
-                
-                // Gambar koneksi antar landmark
-                ctx.lineWidth = 3;
-                ctx.strokeStyle = isRightHand ? '#44ff44' : '#ffaa44';
+        
+        function drawHands(ctx, landmarks, w, h) {
+            ctx.clearRect(0, 0, w, h);
+            landmarks.forEach(hand => {
                 ctx.beginPath();
-                
-                connections.forEach(([start, end]) => {
-                    if (hand[start] && hand[end]) {
-                        const startX = hand[start].x * width;
-                        const startY = hand[start].y * height;
-                        const endX = hand[end].x * width;
-                        const endY = hand[end].y * height;
-                        
-                        ctx.moveTo(startX, startY);
-                        ctx.lineTo(endX, endY);
+                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = '#44ff44';
+                connections.forEach(([s,e]) => {
+                    if (hand[s] && hand[e]) {
+                        ctx.moveTo(hand[s].x * w, hand[s].y * h);
+                        ctx.lineTo(hand[e].x * w, hand[e].y * h);
+                        ctx.stroke();
                     }
                 });
-                ctx.stroke();
-                
-                // Gambar landmark points
-                hand.forEach((point, index) => {
-                    const x = point.x * width;
-                    const y = point.y * height;
-                    
-                    // Lingkaran luar (glow)
+                hand.forEach(p => {
                     ctx.beginPath();
-                    ctx.arc(x, y, 6, 0, 2 * Math.PI);
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                    ctx.arc(p.x * w, p.y * h, 5, 0, 2*Math.PI);
+                    ctx.fillStyle = '#FFD700';
                     ctx.fill();
-                    
-                    // Lingkaran dalam
-                    ctx.beginPath();
-                    ctx.arc(x, y, 4, 0, 2 * Math.PI);
-                    
-                    // Warna berdasarkan jenis tangan dan index
-                    if (isRightHand) {
-                        ctx.fillStyle = '#44ff44'; // Hijau untuk tangan kanan
-                    } else {
-                        ctx.fillStyle = '#ffaa44'; // Oranye untuk tangan kiri
-                    }
-                    
-                    ctx.fill();
-                    
-                    // Outline putih
-                    ctx.strokeStyle = 'white';
-                    ctx.lineWidth = 1.5;
+                    ctx.strokeStyle = '#fff';
                     ctx.stroke();
-                    
-                    // Tambahkan nomor landmark untuk beberapa titik penting
-                    if ([0, 4, 8, 12, 16, 20].includes(index)) {
-                        ctx.font = 'bold 12px Arial';
-                        ctx.fillStyle = 'white';
-                        ctx.shadowColor = 'black';
-                        ctx.shadowBlur = 4;
-                        ctx.fillText(index, x + 8, y - 8);
-                        ctx.shadowBlur = 0;
-                    }
                 });
-            });
-            
-            // Info teks removed per request
-        }
-
-        // Fungsi deteksi tangan dari frame video
-        async function detectAndDrawHands() {
-            if (isProcessingHand || !isCameraActive || !handLandmarker || !elements.videoElement || !elements.videoElement.videoWidth) return;
-            
-            isProcessingHand = true;
-            const startTime = performance.now();
-            
-            try {
-                const results = await handLandmarker.detectForVideo(elements.videoElement, performance.now());
-                
-                // Update canvas overlay
-                if (overlayCanvas && elements.videoElement.videoWidth > 0) {
-                    // Set ukuran canvas sesuai video
-                    overlayCanvas.width = elements.videoElement.videoWidth;
-                    overlayCanvas.height = elements.videoElement.videoHeight;
-                    
-                    const ctx = overlayCanvas.getContext('2d');
-                    
-                    // Gambar frame video
-                    ctx.drawImage(elements.videoElement, 0, 0, overlayCanvas.width, overlayCanvas.height);
-                    
-                    // Gambar landmark di atas video
-                    if (results.landmarks && results.landmarks.length > 0) {
-                        drawHandLandmarks(results.landmarks, results.handedness, overlayCanvas, ctx);
-                        
-                        // Deteksi gesture
-                        const gesture = detectGesture(results.landmarks);
-                        
-                        // Tampilkan gesture di UI
-                        if (elements.gestureName) {
-                            elements.gestureName.textContent = gesture;
-                        }
-                        
-                        // Logika kontrol 3D berdasarkan gesture
-                        if (window.controls && window.camera) {
-                            const controls = window.controls;
-                            const camera = window.camera;
-                            
-                            // Simpan posisi kamera default untuk reset
-                            if (!window.defaultCameraPos) {
-                                window.defaultCameraPos = camera.position.clone();
-                                window.defaultTarget = controls.target.clone();
-                            }
-                            
-                            switch(gesture) {
-                                case 'DUA TANGAN PUTAR':
-                                    // Rotasi Kamera (Orbit)
-                                    const h1p = results.landmarks[0][9];
-                                    const h2p = results.landmarks[1][9];
-                                    const midXp = (h1p.x + h2p.x) / 2;
-                                    const midYp = (h1p.y + h2p.y) / 2;
-                                    
-                                    if (window.lastMidpoint) {
-                                        const dx = midXp - window.lastMidpoint.x;
-                                        const dy = midYp - window.lastMidpoint.y;
-                                        
-                                        // Orbit - Update rotasi controls
-                                        controls.rotateLeft(dx * 5);
-                                        controls.rotateUp(dy * 5);
-                                    }
-                                    window.lastMidpoint = { x: midXp, y: midYp };
-                                    break;
-
-                                case 'DUA TANGAN GESER':
-                                    // Pindahkan kamera (Panning)
-                                    const h1 = results.landmarks[0][9]; // Pangkal jari tengah
-                                    const h2 = results.landmarks[1][9];
-                                    const midX = (h1.x + h2.x) / 2;
-                                    const midY = (h1.y + h2.y) / 2;
-                                    
-                                    if (window.lastMidpoint) {
-                                        const dx = midX - window.lastMidpoint.x;
-                                        const dy = midY - window.lastMidpoint.y;
-                                        
-                                        // Sensitivitas panning
-                                        const sensitivitas = 25; 
-                                        
-                                        // Update target dan posisi kamera
-                                        controls.target.x += dx * sensitivitas;
-                                        controls.target.y -= dy * sensitivitas;
-                                        camera.position.x += dx * sensitivitas;
-                                        camera.position.y -= dy * sensitivitas;
-                                    }
-                                    window.lastMidpoint = { x: midX, y: midY };
-                                    break;
-
-                                    
-                                case 'DUA JARI':
-                                    window.lastMidpoint = null;
-                                    // Orbit Manual 1 Tangan
-                                    const hPos = results.landmarks[0][9];
-                                    if (window.lastSingleHandPos) {
-                                        const dx = hPos.x - window.lastSingleHandPos.x;
-                                        const dy = hPos.y - window.lastSingleHandPos.y;
-                                        controls.rotateLeft(dx * 8);
-                                        controls.rotateUp(dy * 8);
-                                    }
-                                    window.lastSingleHandPos = { x: hPos.x, y: hPos.y };
-                                    break;
-                                    
-                                case 'BUKA TANGAN':
-                                    window.lastMidpoint = null;
-                                    window.lastSingleHandPos = null;
-                                    // Zoom out
-                                    if (camera.position.length() < 25) {
-                                        camera.position.multiplyScalar(1.015);
-                                    }
-                                    break;
-                                case 'TUTUP TANGAN':
-                                    window.lastMidpoint = null;
-                                    window.lastSingleHandPos = null;
-                                    // Zoom in
-                                    if (camera.position.length() > 4) {
-                                        camera.position.multiplyScalar(0.985);
-                                    }
-                                    break;
-                                case 'TIGA JARI':
-                                    window.lastMidpoint = null;
-                                    window.lastSingleHandPos = null;
-                                    // Putar otomatis
-                                    controls.autoRotate = true;
-                                    break;
-                                case 'KELINGKING':
-                                    window.lastMidpoint = null;
-                                    window.lastSingleHandPos = null;
-                                    // Reset view
-                                    camera.position.copy(window.defaultCameraPos);
-                                    controls.target.copy(window.defaultTarget);
-                                    controls.autoRotate = false;
-                                    break;
-                                default:
-                                    window.lastMidpoint = null;
-                                    window.lastSingleHandPos = null;
-                                    // Jika bukan tiga jari, matikan auto rotate
-                                    if (gesture !== 'TIGA JARI') {
-                                        controls.autoRotate = false;
-                                    }
-                                    break;
-                            }
-                        }
-                    } else {
-                        // Jika tidak ada tangan, tetap tampilkan video tanpa overlay
-                        ctx.drawImage(elements.videoElement, 0, 0, overlayCanvas.width, overlayCanvas.height);
-                        
-                        if (elements.gestureName) {
-                            elements.gestureName.textContent = '--';
-                        }
-                    }
-                }
-                
-                if (results.landmarks && results.landmarks.length > 0) {
-                    // Update status
-                    if (elements.statusIndicator) {
-                        elements.statusIndicator.style.color = '#44ff44';
-                    }
-                    if (elements.statusText) {
-                        const handTypes = results.handedness.map(h => h[0].displayName).join(' & ');
-                        elements.statusText.textContent = `Mendeteksi ${results.landmarks.length} tangan (${handTypes})`;
-                    }
-                } else {
-                    if (elements.statusIndicator) {
-                        elements.statusIndicator.style.color = '#ffff44';
-                    }
-                    if (elements.statusText) {
-                        elements.statusText.textContent = 'Tidak ada tangan terdeteksi';
-                    }
-                    
-                    // Jika tidak ada tangan, matikan auto rotate
-                    if (window.controls) {
-                        window.controls.autoRotate = false;
-                    }
-                }
-            } catch (error) {
-                console.error("Error deteksi tangan:", error);
-            } finally {
-                isProcessingHand = false;
-                // Lanjutkan deteksi frame berikutnya
-                if (isCameraActive) {
-                    requestAnimationFrame(detectAndDrawHands);
-                }
-            }
-        }
-
-        // Fungsi aktivasi kamera
-        async function activateCamera() {
-            try {
-                // Cek apakah elemen yang diperlukan ada
-                if (!elements.videoElement || !elements.placeholderPreview || !elements.liveBadge || 
-                    !elements.statusIndicator || !elements.statusText || !elements.captureBtn || !elements.cameraBtn) {
-                    console.error('Elemen kamera tidak lengkap!');
-                    
-                    // Tampilkan elemen mana yang hilang
-                    const missingElements = [];
-                    if (!elements.videoElement) missingElements.push('videoElement');
-                    if (!elements.placeholderPreview) missingElements.push('placeholderPreview');
-                    if (!elements.liveBadge) missingElements.push('liveBadge');
-                    if (!elements.statusIndicator) missingElements.push('statusIndicator');
-                    if (!elements.statusText) missingElements.push('statusText');
-                    if (!elements.captureBtn) missingElements.push('captureBtn');
-                    if (!elements.cameraBtn) missingElements.push('cameraBtn');
-                    
-                    alert(`Error: Elemen berikut tidak ditemukan: ${missingElements.join(', ')}. Periksa kembali HTML Anda.`);
-                    return;
-                }
-
-                // Cek dukungan browser
-                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    alert('Browser Anda tidak mendukung akses kamera. Gunakan Chrome, Firefox, atau Edge terbaru.');
-                    return;
-                }
-
-                // Minta izin kamera
-                stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { 
-                        facingMode: 'user', // Pakai kamera depan untuk demo tangan
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    } 
-                });
-                
-                // Buat canvas overlay
-                overlayCanvas = document.createElement('canvas');
-                overlayCanvas.style.position = 'absolute';
-                overlayCanvas.style.top = '0';
-                overlayCanvas.style.left = '0';
-                overlayCanvas.style.width = '100%';
-                overlayCanvas.style.height = '100%';
-                overlayCanvas.style.pointerEvents = 'none'; // Biarkan klik tembus
-                
-                // Sembunyikan video element asli, kita akan pakai canvas
-                elements.videoElement.style.display = 'none';
-                
-                // Tambahkan canvas ke video preview
-                const videoPreview = document.querySelector('.video-preview');
-                videoPreview.style.position = 'relative';
-                videoPreview.appendChild(overlayCanvas);
-                
-                // Tampilkan stream
-                elements.videoElement.srcObject = stream;
-                elements.placeholderPreview.style.display = 'none';
-                
-                // Update UI
-                isCameraActive = true;
-                elements.liveBadge.innerHTML = '<i class="fas fa-circle"></i> LIVE';
-                elements.statusIndicator.className = 'fas fa-circle';
-                elements.statusIndicator.style.color = '#ffff44';
-                elements.statusText.textContent = 'Kamera aktif - Menunggu deteksi...';
-                
-                // Tampilkan tombol capture
-                elements.captureBtn.style.display = 'flex';
-                
-                // Ubah teks tombol
-                elements.cameraBtn.innerHTML = `
-                    <span>
-                        <i class="fas fa-camera"></i> Matikan Kamera
-                    </span>
-                    <i class="fas fa-arrow-right arrow-icon"></i>
-                `;
-                
-                // Tunggu video siap
-                elements.videoElement.onloadeddata = () => {
-                    elements.videoElement.play();
-                    // Mulai deteksi tangan dengan landmark
-                    detectAndDrawHands();
-                };
-                
-                console.log('✅ Kamera berhasil diaktifkan');
-                
-            } catch (err) {
-                console.error('❌ Gagal mengakses kamera:', err);
-                
-                let errorMessage = 'Tidak dapat mengakses kamera. ';
-                
-                if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-                    errorMessage += 'Izin kamera ditolak. Izinkan akses kamera di pengaturan browser.';
-                } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-                    errorMessage += 'Tidak ada kamera yang terdeteksi.';
-                } else if (err.name === 'NotReadableError') {
-                    errorMessage += 'Kamera sedang digunakan aplikasi lain.';
-                } else {
-                    errorMessage += err.message;
-                }
-                
-                alert(errorMessage);
-            }
-        }
-
-        // Fungsi mematikan kamera
-        function deactivateCamera() {
-            if (stream) {
-                stream.getTracks().forEach(track => {
-                    track.stop();
-                });
-                stream = null;
-            }
-            
-            // Hapus overlay canvas
-            if (overlayCanvas && overlayCanvas.parentNode) {
-                overlayCanvas.parentNode.removeChild(overlayCanvas);
-                overlayCanvas = null;
-            }
-            
-            if (elements.videoElement) {
-                elements.videoElement.srcObject = null;
-                elements.videoElement.style.display = 'none';
-            }
-            
-            if (elements.placeholderPreview) {
-                elements.placeholderPreview.style.display = 'flex';
-            }
-            
-            isCameraActive = false;
-            
-            if (elements.liveBadge) {
-                elements.liveBadge.innerHTML = '<i class="fas fa-circle"></i> OFF';
-            }
-            
-            if (elements.statusIndicator) {
-                elements.statusIndicator.className = 'fas fa-circle';
-                elements.statusIndicator.style.color = '#ff4444';
-            }
-            
-            if (elements.statusText) {
-                elements.statusText.textContent = 'Kamera tidak aktif';
-            }
-            
-            if (elements.captureBtn) {
-                elements.captureBtn.style.display = 'none';
-            }
-            
-            if (elements.pointsValue) {
-                elements.pointsValue.textContent = '--';
-            }
-            
-            if (elements.fpsValue) {
-                elements.fpsValue.textContent = '--';
-            }
-            
-            if (elements.gestureName) {
-                elements.gestureName.textContent = '--';
-            }
-            
-            if (elements.cameraBtn) {
-                elements.cameraBtn.innerHTML = `
-                    <span>
-                        <i class="fas fa-camera"></i> Aktifkan Kamera
-                    </span>
-                    <i class="fas fa-arrow-right arrow-icon"></i>
-                `;
-            }
-        }
-
-        // Fungsi mengambil foto
-        function capturePhoto() {
-            if (!isCameraActive || !stream || !overlayCanvas) return;
-            
-            // Gunakan overlay canvas yang sudah ada landmarknya
-            const photoDataUrl = overlayCanvas.toDataURL('image/jpeg', 0.9);
-            
-            // Buat link download
-            const link = document.createElement('a');
-            link.download = `hand-landmark-${new Date().getTime()}.jpg`;
-            link.href = photoDataUrl;
-            link.click();
-            
-            // Tampilkan notifikasi
-            alert('📸 Foto dengan landmark berhasil disimpan!');
-            
-            console.log('Foto landmark diambil');
-        }
-
-        // Event listeners (hanya jika elemennya ada)
-        if (elements.cameraBtn) {
-            elements.cameraBtn.addEventListener('click', () => {
-                if (isCameraActive) {
-                    deactivateCamera();
-                } else {
-                    activateCamera();
-                }
             });
         }
         
-        if (elements.captureBtn) {
-            elements.captureBtn.addEventListener('click', capturePhoto);
+        async function initHandLandmarker() {
+            try {
+                const resolver = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm");
+                handLandmarker = await HandLandmarker.createFromOptions(resolver, {
+                    baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task", delegate: "CPU" },
+                    runningMode: "VIDEO", numHands: 2
+                });
+                if (elements.statusText) elements.statusText.textContent = 'MediaPipe siap';
+            } catch(e) { console.error(e); }
         }
-
-        // Bersihkan saat halaman ditutup
-        window.addEventListener('beforeunload', () => {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
+        
+        async function activateCamera() {
+            try {
+                if (!navigator.mediaDevices?.getUserMedia) throw new Error('Tidak support');
+                videoElement = document.createElement('video');
+                videoElement.autoplay = true;
+                videoElement.playsInline = true;
+                videoElement.style.display = 'none';
+                document.body.appendChild(videoElement);
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 640, height: 480 } });
+                videoElement.srcObject = stream;
+                elements.placeholderGesture.style.display = 'none';
+                isCameraActive = true;
+                elements.liveBadge.innerHTML = '<i class="fas fa-circle"></i> ACTIVE';
+                elements.liveBadge.classList.add('active');
+                elements.statusIndicator.style.color = '#44ff44';
+                elements.statusText.textContent = 'Gesture detection aktif';
+                elements.cameraBtn.innerHTML = '<i class="fas fa-camera"></i> Matikan';
+                elements.captureBtn.style.display = 'flex';
+                elements.gestureCanvas.width = 640;
+                elements.gestureCanvas.height = 480;
+                videoElement.onloadeddata = () => { videoElement.play(); detectLoop(); };
+            } catch(e) { alert('Gagal akses kamera: ' + e.message); }
+        }
+        
+        function deactivateCamera() {
+            if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+            if (videoElement) { videoElement.remove(); videoElement = null; }
+            elements.placeholderGesture.style.display = 'flex';
+            isCameraActive = false;
+            elements.liveBadge.innerHTML = '<i class="fas fa-circle"></i> OFF';
+            elements.liveBadge.classList.remove('active');
+            elements.statusIndicator.style.color = '#ff4444';
+            elements.statusText.textContent = 'Kamera tidak aktif';
+            elements.cameraBtn.innerHTML = '<i class="fas fa-camera"></i> Aktifkan';
+            elements.captureBtn.style.display = 'none';
+            elements.gestureName.textContent = '--';
+            const ctx = elements.gestureCanvas.getContext('2d');
+            ctx.clearRect(0, 0, elements.gestureCanvas.width, elements.gestureCanvas.height);
+        }
+        
+        async function detectLoop() {
+            if (isProcessing || !isCameraActive || !handLandmarker || !videoElement?.videoWidth) {
+                if (isCameraActive) requestAnimationFrame(detectLoop);
+                return;
             }
-        });
-
-        // Inisialisasi Hand Landmarker saat halaman dimuat
+            isProcessing = true;
+            try {
+                const results = await handLandmarker.detectForVideo(videoElement, performance.now());
+                const ctx = elements.gestureCanvas.getContext('2d');
+                if (results.landmarks?.length) {
+                    drawHands(ctx, results.landmarks, elements.gestureCanvas.width, elements.gestureCanvas.height);
+                    const gesture = detectGesture(results.landmarks);
+                    elements.gestureName.textContent = gesture;
+                    const now = Date.now();
+                    if (window.controls && window.camera) {
+                        const controls = window.controls, camera = window.camera;
+                        if (!window.defaultPos) {
+                            window.defaultPos = camera.position.clone();
+                            window.defaultTarget = controls.target.clone();
+                        }
+                        if (gesture === 'TELUNJUK' && now - lastGestureTime >= gestureCooldown) {
+                            window.rotateCloud90Degrees?.('right');
+                            lastGestureTime = now;
+                        } else if (gesture === 'DUA JARI' && now - lastGestureTime >= gestureCooldown) {
+                            window.rotateCloud90Degrees?.('left');
+                            lastGestureTime = now;
+                        } else if (gesture === 'BUKA TANGAN' && camera.position.length() < 25) {
+                            camera.position.multiplyScalar(1.02);
+                        } else if (gesture === 'TUTUP TANGAN' && camera.position.length() > 4) {
+                            camera.position.multiplyScalar(0.98);
+                        } else if (gesture === 'TIGA JARI') {
+                            controls.autoRotate = true;
+                        } else if (gesture === 'KELINGKING') {
+                            camera.position.copy(window.defaultPos);
+                            controls.target.copy(window.defaultTarget);
+                            controls.autoRotate = false;
+                            window.resetCloudRotation?.();
+                        } else if (gesture === 'DUA TANGAN KEPAL') {
+                            // Dua tangan mengepal -> Awan turun ke bawah
+                            if (now - lastGestureTime >= gestureCooldown) {
+                                window.moveCloudVertical?.('down');
+                                lastGestureTime = now;
+                            }
+                        } else if (gesture === 'DUA TANGAN BUKA') {
+                            // Dua tangan terbuka -> Awan naik ke atas
+                            if (now - lastGestureTime >= gestureCooldown) {
+                                window.moveCloudVertical?.('up');
+                                lastGestureTime = now;
+                            }
+                        } else if (gesture === 'DUA TANGAN PUTAR') {
+                            if (results.landmarks[0] && results.landmarks[1]) {
+                                const hp = results.landmarks[0][9];
+                                if (window.lastMidpoint) {
+                                    controls.rotateLeft((hp.x - window.lastMidpoint.x) * 5);
+                                    controls.rotateUp((hp.y - window.lastMidpoint.y) * 5);
+                                }
+                                window.lastMidpoint = { x: hp.x, y: hp.y };
+                            }
+                        } else if (gesture === 'DUA TANGAN GESER') {
+                            if (results.landmarks[0] && results.landmarks[1]) {
+                                const h1 = results.landmarks[0][9], h2 = results.landmarks[1][9];
+                                const midX = (h1.x + h2.x)/2, midY = (h1.y + h2.y)/2;
+                                if (window.lastMidpoint) {
+                                    controls.target.x += (midX - window.lastMidpoint.x) * 12;
+                                    controls.target.y -= (midY - window.lastMidpoint.y) * 12;
+                                    camera.position.x += (midX - window.lastMidpoint.x) * 12;
+                                    camera.position.y -= (midY - window.lastMidpoint.y) * 12;
+                                }
+                                window.lastMidpoint = { x: midX, y: midY };
+                            }
+                        } else {
+                            if (gesture !== 'TIGA JARI' && gesture !== 'DUA TANGAN KEPAL' && gesture !== 'DUA TANGAN BUKA') {
+                                controls.autoRotate = false;
+                            }
+                            window.lastMidpoint = null;
+                        }
+                    }
+                } else {
+                    elements.gestureName.textContent = '--';
+                    window.lastMidpoint = null;
+                    ctx.clearRect(0, 0, elements.gestureCanvas.width, elements.gestureCanvas.height);
+                    ctx.fillStyle = '#0a0f1f';
+                    ctx.fillRect(0, 0, elements.gestureCanvas.width, elements.gestureCanvas.height);
+                }
+            } catch(e) { console.error(e); }
+            isProcessing = false;
+            if (isCameraActive) requestAnimationFrame(detectLoop);
+        }
+        
+        function capturePhoto() {
+            if (!isCameraActive || !elements.gestureCanvas) return;
+            const link = document.createElement('a');
+            link.download = `gesture-${Date.now()}.jpg`;
+            link.href = elements.gestureCanvas.toDataURL('image/jpeg', 0.9);
+            link.click();
+        }
+        
+        elements.cameraBtn?.addEventListener('click', () => isCameraActive ? deactivateCamera() : activateCamera());
+        elements.captureBtn?.addEventListener('click', capturePhoto);
+        window.addEventListener('beforeunload', () => stream?.getTracks().forEach(t => t.stop()));
         initHandLandmarker();
-
-        // ===== MODAL HELP FUNCTIONS =====
-        window.openHelpModal = () => {
-            document.getElementById('helpModalOverlay').classList.add('active');
-        };
-        window.closeHelpModal = () => {
-            document.getElementById('helpModalOverlay').classList.remove('active');
-        };
-
-        // Close modal on click outside
-        document.getElementById('helpModalOverlay').addEventListener('click', (e) => {
-            if (e.target.id === 'helpModalOverlay') closeHelpModal();
+        
+        const tutorialBtn = document.getElementById('tutorialBtn');
+        const tutorialSidebar = document.getElementById('tutorialSidebar');
+        const closeTutorial = document.getElementById('closeTutorial');
+        tutorialBtn?.addEventListener('click', () => tutorialSidebar.classList.toggle('active'));
+        closeTutorial?.addEventListener('click', () => tutorialSidebar.classList.remove('active'));
+        document.addEventListener('click', (e) => {
+            if (!tutorialSidebar?.contains(e.target) && !tutorialBtn?.contains(e.target) && tutorialSidebar?.classList.contains('active'))
+                tutorialSidebar.classList.remove('active');
         });
-
     </script>
-</body>
+    </body>
 </html>
