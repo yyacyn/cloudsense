@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "live-server --port=3000"
+    "dev": "live-server --port=3000",
+    "build": "node build-config.js"
   },
   "dependencies": {
     "@mediapipe/hands": "^0.4.1675469240",
