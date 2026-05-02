@@ -4,9 +4,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport"
-            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+            content="width=device-width, initial-scale=1.0, user-scalable=yes">
         <title>CloudSense · 10 Karakter Awan · Eksplorasi 3D</title>
-        <!-- Google Fonts Premium & Font Awesome -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
@@ -17,9 +16,8 @@
         <script
             src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
         <style>
-
         * {
-            margin: 1;
+            margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
@@ -38,7 +36,7 @@
             max-width: 1600px;
             width: 100%;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 2rem;
             position: relative;
         }
 
@@ -60,7 +58,7 @@
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             border-radius: 0 0 40px 40px;
-            padding: 1.2rem 2rem;
+            padding: 1rem 1.5rem;
             margin-bottom: 2rem;
             position: sticky;
             top: 0;
@@ -80,19 +78,19 @@
         .logo-wrapper {
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 12px;
         }
 
         .logo-icon {
-            width: 56px;
-            height: 56px;
+            width: 45px;
+            height: 45px;
             background: linear-gradient(135deg, #3b8fd9, #0f4c81);
-            border-radius: 18px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 30px;
+            font-size: 24px;
             box-shadow: 0 10px 20px -5px rgba(43, 127, 195, 0.3);
             animation: float 3s ease-in-out infinite;
         }
@@ -104,7 +102,7 @@
 
         .logo-text h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 800;
             background: linear-gradient(135deg, #1a4d7a, #2b7fc3);
             -webkit-background-clip: text;
@@ -114,14 +112,14 @@
 
         .logo-text p {
             color: #2b7fc3;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
         .nav-menu {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             list-style: none;
             flex-wrap: wrap;
         }
@@ -130,7 +128,7 @@
             color: #4a6a85;
             text-decoration: none;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.9rem;
             padding: 0.5rem 0;
             position: relative;
             transition: 0.2s;
@@ -147,7 +145,7 @@
             bottom: 0;
             left: 0;
             width: 0%;
-            height: 3px;
+            height: 2px;
             background: linear-gradient(90deg, #2b7fc3, #9ad0ff);
             border-radius: 3px;
             transition: width 0.3s ease;
@@ -161,13 +159,14 @@
         .hero-minimal {
             background: linear-gradient(135deg, #ffffff, #e3f0ff);
             border-radius: 60px;
-            padding: 5rem 3rem;
-            margin-bottom: 2.5rem;
+            padding: 4rem 2rem;
+            margin-bottom: 2rem;
             border: 1px solid rgba(43, 127, 195, 0.2);
             box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.15);
             position: relative;
             overflow: hidden;
             text-align: center;
+            isolation: isolate;
         }
 
         .hero-minimal::before {
@@ -183,21 +182,64 @@
             z-index: 0;
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
+        .floating-clouds {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
+
+        .floating-cloud {
+            position: absolute;
+            color: rgba(43, 127, 195, 0.15);
+            font-size: 3rem;
+            pointer-events: none;
+            animation: floatCloud linear infinite;
+        }
+
+        .floating-cloud.large { font-size: 5rem; color: rgba(43, 127, 195, 0.1); }
+        .floating-cloud.medium { font-size: 3rem; color: rgba(43, 127, 195, 0.12); }
+        .floating-cloud.small { font-size: 2rem; color: rgba(43, 127, 195, 0.08); }
+
+        @keyframes floatCloud {
+            0% { transform: translateX(100vw) translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(-20vw) translateY(var(--y-offset, 0)) rotate(10deg); opacity: 0; }
+        }
+
+        @keyframes floatUpDown {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .static-cloud {
+            position: absolute;
+            color: rgba(43, 127, 195, 0.08);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .static-cloud-1 { top: 10%; left: 5%; font-size: 6rem; animation: floatUpDown 6s ease-in-out infinite; }
+        .static-cloud-2 { bottom: 0%; right: 3%; font-size: 8rem; animation: floatUpDown 8s ease-in-out infinite; }
+        .static-cloud-3 { top: 20%; right: 15%; font-size: 4rem; animation: floatUpDown 5s ease-in-out infinite; }
+        .static-cloud-4 { bottom: 15%; left: 10%; font-size: 5.5rem; animation: floatUpDown 7s ease-in-out infinite; }
+
+        .hero-content { position: relative; z-index: 2; }
 
         .hero-tag {
             display: inline-block;
             color: #2b7fc3;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 700;
-            letter-spacing: 4px;
-            margin-bottom: 1.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
             text-transform: uppercase;
             background: rgba(43, 127, 195, 0.1);
-            padding: 0.5rem 2rem;
+            padding: 0.4rem 1.5rem;
             border-radius: 60px;
             border: 1px solid rgba(43, 127, 195, 0.2);
             animation: pulse 2s ease-in-out infinite;
@@ -210,7 +252,7 @@
 
         .hero-content h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 6rem;
+            font-size: 4rem;
             font-weight: 800;
             background: linear-gradient(135deg, #1a4d7a, #2b7fc3, #6bb5ff);
             -webkit-background-clip: text;
@@ -223,7 +265,7 @@
 
         @keyframes glow {
             0%, 100% { text-shadow: 0 0 0px rgba(43, 127, 195, 0); }
-            50% { text-shadow: 0 0 20px rgba(43, 127, 195, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
         }
 
         .main-grid {
@@ -236,8 +278,8 @@
         .camera-panel {
             background: #ffffff;
             backdrop-filter: blur(20px);
-            border-radius: 50px;
-            padding: 2.5rem;
+            border-radius: 40px;
+            padding: 1.5rem;
             border: 1px solid rgba(43, 127, 195, 0.2);
             box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -250,20 +292,20 @@
 
         .panel-title {
             color: #1a4d7a;
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.2rem;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .camera-area {
             background: #f5fafe;
-            border-radius: 40px;
+            border-radius: 30px;
             overflow: hidden;
             border: 2px solid rgba(43, 127, 195, 0.3);
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.2rem;
         }
 
         .preview-box {
@@ -289,9 +331,9 @@
         }
 
         .placeholder-preview i {
-            font-size: 5rem;
+            font-size: 3.5rem;
             opacity: 0.7;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.5rem;
             animation: cloudFloat 4s ease-in-out infinite;
         }
 
@@ -302,21 +344,21 @@
 
         .upload-actions {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
             flex-wrap: wrap;
         }
 
         .btn {
             flex: 1;
-            padding: 1.2rem 1.5rem;
-            border-radius: 60px;
+            padding: 0.8rem 1rem;
+            border-radius: 40px;
             border: none;
-            font-weight: 700;
-            font-size: 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -352,10 +394,56 @@
             transform: translateY(-3px);
         }
 
+        /* ===== NOTIFIKASI ERROR UPLOAD ===== */
+        .upload-error {
+            display: none;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 0.8rem;
+            border-radius: 20px;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            text-align: center;
+            border-left: 4px solid #dc2626;
+            animation: shake 0.5s ease;
+        }
+
+        .upload-error.active {
+            display: block;
+        }
+
+        .upload-error i {
+            margin-right: 8px;
+        }
+
+        .upload-info {
+            background: #e8f0fe;
+            color: #1a4d7a;
+            padding: 0.5rem;
+            border-radius: 20px;
+            margin-top: 0.8rem;
+            font-size: 0.7rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .upload-info i {
+            color: #2b7fc3;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
         .result-panel {
             background: #ffffff;
-            border-radius: 50px;
-            padding: 2.5rem;
+            border-radius: 40px;
+            padding: 1.5rem;
             box-shadow: 0 15px 30px -15px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(43, 127, 195, 0.2);
             transition: all 0.3s ease;
@@ -368,12 +456,19 @@
 
         .badge-kelas {
             background: linear-gradient(135deg, #e8f0fe, #d4e4f5);
-            padding: 0.7rem 1.8rem;
-            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
             color: #1a4d7a;
             font-weight: 700;
             display: inline-block;
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.8rem;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
         }
 
         .kelas-utama {
@@ -381,30 +476,30 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
         }
 
         .kelas-utama h2 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             color: #1a4d7a;
         }
 
         .kode-awan {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: #2b7fc3;
             background: #e8f0fe;
-            padding: 0.4rem 1.5rem;
-            border-radius: 60px;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
         }
 
         .confidence-bar {
             background: #e0ecf8;
-            height: 16px;
+            height: 12px;
             border-radius: 20px;
-            margin: 1.8rem 0;
+            margin: 1.2rem 0;
         }
 
         .confidence-fill {
@@ -420,59 +515,51 @@
             justify-content: space-between;
             font-weight: 600;
             color: #1a4d7a;
+            font-size: 0.85rem;
         }
 
         .risk-meter {
             background: #fff5f0;
-            border-left: 8px solid #f59e0b;
-            border-radius: 30px;
-            padding: 1.5rem;
-            margin: 1.8rem 0;
+            border-left: 6px solid #f59e0b;
+            border-radius: 20px;
+            padding: 1rem;
+            margin: 1.2rem 0;
             transition: all 0.3s ease;
         }
 
-        .risk-meter:hover {
-            transform: translateX(5px);
-        }
-
         .risk-level {
-            font-size: 1.8rem;
+            font-size: 1.3rem;
             font-weight: 800;
-            margin: 0.6rem 0;
+            margin: 0.4rem 0;
             color: #9a3412;
         }
 
         .risk-desc {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: #78350f;
         }
 
         .rekom-card {
             background: linear-gradient(135deg, #f0f9ff, #e8f0fe);
-            border-radius: 35px;
-            padding: 2rem;
+            border-radius: 25px;
+            padding: 1.2rem;
             border: 1px solid #c5dfff;
             transition: all 0.3s ease;
         }
 
-        .rekom-card:hover {
-            transform: scale(1.02);
-            box-shadow: 0 10px 25px -12px rgba(43, 127, 195, 0.2);
-        }
-
         .rekom-text {
-            font-size: 1.3rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #1a4d7a;
-            margin: 0.5rem 0;
+            margin: 0.3rem 0;
         }
 
         .rekom-icons {
             display: flex;
-            gap: 1.5rem;
-            font-size: 2.5rem;
+            gap: 1rem;
+            font-size: 1.8rem;
             color: #2b7fc3;
-            margin-top: 1.2rem;
+            margin-top: 0.8rem;
         }
 
         .rekom-icons i {
@@ -484,11 +571,9 @@
             transform: scale(1.2) rotate(10deg);
             color: #1f5f9e;
         }
-        
 
-        /* ===== WEATHER JABODETABEK DENGAN ANIMASI & AWAN BIRU ===== */
         .weather-jabodetabek {
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .weather-header {
@@ -496,21 +581,21 @@
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-            gap: 1rem;
+            margin-bottom: 1rem;
+            gap: 0.8rem;
         }
 
         .weather-header h2 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #1a4d7a;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             background: rgba(255, 255, 255, 0.8);
-            padding: 0.6rem 1.5rem;
-            border-radius: 60px;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
             border: 1px solid rgba(43, 127, 195, 0.2);
         }
 
@@ -526,181 +611,80 @@
 
         .update-time {
             background: rgba(255, 255, 255, 0.9);
-            padding: 0.7rem 1.5rem;
-            border-radius: 50px;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
             color: #1a4d7a;
             border: 1px solid rgba(43, 127, 195, 0.2);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            font-size: 0.8rem;
         }
 
         .cities-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
 
-        /* ===== HERO SECTION DENGAN AWAN BERGERAK ===== */
-.hero-minimal {
-    background: linear-gradient(135deg, #ffffff, #e3f0ff);
-    border-radius: 60px;
-    padding: 5rem 3rem;
-    margin-bottom: 2.5rem;
-    border: 1px solid rgba(43, 127, 195, 0.2);
-    box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.15);
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-    isolation: isolate;
-}
-
-/* Container awan bergerak */
-.floating-clouds {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* Style untuk setiap awan */
-.floating-cloud {
-    position: absolute;
-    color: rgba(43, 127, 195, 0.15);
-    font-size: 4rem;
-    pointer-events: none;
-    animation: floatCloud linear infinite;
-}
-
-/* Awan besar */
-.floating-cloud.large {
-    font-size: 6rem;
-    color: rgba(43, 127, 195, 0.1);
-}
-
-/* Awan sedang */
-.floating-cloud.medium {
-    font-size: 4rem;
-    color: rgba(43, 127, 195, 0.12);
-}
-
-/* Awan kecil */
-.floating-cloud.small {
-    font-size: 2.5rem;
-    color: rgba(43, 127, 195, 0.08);
-}
-
-/* Animasi awan bergerak dari kanan ke kiri */
-@keyframes floatCloud {
-    0% {
-        transform: translateX(100vw) translateY(0) rotate(0deg);
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    90% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateX(-20vw) translateY(var(--y-offset, 0)) rotate(10deg);
-        opacity: 0;
-    }
-}
-
-/* Animasi awan bergerak naik turun */
-@keyframes floatUpDown {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-15px);
-    }
-}
-
-/* Animasi awan berputar perlahan */
-@keyframes rotateSlow {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Dekorasi awan statis di background */
-.static-cloud {
-    position: absolute;
-    color: rgba(43, 127, 195, 0.08);
-    pointer-events: none;
-    z-index: 0;
-}
-
-.static-cloud-1 {
-    top: 10%;
-    left: 5%;
-    font-size: 8rem;
-    animation: floatUpDown 6s ease-in-out infinite;
-}
-
-.static-cloud-2 {
-    bottom: 0%;
-    right: 3%;
-    font-size: 10rem;
-    animation: floatUpDown 8s ease-in-out infinite;
-}
-
-.static-cloud-3 {
-    top: 20%;
-    right: 15%;
-    font-size: 5rem;
-    animation: floatUpDown 5s ease-in-out infinite;
-}
-
-.static-cloud-4 {
-    bottom: 15%;
-    left: 10%;
-    font-size: 7rem;
-    animation: floatUpDown 7s ease-in-out infinite;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 2;
-}
-
-        /* ===== CARD CUACA DENGAN AWAN BIRU & ANIMASI ===== */
         .city-card {
             background: linear-gradient(145deg, #ffffff, #f8fafc);
-            border-radius: 35px;
-            padding: 1.5rem 1rem;
+            border-radius: 25px;
+            padding: 1rem 0.8rem;
             position: relative;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             cursor: pointer;
+            animation: slideInUp 0.5s ease-out backwards;
         }
 
-        /* Efek hover animasi */
-        .city-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 35px -12px rgba(43, 127, 195, 0.35);
+        .city-card:nth-child(1) { animation-delay: 0.05s; }
+        .city-card:nth-child(2) { animation-delay: 0.1s; }
+        .city-card:nth-child(3) { animation-delay: 0.15s; }
+        .city-card:nth-child(4) { animation-delay: 0.2s; }
+        .city-card:nth-child(5) { animation-delay: 0.25s; }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Frame gradient biru mengelilingi card */
+        .city-card .mini-cloud {
+            position: absolute;
+            font-size: 1.2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease-out;
+            z-index: 1;
+            color: #2b7fc3;
+        }
+
+        .city-card .mini-cloud-1 { bottom: -20px; left: -20px; transition-delay: 0s; }
+        .city-card .mini-cloud-2 { top: -15px; right: -15px; transition-delay: 0.05s; }
+        .city-card .mini-cloud-3 { bottom: 30%; right: -10px; transition-delay: 0.1s; }
+        .city-card .mini-cloud-4 { top: 40%; left: -15px; transition-delay: 0.15s; }
+        .city-card .mini-cloud-5 { bottom: 60%; left: 20%; transition-delay: 0.2s; font-size: 0.9rem; }
+        .city-card .mini-cloud-6 { top: 20%; right: 25%; transition-delay: 0.25s; font-size: 0.8rem; }
+
+        .city-card:hover .mini-cloud { opacity: 0.4; }
+        .city-card:hover .mini-cloud-1 { transform: translate(10px, -10px) rotate(5deg); }
+        .city-card:hover .mini-cloud-2 { transform: translate(-10px, 10px) rotate(-5deg); }
+        .city-card:hover .mini-cloud-3 { transform: translate(-15px, -5px) rotate(10deg); }
+        .city-card:hover .mini-cloud-4 { transform: translate(15px, 5px) rotate(-10deg); }
+        .city-card:hover .mini-cloud-5 { transform: translate(5px, -8px) rotate(8deg); }
+        .city-card:hover .mini-cloud-6 { transform: translate(-8px, -12px) rotate(-8deg); }
+
         .city-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            border-radius: 35px;
+            border-radius: 25px;
             padding: 2px;
             background: linear-gradient(135deg, #2b7fc3, #6bb5ff, #9ad0ff, #2b7fc3);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#ffffff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
             pointer-events: none;
@@ -716,69 +700,47 @@
 
         @keyframes borderGlow {
             0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
+            70% { opacity: 1; }
         }
 
-        /* Awan biru dekoratif di pojok card */
         .city-card .cloud-decoration {
             position: absolute;
             bottom: 10px;
             right: 10px;
-            font-size: 2.5rem;
-            opacity: 0.2;
+            font-size: 2rem;
+            opacity: 0.15;
             pointer-events: none;
             transition: all 0.3s ease;
             color: #2b7fc3;
+            z-index: 1;
         }
 
         .city-card:hover .cloud-decoration {
-            opacity: 0.5;
+            opacity: 0.4;
             transform: scale(1.2) translate(-5px, -5px);
         }
 
-        /* Awan biru tambahan di background */
         .city-card::after {
             content: '☁️ ☁️';
             position: absolute;
             top: -20px;
             left: -20px;
-            font-size: 4rem;
-            opacity: 0.08;
+            font-size: 3rem;
+            opacity: 0.06;
             pointer-events: none;
             color: #2b7fc3;
             transition: all 0.5s ease;
+            z-index: 0;
         }
 
         .city-card:hover::after {
-            opacity: 0.15;
+            opacity: 0.12;
             transform: rotate(5deg) scale(1.1);
         }
 
-        /* Animasi masuk untuk card */
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .city-card {
-            animation: slideInUp 0.5s ease-out backwards;
-        }
-
-        .city-card:nth-child(1) { animation-delay: 0.05s; }
-        .city-card:nth-child(2) { animation-delay: 0.1s; }
-        .city-card:nth-child(3) { animation-delay: 0.15s; }
-        .city-card:nth-child(4) { animation-delay: 0.2s; }
-        .city-card:nth-child(5) { animation-delay: 0.25s; }
-
         .city-name {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #1a4d7a;
             display: flex;
@@ -787,7 +749,7 @@
         }
 
         .city-name i {
-            font-size: 1.2rem;
+            font-size: 1rem;
             transition: transform 0.3s ease;
         }
 
@@ -796,8 +758,8 @@
         }
 
         .city-weather-icon {
-            font-size: 3rem;
-            margin: 0.5rem 0;
+            font-size: 2rem;
+            margin: 0.3rem 0;
             transition: transform 0.3s ease;
         }
 
@@ -806,7 +768,7 @@
         }
 
         .city-temp {
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: #1a4d7a;
             transition: all 0.3s ease;
@@ -814,78 +776,110 @@
 
         .city-card:hover .city-temp {
             color: #2b7fc3;
-            transform: scale(1.05);
-            display: inline-block;
         }
 
         .city-desc {
             color: #64748b;
-            font-size: 0.9rem;
-            margin-bottom: 1.2rem;
+            font-size: 0.75rem;
+            margin-bottom: 0.8rem;
             font-weight: 600;
         }
 
         .city-stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 0.6rem;
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .city-card:hover .city-stats {
-            background: #e8f0fe;
+            gap: 0.4rem;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 0.5rem;
         }
 
         .city-stat-item {
             text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .city-card:hover .city-stat-item {
-            transform: translateY(-2px);
         }
 
         .city-stat-item i {
             color: #2b7fc3;
-            transition: transform 0.3s ease;
+            font-size: 0.7rem;
+        }
+
+        .city-stat-value {
+            color: #1a4d7a;
+            font-weight: 700;
+            font-size: 0.7rem;
+        }
+
+        .city-stat-label {
+            font-size: 0.55rem;
+            color: #64748b;
+        }
+
+        .city-card:hover .city-stats {
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            box-shadow: 0 2px 8px rgba(43, 127, 195, 0.15);
+        }
+
+        .city-stat-item {
+            text-align: center;
+            transition: all 0.3s ease;
+            padding: 0.2rem;
+            border-radius: 10px;
+        }
+
+        .city-stat-item i {
+            color: #2b7fc3;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
         }
 
         .city-card:hover .city-stat-item i {
+            color: #1f5f9e;
             transform: scale(1.2);
         }
 
         .city-stat-value {
             color: #1a4d7a;
             font-weight: 700;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
         }
 
-        /* Best Time Card dengan animasi */
+        .city-card:hover .city-stat-value {
+            color: #2b7fc3;
+        }
+
+        .city-stat-label {
+            font-size: 0.55rem;
+            color: #64748b;
+            transition: all 0.3s ease;
+        }
+
+        .city-card:hover .city-stat-label {
+            color: #2b7fc3;
+        }
+
         .best-time-card {
             background: linear-gradient(135deg, #e3f0ff, #ffffff);
-            border-radius: 50px;
-            padding: 1.8rem 2.2rem;
+            border-radius: 35px;
+            padding: 1.2rem 1.5rem;
             border: 1px solid rgba(43, 127, 195, 0.2);
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            gap: 1.5rem;
+            gap: 1rem;
             position: relative;
             transition: all 0.3s ease;
         }
 
         .best-time-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px -15px rgba(43, 127, 195, 0.2);
         }
 
         .best-time-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            border-radius: 50px;
+            border-radius: 35px;
             padding: 2px;
             background: linear-gradient(135deg, #f59e0b, #fbbf24, #fcd34d, #f59e0b);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -894,66 +888,35 @@
             mask-composite: exclude;
             pointer-events: none;
             opacity: 0.5;
-            transition: opacity 0.3s;
-        }
-
-        .best-time-card:hover::before {
-            opacity: 1;
-            animation: borderPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes borderPulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
         }
 
         .best-time-content h3 {
-            font-size: 1.6rem;
+            font-size: 1.1rem;
             color: #1a4d7a;
-        }
-
-        .best-time-content h3 i {
-            animation: bounce 1s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
         }
 
         .best-time-badge {
             background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
-            padding: 0.9rem 2rem;
-            border-radius: 60px;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
             font-weight: 700;
-            font-size: 1.4rem;
+            font-size: 1rem;
             color: white;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             transition: all 0.3s ease;
         }
 
         .best-time-badge:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 20px -8px #2b7fc3;
         }
 
-        .best-time-badge i {
-            animation: sunSpin 4s linear infinite;
-        }
-
-        @keyframes sunSpin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* ===== FEATURE & TUTORIAL SECTION ===== */
         .feature-section, .tutorial-section {
             background: #ffffff;
-            border-radius: 50px;
-            padding: 2.5rem 2rem;
-            margin-bottom: 3rem;
+            border-radius: 40px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
             border: 1px solid rgba(43, 127, 195, 0.15);
             transition: transform 0.3s ease;
         }
@@ -964,13 +927,12 @@
 
         .feature-header h2, .tutorial-header h2, .cloud-header-section h2 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.2rem;
+            font-size: 1.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, #1a4d7a, #2b7fc3);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin: 0;
             display: inline-block;
             position: relative;
         }
@@ -978,46 +940,51 @@
         .feature-header h2::after, .tutorial-header h2::after, .cloud-header-section h2::after {
             content: '';
             position: absolute;
-            bottom: -8px;
+            bottom: -5px;
             left: 0;
-            width: 80px;
-            height: 4px;
+            width: 60px;
+            height: 3px;
             background: linear-gradient(90deg, #2b7fc3, #99d0ff);
             border-radius: 3px;
+        }
+
+        .feature-header p, .tutorial-header p, .cloud-header-section p {
+            font-size: 0.85rem;
+            color: #5a7a9e;
+            margin-top: 0.8rem;
         }
 
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-top: 2rem;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
         .feature-item {
             background: #f8fafc;
-            border-radius: 40px;
-            padding: 2rem 1.5rem;
+            border-radius: 30px;
+            padding: 1.2rem;
             border: 1px solid rgba(43, 127, 195, 0.15);
             transition: all 0.3s ease;
         }
 
         .feature-item:hover {
             background: #f0f9ff;
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 30px -12px rgba(43, 127, 195, 0.15);
+            transform: translateY(-5px);
         }
 
         .feature-icon {
-            width: 60px;
-            height: 60px;
+            width: 45px;
+            height: 45px;
             background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
-            border-radius: 20px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: white;
-            margin-bottom: 1.2rem;
+            margin-bottom: 0.8rem;
             transition: all 0.3s ease;
         }
 
@@ -1025,17 +992,28 @@
             transform: rotate(10deg) scale(1.1);
         }
 
+        .feature-item h3 {
+            font-size: 1rem;
+            color: #1a4d7a;
+            margin-bottom: 0.3rem;
+        }
+
+        .feature-item p {
+            font-size: 0.75rem;
+            color: #5a7a9e;
+        }
+
         .tutorial-steps {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1.2rem;
-            margin-top: 2rem;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
         .step-card {
             background: #f8fafc;
-            border-radius: 35px;
-            padding: 2rem 1.2rem;
+            border-radius: 25px;
+            padding: 1rem;
             position: relative;
             text-align: center;
             transition: all 0.3s ease;
@@ -1044,35 +1022,29 @@
         .step-card:hover {
             transform: translateY(-5px);
             background: #f0f9ff;
-            box-shadow: 0 10px 25px -12px rgba(43, 127, 195, 0.2);
         }
 
         .step-number {
             position: absolute;
-            top: -12px;
-            left: 20px;
+            top: -10px;
+            left: 15px;
             background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
             color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 30px;
+            width: 30px;
+            height: 30px;
+            border-radius: 25px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
+            font-size: 1rem;
             font-weight: 800;
-            border: 3px solid white;
-            transition: all 0.3s ease;
-        }
-
-        .step-card:hover .step-number {
-            transform: scale(1.1);
+            border: 2px solid white;
         }
 
         .step-icon {
-            font-size: 2.8rem;
+            font-size: 2rem;
             color: #2b7fc3;
-            margin: 0.5rem 0;
+            margin: 0.3rem 0;
             transition: transform 0.3s ease;
         }
 
@@ -1080,32 +1052,58 @@
             transform: scale(1.1) rotate(5deg);
         }
 
-        /* ===== CLOUD CARDS ===== */
+        .step-card h3 {
+            font-size: 0.85rem;
+            color: #1a4d7a;
+        }
+
+        .step-card p {
+            font-size: 0.7rem;
+            color: #5a7a9e;
+        }
+
         .cloud-grid-section {
-            margin-bottom: 4rem;
+            margin-bottom: 2rem;
         }
 
         .cloud-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
 
         .cloud-card {
             background: #ffffff;
-            border-radius: 40px;
-            padding: 2rem 1.8rem;
+            border-radius: 30px;
+            padding: 1.2rem;
             position: relative;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 15px 25px -15px rgba(0, 0, 0, 0.08);
+            animation: fadeInUp 0.6s ease-out backwards;
         }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cloud-card:nth-child(1) { animation-delay: 0.05s; }
+        .cloud-card:nth-child(2) { animation-delay: 0.1s; }
+        .cloud-card:nth-child(3) { animation-delay: 0.15s; }
+        .cloud-card:nth-child(4) { animation-delay: 0.2s; }
+        .cloud-card:nth-child(5) { animation-delay: 0.25s; }
+        .cloud-card:nth-child(6) { animation-delay: 0.3s; }
+        .cloud-card:nth-child(7) { animation-delay: 0.35s; }
+        .cloud-card:nth-child(8) { animation-delay: 0.4s; }
+        .cloud-card:nth-child(9) { animation-delay: 0.45s; }
+        .cloud-card:nth-child(10) { animation-delay: 0.5s; }
 
         .cloud-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            border-radius: 40px;
+            border-radius: 30px;
             padding: 2px;
             background: linear-gradient(135deg, #2b7fc3, #6bb5ff, #9ad0ff, #2b7fc3);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -1122,24 +1120,24 @@
         }
 
         .cloud-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 40px -18px rgba(43, 127, 195, 0.3);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 40px -18px rgba(43, 127, 195, 0.4);
         }
 
         .cloud-header {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 1.5rem;
+            gap: 12px;
+            margin-bottom: 1rem;
         }
 
         .cloud-icon {
-            font-size: 2.8rem;
+            font-size: 2rem;
             color: #2b7fc3;
             background: rgba(43, 127, 195, 0.1);
-            width: 70px;
-            height: 70px;
-            border-radius: 30px;
+            width: 55px;
+            height: 55px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1147,29 +1145,30 @@
         }
 
         .cloud-card:hover .cloud-icon {
-            transform: scale(1.05) rotate(5deg);
+            transform: scale(1.1) rotate(5deg);
             background: rgba(43, 127, 195, 0.2);
         }
 
         .cloud-code {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: #2b7fc3;
         }
 
         .cloud-name {
-            font-size: 1.5rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: #1a4d7a;
         }
 
         .cloud-desc {
             color: #5a7a9e;
-            line-height: 1.6;
-            margin: 1rem 0;
+            line-height: 1.5;
+            font-size: 0.8rem;
+            margin: 0.8rem 0;
             border-left: 3px solid #2b7fc3;
-            padding-left: 1rem;
+            padding-left: 0.8rem;
         }
 
         .cloud-footer {
@@ -1179,24 +1178,25 @@
         }
 
         .cloud-base {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             color: #2b7fc3;
             background: rgba(43, 127, 195, 0.1);
-            padding: 0.4rem 1rem;
-            border-radius: 50px;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
         }
 
         .btn-3d {
             background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
             border: none;
             color: white;
-            padding: 0.7rem 1.4rem;
-            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
             font-weight: 600;
+            font-size: 0.8rem;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
             transition: all 0.3s ease;
         }
@@ -1206,38 +1206,22 @@
             box-shadow: 0 5px 15px -5px #2b7fc3;
         }
 
-        .btn-detail {
-            background: linear-gradient(135deg, #2b7fc3, #1f5f9e);
-            color: white;
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-detail:hover {
-            transform: scale(1.05);
-            box-shadow: 0 3px 10px -3px #2b7fc3;
-        }
-
         .gemini-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.75rem;
+            gap: 4px;
+            font-size: 0.65rem;
             color: #2b7fc3;
             background: rgba(43, 127, 195, 0.08);
-            padding: 0.3rem 0.8rem;
-            border-radius: 30px;
-            margin-top: 0.8rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            margin-top: 0.5rem;
         }
 
         .loading-indicator {
             display: none;
             text-align: center;
-            padding: 1rem;
+            padding: 0.8rem;
             color: #2b7fc3;
         }
 
@@ -1249,15 +1233,36 @@
             animation: spin 1s linear infinite;
         }
 
+        .btn-loading {
+            position: relative;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            border: 2px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
         #camera-input, #gallery-input {
             display: none;
         }
 
         .footer {
             text-align: center;
-            padding: 2rem;
+            padding: 1.5rem;
             color: #5a7a9e;
             border-top: 1px solid rgba(43, 127, 195, 0.2);
+            font-size: 0.8rem;
         }
 
         .detail-modal-overlay {
@@ -1272,12 +1277,6 @@
             display: none;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .detail-modal-overlay.active {
@@ -1287,34 +1286,34 @@
         .detail-modal {
             background: white;
             border-radius: 24px;
-            padding: 2rem;
-            max-width: 480px;
+            padding: 1.5rem;
+            max-width: 400px;
             width: 90%;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
 
         .modal-section {
             background: #f8fafc;
             border-radius: 16px;
-            padding: 1rem;
-            margin-bottom: 1rem;
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .modal-section label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #2b7fc3;
+        }
+
+        .modal-section p {
+            color: #1a4d7a;
+            margin-top: 0.3rem;
+            font-size: 0.85rem;
         }
 
         .btn-close-modal {
             background: #e2e8f0;
             border: none;
-            padding: 0.5rem 1.5rem;
+            padding: 0.4rem 1rem;
             border-radius: 20px;
             cursor: pointer;
             width: 100%;
@@ -1323,105 +1322,58 @@
 
         .btn-close-modal:hover {
             background: #cbd5e1;
-            transform: scale(1.02);
+        }
+
+        .city-card[data-weather="sunny"] .city-weather-icon i {
+            color: #f59e0b;
+            animation: sunGlow 2s ease-in-out infinite;
+        }
+        .city-card[data-weather="partly-cloudy"] .city-weather-icon i { color: #eab308; }
+        .city-card[data-weather="cloudy"] .city-weather-icon i { color: #94a3b8; }
+        .city-card[data-weather="rainy"] .city-weather-icon i {
+            color: #29508f;
+            animation: rainDrop 1s ease-in-out infinite;
+        }
+        .city-card[data-weather="storm"] .city-weather-icon i {
+            color: #7c3aed;
+            animation: lightning 1.5s ease-in-out infinite;
+        }
+
+        @keyframes sunGlow {
+            0%, 100% { text-shadow: 0 0 0px rgba(245, 158, 11, 0); }
+            50% { text-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }
+        }
+        @keyframes rainDrop {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(3px); }
+        }
+        @keyframes lightning {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; text-shadow: 0 0 10px rgba(124, 58, 237, 0.5); }
         }
 
         @media (max-width: 1000px) {
+            .web-container { padding: 0 1.5rem; }
             .main-grid { grid-template-columns: 1fr; }
             .cities-grid { grid-template-columns: repeat(3, 1fr); }
             .feature-grid { grid-template-columns: repeat(2, 1fr); }
             .tutorial-steps { grid-template-columns: repeat(2, 1fr); }
+            .hero-content h1 { font-size: 3rem; }
+            .hero-minimal { padding: 3rem 1.5rem; }
         }
 
         @media (max-width: 700px) {
-            .hero-content h1 { font-size: 3.5rem; }
+            .web-container { padding: 0 1rem; }
+            .nav-container { flex-direction: column; text-align: center; }
+            .nav-menu { justify-content: center; gap: 1rem; }
+            .hero-content h1 { font-size: 2.5rem; }
             .cities-grid { grid-template-columns: repeat(2, 1fr); }
             .feature-grid, .tutorial-steps { grid-template-columns: 1fr; }
             .cloud-grid { grid-template-columns: 1fr; }
+            .hero-minimal { padding: 2rem 1rem; }
+            .static-cloud-1, .static-cloud-2, .static-cloud-3, .static-cloud-4 { display: none; }
+            .floating-cloud { font-size: 2rem !important; }
         }
-
-        /* Style untuk weather icon dengan warna dinamis */
-.city-weather-icon i {
-    transition: all 0.3s ease;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-}
-
-/* Efek hover pada icon */
-.city-card:hover .city-weather-icon i {
-    transform: scale(1.15) rotate(5deg);
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
-}
-
-/* Warna khusus untuk setiap jenis cuaca */
-.city-card[data-weather="sunny"] .city-weather-icon i {
-    color: #f59e0b;
-    animation: sunGlow 2s ease-in-out infinite;
-}
-
-.city-card[data-weather="partly-cloudy"] .city-weather-icon i {
-    color: #eab308;
-}
-
-.city-card[data-weather="cloudy"] .city-weather-icon i {
-    color: #94a3b8;
-}
-
-.city-card[data-weather="foggy"] .city-weather-icon i {
-    color: #9ca3af;
-}
-
-.city-card[data-weather="rainy"] .city-weather-icon i {
-    color: #29508f;
-    animation: rainDrop 1s ease-in-out infinite;
-}
-
-.city-card[data-weather="storm"] .city-weather-icon i {
-    color: #7c3aed;
-    animation: lightning 1.5s ease-in-out infinite;
-}
-
-/* Animasi khusus */
-@keyframes sunGlow {
-    0%, 100% {
-        text-shadow: 0 0 0px rgba(245, 158, 11, 0);
-    }
-    50% {
-        text-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
-    }
-}
-
-@keyframes rainDrop {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(3px);
-    }
-}
-
-@keyframes lightning {
-    0%, 100% {
-        opacity: 1;
-        text-shadow: 0 0 0px rgba(124, 58, 237, 0);
-    }
-    50% {
-        opacity: 0.7;
-        text-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
-    }
-}
-
-/* Background card dengan warna sesuai cuaca */
-.city-card[data-weather="sunny"] {
-    background: linear-gradient(145deg, #ffffff, #fffbeb);
-}
-
-.city-card[data-weather="rainy"] {
-    background: linear-gradient(145deg, #ffffff, #eff6ff);
-}
-
-.city-card[data-weather="storm"] {
-    background: linear-gradient(145deg, #ffffff, #f5f3ff);
-}
     </style>
     </head>
 
@@ -1445,18 +1397,13 @@
                     </ul>
                 </div>
             </header>
+
             <div class="hero-minimal" id="home">
-                <!-- Awan statis di background -->
                 <div class="static-cloud static-cloud-1">☁️</div>
                 <div class="static-cloud static-cloud-2">☁️</div>
                 <div class="static-cloud static-cloud-3">☁️</div>
                 <div class="static-cloud static-cloud-4">☁️</div>
-
-                <!-- Awan bergerak -->
-                <div class="floating-clouds" id="floatingClouds">
-                    <!-- Awan akan ditambahkan oleh JavaScript -->
-                </div>
-
+                <div class="floating-clouds" id="floatingClouds"></div>
                 <div class="hero-content">
                     <div class="hero-tag">NEXT GEN CLOUD INTELLIGENCE</div>
                     <h1>CloudSense</h1>
@@ -1477,7 +1424,7 @@
                                 id="placeholderPreview">
                                 <i class="fas fa-cloud-moon"></i>
                                 <p>Belum ada gambar</p>
-                                <p style="font-size:0.9rem;">Klik Kamera atau
+                                <p style="font-size:0.8rem;">Klik Kamera atau
                                     Galeri</p>
                             </div>
                         </div>
@@ -1494,14 +1441,30 @@
                         <button class="btn btn-outline" id="galleryBtn"><i
                                 class="fas fa-images"></i> Galeri</button>
                     </div>
+
+                    <!-- Informasi batasan upload -->
+                    <div class="upload-info">
+                        <i class="fas fa-info-circle"></i>
+                        Maksimal ukuran file: 5 MB (format JPG, JPEG, PNG)
+                    </div>
+
+                    <!-- Notifikasi error -->
+                    <div class="upload-error" id="uploadError">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span id="errorMessage">Ukuran file terlalu besar!
+                            Maksimal 5 MB.</span>
+                    </div>
+
                     <div class="loading-indicator" id="loadingIndicator">
                         <i class="fas fa-spinner fa-pulse"></i> Menganalisis
                         gambar dengan AI...
                     </div>
                     <canvas id="camera-canvas" style="display:none;"></canvas>
-                    <input type="file" id="camera-input" accept="image/*"
+                    <input type="file" id="camera-input"
+                        accept="image/jpeg,image/jpg,image/png"
                         capture="environment">
-                    <input type="file" id="gallery-input" accept="image/*">
+                    <input type="file" id="gallery-input"
+                        accept="image/jpeg,image/jpg,image/png">
                 </div>
 
                 <div class="result-panel" id="resultPanel">
@@ -1519,15 +1482,12 @@
                             id="confidenceVal">0%</span></div>
                     <div class="risk-meter">
                         <i class="fas fa-exclamation-triangle"></i><span
-                            style="font-weight:700; margin-left:8px;">Analisis
+                            style="font-weight:700; margin-left:6px;">Analisis
                             Risiko</span>
                         <div class="risk-level" id="riskLevel">Belum ada
                             analisis</div>
                         <div class="risk-desc" id="riskDesc">Upload gambar awan
                             untuk memulai klasifikasi</div>
-                        <button class="btn-detail" id="btnDetail"
-                            style="display:none;"><i class="fas fa-eye"></i>
-                            Lihat Detail</button>
                     </div>
                     <div class="rekom-card">
                         <div><i class="fas fa-clipboard-check"></i> Rekomendasi
@@ -1552,7 +1512,7 @@
                 </div>
                 <div class="cities-grid" id="citiesGrid">
                     <div class="city-card"><div
-                            style="text-align:center; padding:2rem;"><i
+                            style="text-align:center; padding:1rem;"><i
                                 class="fas fa-spinner fa-pulse"></i> Memuat
                             cuaca...</div></div>
                 </div>
@@ -1668,7 +1628,6 @@
                 { code: 'Cs', name: 'Cirrostratus', icon: 'fa-circle', karakter: 'Selubung tipis transparan menutupi langit, menciptakan fenomena halo. Pertanda hujan dalam 12-24 jam.', base: '>6 km' }
             ];
 
-            // Render 10 cloud cards
             const grid = document.getElementById('cloudGrid');
             cloudData.forEach(c => {
                 const card = document.createElement('div');
@@ -1684,13 +1643,12 @@
                     <div class="cloud-desc">${c.karakter}</div>
                     <div class="cloud-footer">
                         <span class="cloud-base"><i class="fas fa-arrow-up"></i> ${c.base}</span>
-                        <a href="cloud.html" class="btn-3d" data-code="${c.code}" data-name="${c.name}"><i class="fas fa-cube"></i> Jelajahi 3D</a>
+                        <a href="cloud.html" class="btn-3d"><i class="fas fa-cube"></i> Jelajahi 3D</a>
                     </div>
                 `;
                 grid.appendChild(card);
             });
 
-            // ==================== TENSORFLOW.JS MODEL ====================
             let tfModel = null;
             const CLASS_NAMES = ['Cumulus', 'Altocumulus', 'Cirrus', 'Clear Sky', 'Stratocumulus', 'Cumulonimbus'];
             const CLASS_CODES = ['Cu', 'Ac', 'Ci', 'CS', 'Sc', 'Cb'];
@@ -1708,24 +1666,78 @@
 
             async function classifyImage(imgElement) {
                 if (!tfModel) return null;
-                const tensor = tf.browser.fromPixels(imgElement)
-                    .resizeBilinear([256, 256])
-                    .toFloat()
-                    .expandDims(0);
+                const tensor = tf.browser.fromPixels(imgElement).resizeBilinear([256, 256]).toFloat().expandDims(0);
                 const probs = tfModel.predict(tensor);
                 const data = await probs.data();
                 tensor.dispose(); probs.dispose();
                 return Array.from(data);
             }
 
-            // ==================== GROQ LLM API ====================
             let cachedWeather = null;
             const rateLimiter = { lastCall: 0, cooldown: 30000, canCall() { return Date.now() - this.lastCall >= this.cooldown; }, mark() { this.lastCall = Date.now(); } };
+            let llmEnabled = true;
+
+            function getLocalFallbackRecommendation(cloudName, cloudCode, weatherData) {
+                const recommendations = {
+                    'Cumulus': {
+                        riskLevel: 'Rendah · Cerah',
+                        riskDesc: 'Awan Cumulus menandakan cuaca cerah dan stabil. Cocok untuk aktivitas outdoor.',
+                        recommendation: '☀️ Waktu tepat untuk hiking, bersepeda, atau fotografi alam!',
+                        icons: ['fa-person-hiking', 'fa-bicycle', 'fa-camera']
+                    },
+                    'Cumulonimbus': {
+                        riskLevel: 'Tinggi · Waspada',
+                        riskDesc: 'Awan Cumulonimbus membawa potensi hujan lebat, petir, dan angin kencang.',
+                        recommendation: '⚠️ Segera cari tempat berlindung! Hindari area terbuka dan pohon besar.',
+                        icons: ['fa-umbrella', 'fa-house-flood', 'fa-bolt']
+                    },
+                    'Stratus': {
+                        riskLevel: 'Sedang · Berkabut',
+                        riskDesc: 'Awan Stratus menyebabkan visibilitas terbatas seperti kabut.',
+                        recommendation: '🌫️ Hati-hati berkendara, nyalakan lampu kabut, dan jaga jarak aman.',
+                        icons: ['fa-car', 'fa-road', 'fa-lightbulb']
+                    },
+                    'Stratocumulus': {
+                        riskLevel: 'Rendah · Stabil',
+                        riskDesc: 'Awan Stratocumulus menandakan cuaca umumnya stabil dengan sedikit gerimis.',
+                        recommendation: '👍 Cocok untuk aktivitas ringan di luar ruangan.',
+                        icons: ['fa-walking', 'fa-tree', 'fa-cloud-sun']
+                    },
+                    'Cirrus': {
+                        riskLevel: 'Rendah · Cerah',
+                        riskDesc: 'Awan Cirrus dari kristal es menandakan cuaca cerah.',
+                        recommendation: '📸 Waktu tepat untuk fotografi landscape!',
+                        icons: ['fa-camera-retro', 'fa-paintbrush', 'fa-mountain-sun']
+                    },
+                    'Altocumulus': {
+                        riskLevel: 'Rendah · Normal',
+                        riskDesc: 'Awan Altocumulus menandakan udara dingin di ketinggian.',
+                        recommendation: '🚶‍♂️ Aktivitas outdoor tetap nyaman.',
+                        icons: ['fa-person-walking', 'fa-cloud', 'fa-tree']
+                    },
+                    'Clear Sky': {
+                        riskLevel: 'Rendah · Cerah',
+                        riskDesc: 'Langit cerah tanpa awan, cuaca sangat baik.',
+                        recommendation: '🌟 Waktu sempurna untuk semua aktivitas outdoor!',
+                        icons: ['fa-sun', 'fa-person-hiking', 'fa-camera']
+                    }
+                };
+                return recommendations[cloudName] || {
+                    riskLevel: 'Normal · Aman',
+                    riskDesc: `${cloudName} menandakan kondisi cuaca yang umumnya baik.`,
+                    recommendation: 'Nikmati aktivitas outdoor dengan tetap waspada terhadap perubahan cuaca.',
+                    icons: ['fa-cloud-sun', 'fa-person-walking', 'fa-tree']
+                };
+            }
 
             async function getLLMRecommendation(cloudName, cloudCode, weatherData) {
-                if (!rateLimiter.canCall()) throw new Error('Rate limited');
+                if (!llmEnabled) {
+                    return getLocalFallbackRecommendation(cloudName, cloudCode, weatherData);
+                }
+                if (!rateLimiter.canCall()) {
+                    return getLocalFallbackRecommendation(cloudName, cloudCode, weatherData);
+                }
                 rateLimiter.mark();
-                
                 const weatherContext = weatherData ? weatherData.map(w => `${w.name}: ${w.temp}°C, ${w.desc}`).join('; ') : 'Tidak tersedia';
                 try {
                     const response = await fetch('/api/chat', {
@@ -1734,26 +1746,28 @@
                         body: JSON.stringify({
                             model: 'llama-3.3-70b-versatile',
                             messages: [{ role: 'user', content: `Analisis risiko cuaca: Awan ${cloudName} (${cloudCode}), Cuaca: ${weatherContext}. Berikan JSON: {"riskLevel":"...","riskDesc":"...","recommendation":"...","icons":["fa-...","fa-...","fa-..."]}` }],
-                            temperature: 0.4
+                            temperature: 0.4,
+                            max_tokens: 300
                         })
                     });
-                    if (!response.ok) throw new Error('API error');
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            console.warn('Invalid API Key, using local fallback');
+                            llmEnabled = false;
+                            document.getElementById('geminiBadge').innerHTML = '<i class="fas fa-database"></i> Mode Offline · Analisis Lokal';
+                        }
+                        throw new Error(`API error ${response.status}`);
+                    }
                     const data = await response.json();
                     let text = data.choices?.[0]?.message?.content || '';
                     text = text.replace(/```json\s*/gi, '').replace(/```/g, '').trim();
                     return JSON.parse(text);
                 } catch(e) {
-                    console.warn('LLM API error, using fallback:', e);
-                    return {
-                        riskLevel: 'Rendah · Cerah',
-                        riskDesc: `${cloudName} menandakan kondisi cuaca yang umumnya baik`,
-                        recommendation: 'Nikmati aktivitas outdoor dengan tetap waspada terhadap perubahan cuaca',
-                        icons: ['fa-person-hiking', 'fa-camera', 'fa-tree']
-                    };
+                    console.warn('LLM error, using local fallback:', e.message);
+                    return getLocalFallbackRecommendation(cloudName, cloudCode, weatherData);
                 }
             }
 
-            // ==================== WEATHER API ====================
             const CITIES = [
                 { name: 'Jakarta', lat: -6.2088, lon: 106.8456 },
                 { name: 'Bogor', lat: -6.5971, lon: 106.8060 },
@@ -1797,6 +1811,12 @@
                     const grid = document.getElementById('citiesGrid');
                     grid.innerHTML = weather.map(w => `
                         <div class="city-card" data-weather="${w.type}">
+                            <div class="mini-cloud mini-cloud-1">☁️</div>
+                            <div class="mini-cloud mini-cloud-2">☁️</div>
+                            <div class="mini-cloud mini-cloud-3">☁️</div>
+                            <div class="mini-cloud mini-cloud-4">☁️</div>
+                            <div class="mini-cloud mini-cloud-5">☁️</div>
+                            <div class="mini-cloud mini-cloud-6">☁️</div>
                             <div class="city-name">${w.name} <i class="fas ${w.icon}"></i></div>
                             <div class="city-weather-icon"><i class="fas ${w.icon}"></i></div>
                             <div class="city-temp">${w.temp}°C</div>
@@ -1811,15 +1831,14 @@
                     
                     const rainyCount = weather.filter(w => w.type === 'rainy' || w.type === 'storm').length;
                     if (rainyCount >= 3) {
-                        document.getElementById('bestTimeText').innerHTML = '<i class=""></i> Waspada Hujan';
+                        document.getElementById('bestTimeText').innerHTML = 'Waspada Hujan';
                         document.getElementById('bestTimeDesc').textContent = `${rainyCount} dari 5 kota terpantau hujan`;
                     } else {
-                        document.getElementById('bestTimeText').innerHTML = '<i class=""></i> 09:00 - 15:00';
+                        document.getElementById('bestTimeText').innerHTML = '09:00 - 15:00';
                         document.getElementById('bestTimeDesc').textContent = 'Waktu terbaik untuk aktivitas outdoor';
                     }
-                    
                     const now = new Date();
-                    document.getElementById('updateTime').innerHTML = `<i class="fas fa-satellite-dish" style="color:#f59e0b"></i> Diperbarui ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} WIB`;
+                    document.getElementById('updateTime').innerHTML = `Diperbarui ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} WIB`;
                 } catch(e) {
                     console.error('Weather error:', e);
                 }
@@ -1828,6 +1847,29 @@
             setInterval(updateWeatherDisplay, 10 * 60 * 1000);
 
             // ==================== KAMERA & ANALISIS ====================
+            const MAX_FILE_SIZE = 5 * 1024 * 1024;
+            const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
+            
+            function validateFile(file) {
+                const errorDiv = document.getElementById('uploadError');
+                const errorMessage = document.getElementById('errorMessage');
+                errorDiv.classList.remove('active');
+                
+                if (!ALLOWED_TYPES.includes(file.type)) {
+                    errorMessage.innerHTML = '<i class="fas fa-file-image"></i> Format file tidak didukung! Gunakan format JPG, JPEG, atau PNG.';
+                    errorDiv.classList.add('active');
+                    return false;
+                }
+                
+                if (file.size > MAX_FILE_SIZE) {
+                    const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                    errorMessage.innerHTML = `<i class="fas fa-weight-hanging"></i> Ukuran file ${fileSizeMB} MB melebihi batas! Maksimal 5 MB.`;
+                    errorDiv.classList.add('active');
+                    return false;
+                }
+                return true;
+            }
+
             const shutterBtn = document.getElementById('shutterBtn');
             const captureBtn = document.getElementById('captureBtn');
             const stopCamBtn = document.getElementById('stopCamBtn');
@@ -1844,7 +1886,7 @@
             async function analyzeAndUpdate(imageElement) {
                 loadingIndicator.classList.add('active');
                 
-                let prediction = { name: 'Cumulus', code: 'Cu', confidence: 0 };
+                let prediction = { name: 'Cumulus', code: 'Cu', confidence: 85 };
                 
                 try {
                     const probs = await classifyImage(imageElement);
@@ -1861,21 +1903,10 @@
                     }
                 } catch(e) {
                     console.warn('Classification error:', e);
-                    prediction.name = 'Cumulus';
-                    prediction.code = 'Cu';
-                    prediction.confidence = 85;
                 }
                 
-                // Update UI dengan animasi
-                document.getElementById('cloudName').style.opacity = '0';
-                document.getElementById('cloudCode').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('cloudName').textContent = prediction.name;
-                    document.getElementById('cloudCode').textContent = prediction.code;
-                    document.getElementById('cloudName').style.opacity = '1';
-                    document.getElementById('cloudCode').style.opacity = '1';
-                }, 200);
-                
+                document.getElementById('cloudName').textContent = prediction.name;
+                document.getElementById('cloudCode').textContent = prediction.code;
                 document.getElementById('confidenceFill').style.width = prediction.confidence + '%';
                 document.getElementById('confidenceVal').textContent = prediction.confidence + '%';
                 
@@ -1923,7 +1954,6 @@
                 const dataUrl = cameraCanvas.toDataURL('image/jpeg', 0.9);
                 previewImg.src = dataUrl;
                 previewImg.style.display = 'block';
-                
                 const tempImg = new Image();
                 tempImg.onload = () => analyzeAndUpdate(tempImg);
                 tempImg.src = dataUrl;
@@ -1947,14 +1977,27 @@
 
             function processUpload(file) {
                 if (!file) return;
+                
+                if (!validateFile(file)) {
+                    previewImg.src = '#';
+                    previewImg.style.display = 'none';
+                    placeholder.style.display = '';
+                    return;
+                }
+                
                 if (activeStream) stopCamera();
+                document.getElementById('uploadError').classList.remove('active');
+                loadingIndicator.classList.add('active');
+                
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     previewImg.src = e.target.result;
                     previewImg.style.display = 'block';
                     placeholder.style.display = 'none';
                     const img = new Image();
-                    img.onload = () => analyzeAndUpdate(img);
+                    img.onload = () => {
+                        analyzeAndUpdate(img);
+                    };
                     img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
@@ -1967,7 +2010,6 @@
             cameraInput.onchange = (e) => processUpload(e.target.files[0]);
             galleryInput.onchange = (e) => processUpload(e.target.files[0]);
 
-            // Smooth scroll
             document.querySelectorAll('.nav-menu a').forEach(a => {
                 a.onclick = (e) => {
                     const hash = a.getAttribute('href');
@@ -1980,6 +2022,24 @@
                     }
                 };
             });
+
+            function createFloatingClouds() {
+                const container = document.getElementById('floatingClouds');
+                if (!container) return;
+                const cloudSizes = ['small', 'medium', 'large'];
+                const cloudVariants = ['☁️', '☁️', '☁️', '⛅', '☁️'];
+                for (let i = 0; i < 15; i++) {
+                    const cloud = document.createElement('div');
+                    cloud.className = `floating-cloud ${cloudSizes[Math.floor(Math.random() * cloudSizes.length)]}`;
+                    cloud.textContent = cloudVariants[Math.floor(Math.random() * cloudVariants.length)];
+                    cloud.style.top = `${Math.random() * 100}%`;
+                    cloud.style.animationDuration = `${15 + Math.random() * 15}s`;
+                    cloud.style.animationDelay = `${Math.random() * -20}s`;
+                    cloud.style.setProperty('--y-offset', `${(Math.random() - 0.5) * 100}px`);
+                    container.appendChild(cloud);
+                }
+            }
+            createFloatingClouds();
         })();
 
         function openDetailModal() {
@@ -1994,65 +2054,6 @@
             document.getElementById('detailModal').classList.remove('active');
         }
         document.getElementById('btnDetail')?.addEventListener('click', openDetailModal);
-// ==================== ANIMASI AWAN BERGERAK ====================
-function createFloatingClouds() {
-    const container = document.getElementById('floatingClouds');
-    if (!container) return;
-    
-    const cloudSizes = ['small', 'medium', 'large'];
-    const cloudVariants = ['☁️', '☁️', '☁️', '⛅', '☁️'];
-    
-    // Buat 15 awan yang bergerak
-    for (let i = 0; i < 15; i++) {
-        const cloud = document.createElement('div');
-        cloud.className = `floating-cloud ${cloudSizes[Math.floor(Math.random() * cloudSizes.length)]}`;
-        cloud.textContent = cloudVariants[Math.floor(Math.random() * cloudVariants.length)];
-        
-        // Posisi awal random
-        const startY = Math.random() * 100; // persen dari height
-        const duration = 15 + Math.random() * 15; // 15-30 detik
-        const delay = Math.random() * -20; // delay random (bisa negatif untuk mulai di tengah)
-        const yOffset = (Math.random() - 0.5) * 100; // pergerakan vertikal -50px sampai 50px
-        
-        cloud.style.top = `${startY}%`;
-        cloud.style.animationDuration = `${duration}s`;
-        cloud.style.animationDelay = `${delay}s`;
-        cloud.style.setProperty('--y-offset', `${yOffset}px`);
-        
-        container.appendChild(cloud);
-    }
-}
-
-// Tambahkan juga awan tambahan secara periodik
-function addPeriodicCloud() {
-    const container = document.getElementById('floatingClouds');
-    if (!container) return;
-    
-    setInterval(() => {
-        const cloud = document.createElement('div');
-        const cloudSizes = ['small', 'medium'];
-        cloud.className = `floating-cloud ${cloudSizes[Math.floor(Math.random() * cloudSizes.length)]}`;
-        cloud.textContent = '☁️';
-        
-        cloud.style.top = `${Math.random() * 100}%`;
-        cloud.style.animationDuration = `${12 + Math.random() * 15}s`;
-        cloud.style.animationDelay = `0s`;
-        
-        container.appendChild(cloud);
-        
-        // Hapus awan setelah animasi selesai
-        setTimeout(() => {
-            if (cloud && cloud.remove) cloud.remove();
-        }, 25000);
-    }, 8000);
-}
-
-// Panggil fungsi saat halaman load
-document.addEventListener('DOMContentLoaded', () => {
-    createFloatingClouds();
-    addPeriodicCloud();
-});
-
     </script>
     </body>
 
