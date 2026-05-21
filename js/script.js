@@ -489,7 +489,8 @@
             document.getElementById('rekomText').textContent = 'Silakan ambil ulang foto awan dengan posisi yang lebih jelas.';
             document.getElementById('rekomIcons').innerHTML = '<i class="fas fa-exclamation-circle"></i><i class="fas fa-cloud"></i><i class="fas fa-sync-alt"></i>';
             document.getElementById('geminiBadge').style.display = 'none';
-            document.getElementById('btnDetail').style.display = 'none';
+            const btnDetail = document.getElementById('btnDetail');
+            if (btnDetail) btnDetail.style.display = 'none';
             loadingIndicator.classList.remove('active');
             return;
         }
@@ -535,7 +536,8 @@
             document.getElementById('rekomText').textContent = 'Silakan ambil ulang foto awan dengan posisi yang lebih jelas.';
             document.getElementById('rekomIcons').innerHTML = '<i class="fas fa-camera"></i><i class="fas fa-cloud-sun"></i><i class="fas fa-sync-alt"></i>';
             document.getElementById('geminiBadge').style.display = 'none';
-            document.getElementById('btnDetail').style.display = 'none';
+            const btnDetail = document.getElementById('btnDetail');
+            if (btnDetail) btnDetail.style.display = 'none';
             loadingIndicator.classList.remove('active');
             return;
         }
@@ -549,7 +551,8 @@
             document.getElementById('rekomText').textContent = llmResult.recommendation;
             document.getElementById('rekomIcons').innerHTML = (llmResult.icons || []).map(i => `<i class="fas ${i}"></i>`).join('');
             document.getElementById('geminiBadge').style.display = 'inline-flex';
-            document.getElementById('btnDetail').style.display = 'inline-block';
+            const btnDetail = document.getElementById('btnDetail');
+            if (btnDetail) btnDetail.style.display = 'inline-block';
             window._lastLLMResult = llmResult;
         } catch (e) {
             console.warn('LLM error:', e);
