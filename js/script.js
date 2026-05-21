@@ -356,8 +356,143 @@
     const loadingIndicator = document.getElementById('loadingIndicator');
     let activeStream = null;
 
+    function getResizedBase64(imgElement, maxDim = 300) {
+        const canvas = document.createElement('canvas');
+        let width = imgElement.naturalWidth || imgElement.width || 300;
+        let height = imgElement.naturalHeight || imgElement.height || 300;
+        
+        if (width > height) {
+            if (width > maxDim) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+            }
+        } else {
+            if (height > maxDim) {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+            }
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(imgElement, 0, 0, width, height);
+        return canvas.toDataURL('image/jpeg', 0.7);
+    }
+
+    function runLocalSkyHeuristic(imgElement) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 50;
+        canvas.height = 50;
+        const ctx = canvas.getContext('2d');
+        try {
+            ctx.drawImage(imgElement, 0, 0, 50, 50);
+            const imgData = ctx.getImageData(0, 0, 50, 50);
+            const data = imgData.data;
+            
+            let skyPixels = 0;
+            const totalPixels = 50 * 50;
+            
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i+1];
+                const b = data[i+2];
+                
+                // Blue Sky Check: Blue is dominant and bright
+                const isBlueSky = (b > r && b > g && b > 75 && (b - r) > 8);
+                
+                // White/Grey Cloud Check: Bright and desaturated
+                const maxVal = Math.max(r, g, b);
+                const minVal = Math.min(r, g, b);
+                const diff = maxVal - minVal;
+                const isCloud = (r > 90 && g > 90 && b > 90 && diff < 30);
+                
+                // Sunset/Sunrise Check: Warm orange/red colors
+                const isSunset = (r > 120 && r > b && g > b && (r - b) > 25);
+                
+                // Dark/Overcast/Night Sky: Low saturation grey or dark blue
+                const isDarkSky = (maxVal < 100 && maxVal > 25 && diff < 15);
+                
+                if (isBlueSky || isCloud || isSunset || isDarkSky) {
+                    skyPixels++;
+                }
+            }
+            
+            const ratio = skyPixels / totalPixels;
+            console.log(`📊 Local heuristic sky/cloud pixel ratio: ${(ratio * 100).toFixed(1)}%`);
+            return ratio >= 0.30;
+        } catch (err) {
+            console.error('Error running local sky heuristic:', err);
+            return true;
+        }
+    }
+
+    async function checkIsSkyOrCloudImage(imgElement) {
+        if (llmEnabled) {
+            try {
+                const base64Data = getResizedBase64(imgElement, 300);
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model: 'llama-3.2-11b-vision-preview',
+                        messages: [{
+                            role: 'user',
+                            content: [
+                                { 
+                                    type: 'text', 
+                                    text: 'Analyze this image. Is it an image of a cloud or sky? Reply with a JSON object strictly containing a single key "isSky" which is a boolean (true if the image is mostly a cloud, clouds, or sky, and false if the image is of something else like a person, room, laptop, text, animal, vehicle, etc.). Do not include markdown formatting or extra text, just the raw JSON.' 
+                                },
+                                { 
+                                    type: 'image_url', 
+                                    image_url: { url: base64Data } 
+                                }
+                            ]
+                        }],
+                        response_format: { type: "json_object" },
+                        temperature: 0.1,
+                        max_tokens: 50
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    let text = data.choices?.[0]?.message?.content || '';
+                    text = text.replace(/```json\s*/gi, '').replace(/```/g, '').trim();
+                    const result = JSON.parse(text);
+                    console.log('👁️ Vision LLM verification result:', result);
+                    if (typeof result.isSky === 'boolean') {
+                        return result.isSky;
+                    }
+                }
+            } catch (e) {
+                console.warn('Vision LLM verification failed, falling back to local heuristic:', e);
+            }
+        }
+        return runLocalSkyHeuristic(imgElement);
+    }
+
     async function analyzeAndUpdate(imageElement) {
         loadingIndicator.classList.add('active');
+
+        // Verify if the uploaded image actually contains a cloud or sky
+        const isSky = await checkIsSkyOrCloudImage(imageElement);
+        if (!isSky) {
+            document.getElementById('cloudName').textContent = 'Tidak Teridentifikasi';
+            document.getElementById('cloudCode').textContent = '???';
+            document.getElementById('confidenceFill').style.width = '0%';
+            document.getElementById('confidenceVal').textContent = '0%';
+            document.querySelector('.confidence-bar').style.opacity = '0.3';
+
+            document.getElementById('riskLevel').textContent = '⚠️ Bukan Gambar Awan';
+            document.getElementById('riskDesc').textContent = 'Sistem mendeteksi bahwa gambar ini bukan merupakan awan atau langit. Harap ambil atau pilih foto awan yang lebih jelas.';
+            document.getElementById('rekomText').textContent = 'Silakan ambil ulang foto awan dengan posisi yang lebih jelas.';
+            document.getElementById('rekomIcons').innerHTML = '<i class="fas fa-exclamation-circle"></i><i class="fas fa-cloud"></i><i class="fas fa-sync-alt"></i>';
+            document.getElementById('geminiBadge').style.display = 'none';
+            document.getElementById('btnDetail').style.display = 'none';
+            loadingIndicator.classList.remove('active');
+            return;
+        }
 
         let prediction = { name: 'Cumulus', code: 'Cu', confidence: 85 };
         let isValid = true;
