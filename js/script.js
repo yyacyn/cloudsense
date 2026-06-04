@@ -111,7 +111,7 @@
 
     async function classifyImage(imgElement) {
         if (!tfModel) return null;
-        const tensor = tf.browser.fromPixels(imgElement).resizeBilinear([224, 224]).toFloat().expandDims(0);
+        const tensor = tf.browser.fromPixels(imgElement).resizeBilinear([256, 256]).toFloat().expandDims(0);
         const probs = tfModel.predict(tensor);
         const data = await probs.data();
         tensor.dispose();
