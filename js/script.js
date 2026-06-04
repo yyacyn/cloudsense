@@ -428,49 +428,12 @@
     }
 
     async function checkIsSkyOrCloudImage(imgElement) {
-        if (llmEnabled) {
-            try {
-                const base64Data = getResizedBase64(imgElement, 300);
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        model: 'meta-llama/llama-4-scout-17b-16e-instruct',
-                        messages: [{
-                            role: 'user',
-                            content: [
-                                { 
-                                    type: 'text', 
-                                    text: 'Analyze this image. Is the primary, dominant subject of this image a cloud, clouds, or the sky? If the main subject is anything else—such as a person, a character, a robot, a weapon, a vehicle, a building, an animal, a laptop, food, text, or an indoor room—even if there is sky or clouds in the background, you MUST reply with {"isSky": false}. Only reply with {"isSky": true} if the image is purely or predominantly a photo of the sky and clouds. Reply with a JSON object strictly containing a single key "isSky" which is a boolean.' 
-                                },
-                                { 
-                                    type: 'image_url', 
-                                    image_url: { url: base64Data } 
-                                }
-                            ]
-                        }],
-                        response_format: { type: "json_object" },
-                        temperature: 0.1,
-                        max_tokens: 50
-                    })
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    let text = data.choices?.[0]?.message?.content || '';
-                    text = text.replace(/```json\s*/gi, '').replace(/```/g, '').trim();
-                    const result = JSON.parse(text);
-                    console.log('👁️ Vision LLM verification result:', result);
-                    if (typeof result.isSky === 'boolean') {
-                        return result.isSky;
-                    }
-                }
-            } catch (e) {
-                console.warn('Vision LLM verification failed, falling back to local heuristic:', e);
-            }
-        }
+        // Only use the deterministic local pixel heuristic.
+        // Vision LLM removed: it was inconsistent (rejected valid sky photos
+        // when trees/objects appeared in frame) causing random failures.
         return runLocalSkyHeuristic(imgElement);
     }
+
 
     async function analyzeAndUpdate(imageElement) {
         loadingIndicator.classList.add('active');
@@ -512,10 +475,11 @@
                     prediction.code = '???';
                 }
             } else {
-                const randomIdx = Math.floor(Math.random() * CLASS_NAMES.length);
-                prediction.name = CLASS_NAMES[randomIdx];
-                prediction.code = CLASS_CODES[randomIdx];
-                prediction.confidence = Math.floor(Math.random() * 30) + 70;
+                // Model not loaded — show a clear error instead of random results
+                isValid = false;
+                prediction.name = 'Tidak Teridentifikasi';
+                prediction.code = '???';
+                prediction.confidence = 0;
             }
         } catch (e) {
             console.warn('Classification error:', e);
