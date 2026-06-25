@@ -430,7 +430,7 @@
                             content: [
                                 { 
                                     type: 'text', 
-                                    text: 'Analyze this image. Is the primary, dominant subject of this image a cloud, clouds, or the sky? If the main subject is anything else—such as a person, a character, a robot, a weapon, a vehicle, a building, an animal, a laptop, food, text, or an indoor room—even if there is sky or clouds in the background, you MUST reply with {"isSky": false}. Only reply with {"isSky": true} if the image is purely or predominantly a photo of the sky and clouds. Reply with a JSON object strictly containing a single key "isSky" which is a boolean.' 
+                                    text: 'Analyze this image. Is the primary, dominant subject of this image a cloud, clouds, or the sky? If the main subject is anything else—such as a person, a character, a robot, a weapon, a vehicle, a building, an animal, a laptop, food, text, or an indoor room, you MUST reply with {"isSky": false}. Only reply with {"isSky": true} if the image is purely or predominantly a photo of the sky and clouds. Reply with a JSON object strictly containing a single key "isSky" which is a boolean.' 
                                 },
                                 { 
                                     type: 'image_url', 
