@@ -4,10 +4,10 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const groqKey = process.env.GROQ_API_KEY;
+    const groqKey = process.env.GROQ_API_KEY || process.env.grog;
     
     if (!groqKey) {
-        return res.status(500).json({ error: 'GROQ_API_KEY is not configured on the server' });
+        return res.status(500).json({ error: 'GROQ_API_KEY or grog is not configured on the server' });
     }
 
     try {

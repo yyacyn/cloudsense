@@ -94,30 +94,19 @@
         grid.appendChild(card);
     });
 
-    let tfModel = null;
-    const CLASS_NAMES = ['Cumulus', 'Altocumulus', 'Cirrus', 'Clear Sky', 'Stratocumulus', 'Cumulonimbus'];
-    const CLASS_CODES = ['Cu', 'Ac', 'Ci', 'CS', 'Sc', 'Cb'];
-
-    async function loadModel() {
-        try {
-            tfModel = await tf.loadGraphModel('./model/model.json');
-            console.log('✅ Model TensorFlow.js loaded!');
-        } catch (e) {
-            console.warn('Model not found, using simulation mode:', e);
-            tfModel = null;
-        }
-    }
-    loadModel();
-
-    async function classifyImage(imgElement) {
-        if (!tfModel) return null;
-        const tensor = tf.browser.fromPixels(imgElement).resizeBilinear([256, 256]).toFloat().expandDims(0);
-        const probs = tfModel.predict(tensor);
-        const data = await probs.data();
-        tensor.dispose();
-        probs.dispose();
-        return Array.from(data);
-    }
+    const CLASS_CODES_MAP = {
+        'Cumulus': 'Cu',
+        'Altocumulus': 'Ac',
+        'Cirrus': 'Ci',
+        'Clear Sky': 'CS',
+        'Stratocumulus': 'Sc',
+        'Cumulonimbus': 'Cb',
+        'Cirrocumulus': 'Cc',
+        'Altostratus': 'As',
+        'Nimbostratus': 'Ns',
+        'Stratus': 'St',
+        'Cirrostratus': 'Cs'
+    };
 
     let cachedWeather = null;
     const rateLimiter = {
@@ -472,39 +461,69 @@
         return runLocalSkyHeuristic(imgElement);
     }
 
-    async function analyzeAndUpdate(imageElement) {
+    async function analyzeAndUpdate(file) {
         loadingIndicator.classList.add('active');
 
-        // Verify if the uploaded image actually contains a cloud or sky
-        const isSky = await checkIsSkyOrCloudImage(imageElement);
-        if (!isSky) {
-            document.getElementById('cloudName').textContent = 'Tidak Teridentifikasi';
-            document.getElementById('cloudCode').textContent = '???';
-            document.getElementById('confidenceFill').style.width = '0%';
-            document.getElementById('confidenceVal').textContent = '0%';
-            document.querySelector('.confidence-bar').style.opacity = '0.3';
-
-            document.getElementById('riskLevel').textContent = '⚠️ Bukan Gambar Awan';
-            document.getElementById('riskDesc').textContent = 'Sistem mendeteksi bahwa gambar ini bukan merupakan awan atau langit. Harap ambil atau pilih foto awan yang lebih jelas.';
-            document.getElementById('rekomText').textContent = 'Silakan ambil ulang foto awan dengan posisi yang lebih jelas.';
-            document.getElementById('rekomIcons').innerHTML = '<i class="fas fa-exclamation-circle"></i><i class="fas fa-cloud"></i><i class="fas fa-sync-alt"></i>';
-            document.getElementById('geminiBadge').style.display = 'none';
-            const btnDetail = document.getElementById('btnDetail');
-            if (btnDetail) btnDetail.style.display = 'none';
-            loadingIndicator.classList.remove('active');
-            return;
+        // Create an Image element from the file/blob to run vision verification if needed
+        let imageElement = null;
+        try {
+            imageElement = await new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = URL.createObjectURL(file);
+            });
+        } catch (err) {
+            console.warn('Failed to load image for heuristic check:', err);
         }
 
-        let prediction = { name: 'Cumulus', code: 'Cu', confidence: 85 };
+        // Verify if the uploaded image actually contains a cloud or sky
+        if (imageElement) {
+            const isSky = await checkIsSkyOrCloudImage(imageElement);
+            // Revoke the object URL to free memory
+            URL.revokeObjectURL(imageElement.src);
+            
+            if (!isSky) {
+                document.getElementById('cloudName').textContent = 'Tidak Teridentifikasi';
+                document.getElementById('cloudCode').textContent = '???';
+                document.getElementById('confidenceFill').style.width = '0%';
+                document.getElementById('confidenceVal').textContent = '0%';
+                document.querySelector('.confidence-bar').style.opacity = '0.3';
+
+                document.getElementById('riskLevel').textContent = '⚠️ Bukan Gambar Awan';
+                document.getElementById('riskDesc').textContent = 'Sistem mendeteksi bahwa gambar ini bukan merupakan awan atau langit. Harap ambil atau pilih foto awan yang lebih jelas.';
+                document.getElementById('rekomText').textContent = 'Silakan ambil ulang foto awan dengan posisi yang lebih jelas.';
+                document.getElementById('rekomIcons').innerHTML = '<i class="fas fa-exclamation-circle"></i><i class="fas fa-cloud"></i><i class="fas fa-sync-alt"></i>';
+                document.getElementById('geminiBadge').style.display = 'none';
+                const btnDetail = document.getElementById('btnDetail');
+                if (btnDetail) btnDetail.style.display = 'none';
+                loadingIndicator.classList.remove('active');
+                return;
+            }
+        }
+
+        let prediction = { name: 'Cumulus', emoji: '🌤️', confidence: 85, code: 'Cu' };
         let isValid = true;
 
         try {
-            const probs = await classifyImage(imageElement);
-            if (probs) {
-                const topIdx = probs.indexOf(Math.max(...probs));
-                prediction.confidence = Math.round(probs[topIdx] * 100);
-                prediction.name = CLASS_NAMES[topIdx];
-                prediction.code = CLASS_CODES[topIdx];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch('https://cloudsense-model.fastapicloud.dev/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`Server returned status ${response.status}`);
+            }
+
+            const result = await response.json();
+            if (result && result.top) {
+                prediction.name = result.top.name;
+                prediction.emoji = result.top.emoji || '';
+                prediction.confidence = Math.round(result.top.confidence);
+                prediction.code = CLASS_CODES_MAP[result.top.name] || '??';
 
                 if (prediction.confidence < 70) {
                     isValid = false;
@@ -512,16 +531,28 @@
                     prediction.code = '???';
                 }
             } else {
-                const randomIdx = Math.floor(Math.random() * CLASS_NAMES.length);
-                prediction.name = CLASS_NAMES[randomIdx];
-                prediction.code = CLASS_CODES[randomIdx];
-                prediction.confidence = Math.floor(Math.random() * 30) + 70;
+                throw new Error('Invalid response structure from prediction API');
             }
         } catch (e) {
-            console.warn('Classification error:', e);
+            console.error('Classification error:', e);
+            document.getElementById('cloudName').textContent = 'Error Klasifikasi';
+            document.getElementById('cloudCode').textContent = 'ERR';
+            document.getElementById('confidenceFill').style.width = '0%';
+            document.getElementById('confidenceVal').textContent = '0%';
+            document.querySelector('.confidence-bar').style.opacity = '0.3';
+
+            document.getElementById('riskLevel').textContent = '⚠️ Layanan Error';
+            document.getElementById('riskDesc').textContent = 'Gagal menghubungi server klasifikasi awan. Silakan periksa koneksi internet Anda atau coba lagi nanti.';
+            document.getElementById('rekomText').textContent = 'Silakan coba beberapa saat lagi.';
+            document.getElementById('rekomIcons').innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+            document.getElementById('geminiBadge').style.display = 'none';
+            const btnDetail = document.getElementById('btnDetail');
+            if (btnDetail) btnDetail.style.display = 'none';
+            loadingIndicator.classList.remove('active');
+            return;
         }
 
-        document.getElementById('cloudName').textContent = prediction.name;
+        document.getElementById('cloudName').innerHTML = `${prediction.name} ${prediction.emoji}`;
         document.getElementById('cloudCode').textContent = prediction.code;
         document.getElementById('confidenceFill').style.width = prediction.confidence + '%';
         document.getElementById('confidenceVal').textContent = prediction.confidence + '%';
@@ -591,9 +622,12 @@
         const dataUrl = cameraCanvas.toDataURL('image/jpeg', 0.9);
         previewImg.src = dataUrl;
         previewImg.style.display = 'block';
-        const tempImg = new Image();
-        tempImg.onload = () => analyzeAndUpdate(tempImg);
-        tempImg.src = dataUrl;
+        placeholder.style.display = 'none';
+
+        cameraCanvas.toBlob(blob => {
+            const file = new File([blob], "captured_cloud.jpg", { type: "image/jpeg" });
+            analyzeAndUpdate(file);
+        }, 'image/jpeg', 0.9);
     }
 
     function stopCamera() {
@@ -624,18 +658,13 @@
 
         if (activeStream) stopCamera();
         document.getElementById('uploadError').classList.remove('active');
-        loadingIndicator.classList.add('active');
 
         const reader = new FileReader();
         reader.onload = (e) => {
             previewImg.src = e.target.result;
             previewImg.style.display = 'block';
             placeholder.style.display = 'none';
-            const img = new Image();
-            img.onload = () => {
-                analyzeAndUpdate(img);
-            };
-            img.src = e.target.result;
+            analyzeAndUpdate(file);
         };
         reader.readAsDataURL(file);
     }
